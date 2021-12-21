@@ -6,31 +6,42 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class PosixDartSassExecutableExtractor implements DartSassExecutableExtractor {
+    private static String[] _RESOURCE_NAMES =
+            new String[] {"sass", "src/sass.snapshot", "src/dart"};
+
     @Override
     public void extract() throws IOException {
-        InputStream inputStream =
-                getClass()
-                        .getResourceAsStream(
-                                "/sass-binaries/"
-                                        + OSDetector.getOSName()
-                                        + "/"
-                                        + OSDetector.getOSArchitecture()
-                                        + "/sass");
-
         Path executableFolder = createExecutableFolder();
 
-        Path executablePath = executableFolder.resolve("sass");
+        for (String resourceName : _RESOURCE_NAMES) {
+            InputStream resourceInputStream =
+                    getClass()
+                            .getResourceAsStream(
+                                    "/sass-binaries/"
+                                            + OSDetector.getOSName()
+                                            + "/"
+                                            + OSDetector.getOSArchitecture()
+                                            + "/"
+                                            + resourceName);
 
-        if (Files.exists(executablePath)) {
-            return;
+            Path resourcePath = executableFolder.resolve(resourceName);
+
+            if (Files.exists(resourcePath)) {
+                continue;
+            }
+
+            Files.copy(resourceInputStream, resourcePath);
+
+            Files.setPosixFilePermissions(
+                    resourcePath,
+                    new HashSet<>(
+                            Arrays.asList(
+                                    PosixFilePermission.OWNER_EXECUTE,
+                                    PosixFilePermission.OWNER_READ)));
         }
-
-        Files.copy(inputStream, executablePath);
-
-        Files.setPosixFilePermissions(
-                executablePath, Collections.singleton(PosixFilePermission.OWNER_EXECUTE));
     }
 }

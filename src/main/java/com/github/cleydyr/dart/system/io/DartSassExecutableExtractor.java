@@ -15,6 +15,12 @@ public interface DartSassExecutableExtractor {
             Files.createDirectory(executableFolder);
         }
 
+        Path srcDir = executableFolder.resolve("src");
+
+        if (!Files.isDirectory(srcDir)) {
+            Files.createDirectory(srcDir);
+        }
+
         return executableFolder;
     }
 
