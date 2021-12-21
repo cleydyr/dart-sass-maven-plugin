@@ -6,22 +6,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class WindowsDartSassExecutableExtractor implements DartSassExecutableExtractor {
-	private static String[] _RESOURCE_NAMES = new String[] {"dart.exe", "sass.snapshot"};
+    private static String[] _RESOURCE_NAMES = new String[] {"dart.exe", "sass.snapshot"};
 
-	@Override
-	public void extract() throws IOException {
-		Path executableFolder = createExecutableFolder();
+    @Override
+    public void extract() throws IOException {
+        Path executableFolder = createExecutableFolder();
 
-		for (String resourceName : _RESOURCE_NAMES) {
-			InputStream resourceInputStream = getClass().getResourceAsStream("/sass-binaries/windows/x64/" + resourceName);
+        for (String resourceName : _RESOURCE_NAMES) {
+            InputStream resourceInputStream =
+                    getClass().getResourceAsStream("/sass-binaries/windows/x64/" + resourceName);
 
-			Path resourcePath = executableFolder.resolve(resourceName);
+            Path resourcePath = executableFolder.resolve(resourceName);
 
-			if (Files.exists(resourcePath)) {
-				continue;
-			}
+            if (Files.exists(resourcePath)) {
+                continue;
+            }
 
-			Files.copy(resourceInputStream, resourcePath);
-		}
-	}
+            Files.copy(resourceInputStream, resourcePath);
+        }
+    }
 }

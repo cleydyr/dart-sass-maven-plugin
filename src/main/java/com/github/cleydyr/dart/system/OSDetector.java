@@ -1,59 +1,55 @@
 package com.github.cleydyr.dart.system;
 
 public class OSDetector {
-	public static final String OS_MAC_OS = "macos";
-	
-	public static final String OS_WINDOWS = "windows";
-	
-	public static final String OS_LINUX = "linux";
+    public static final String OS_MAC_OS = "macos";
 
-	private static final String _DETECTED_OS;
+    public static final String OS_WINDOWS = "windows";
 
-	private static final String _DETECTED_ARCHITECTURE;
+    public static final String OS_LINUX = "linux";
 
-	private static final boolean _IS_WINDOWS;
+    private static final String _DETECTED_OS;
 
-	static {
-		String osName = System.getProperty("os.name");
+    private static final String _DETECTED_ARCHITECTURE;
 
-		if (osName.contains("Mac OS")) {
-			_DETECTED_OS = OS_MAC_OS;
+    private static final boolean _IS_WINDOWS;
 
-			_IS_WINDOWS = false;
-		}
-		else if (osName.contains("Windows")) {
-			_DETECTED_OS = OS_WINDOWS;
+    static {
+        String osName = System.getProperty("os.name");
 
-			_IS_WINDOWS = true;
-		}
-		else {
-			_DETECTED_OS = OS_LINUX;
+        if (osName.contains("Mac OS")) {
+            _DETECTED_OS = OS_MAC_OS;
 
-			_IS_WINDOWS = false;
-		}
+            _IS_WINDOWS = false;
+        } else if (osName.contains("Windows")) {
+            _DETECTED_OS = OS_WINDOWS;
 
-		String osArchitecture = System.getProperty("os.arch");
+            _IS_WINDOWS = true;
+        } else {
+            _DETECTED_OS = OS_LINUX;
 
-		if (osArchitecture.equals("aarch64")) {
-			_DETECTED_ARCHITECTURE = "aarch64";
-		}
-		else if (osArchitecture.contains("64")) {
-			_DETECTED_ARCHITECTURE = "x64";
-		}
-		else {
-			_DETECTED_ARCHITECTURE = "x86";
-		}
-	}
+            _IS_WINDOWS = false;
+        }
 
-	public static String getOSName() {
-		return _DETECTED_OS;
-	}
+        String osArchitecture = System.getProperty("os.arch");
 
-	public static String getOSArchitecture() {
-		return _DETECTED_ARCHITECTURE;
-	}
+        if (osArchitecture.equals("aarch64")) {
+            _DETECTED_ARCHITECTURE = "aarch64";
+        } else if (osArchitecture.contains("64")) {
+            _DETECTED_ARCHITECTURE = "x64";
+        } else {
+            _DETECTED_ARCHITECTURE = "x86";
+        }
+    }
 
-	public static boolean isWindows() {
-		return _IS_WINDOWS;
-	}
+    public static String getOSName() {
+        return _DETECTED_OS;
+    }
+
+    public static String getOSArchitecture() {
+        return _DETECTED_ARCHITECTURE;
+    }
+
+    public static boolean isWindows() {
+        return _IS_WINDOWS;
+    }
 }
