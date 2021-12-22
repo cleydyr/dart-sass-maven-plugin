@@ -216,8 +216,10 @@ public abstract class AbstractSassCommand implements SassCommand {
         switch (sourceMapURLs) {
             case ABSOLUTE:
                 commands.add("--source-map-urls=absolute");
+                break;
             case RELATIVE:
                 commands.add("--source-map-urls=relative");
+                break;
         }
     }
 
@@ -225,8 +227,10 @@ public abstract class AbstractSassCommand implements SassCommand {
         switch (style) {
             case COMPRESSED:
                 commands.add("--style=compressed");
+                break;
             case EXPANDED:
                 commands.add("--style=expanded");
+                break;
         }
     }
 
