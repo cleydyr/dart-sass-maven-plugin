@@ -20,14 +20,7 @@ public class SassCommandBuilderFactory {
                                     Paths.get(
                                                     System.getProperty("java.io.tmpdir"),
                                                     "dart-sass-maven-plugin",
-                                                    "dart.exe")
-                                            .toString());
-
-                            commands.add(
-                                    Paths.get(
-                                                    System.getProperty("java.io.tmpdir"),
-                                                    "dart-sass-maven-plugin",
-                                                    "sass.snapshot")
+                                                    "sass.bat")
                                             .toString());
                         }
                     };
