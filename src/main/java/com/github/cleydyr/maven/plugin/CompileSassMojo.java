@@ -89,7 +89,13 @@ public class CompileSassMojo extends AbstractMojo {
         SassCommand sassCommand = buildSassCommand();
 
         try {
-            sassCommand.execute();
+            String output = sassCommand.execute();
+
+            if (!output.isEmpty()) {
+                getLog().info("sass command output:");
+
+                getLog().info(output);
+            }
         } catch (SassCommandException sassCommandException) {
             throw new MojoExecutionException("Can't execute SASS command", sassCommandException);
         }
