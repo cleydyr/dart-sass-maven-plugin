@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
@@ -76,6 +78,8 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean trace;
 
+    private long fileCount;
+
     public void execute() throws MojoExecutionException {
         DartSassExecutableExtractor dartSassExecutableExtractor =
                 DartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
@@ -89,7 +93,15 @@ public class CompileSassMojo extends AbstractMojo {
         SassCommand sassCommand = buildSassCommand();
 
         try {
+            Instant start = Instant.now();
+
             String output = sassCommand.execute();
+
+            Instant finish = Instant.now();
+
+            long elapsedTime = Duration.between(start, finish).toMillis();
+
+            getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
 
             if (!output.isEmpty()) {
                 getLog().info("sass command output:");
@@ -128,6 +140,8 @@ public class CompileSassMojo extends AbstractMojo {
         Path inputFolderPath = inputFolder.toPath();
 
         try {
+            fileCount = Files.list(inputFolderPath).count();
+
             Files.list(inputFolderPath)
                     .forEach(
                             inputFilePath -> {
