@@ -2,6 +2,8 @@ package com.github.cleydyr.maven.plugin;
 
 import com.github.cleydyr.dart.command.SassCommand;
 import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
+import com.github.cleydyr.dart.command.enums.SourceMapURLs;
+import com.github.cleydyr.dart.command.enums.Style;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -23,11 +26,55 @@ public class CompileSassMojo extends AbstractMojo {
 
     private static final String[] ALLOWED_EXTENSIONS = new String[] {".scss", ".sass"};
 
-    @Parameter(required = true)
+    @Parameter(defaultValue = "src/main/sass")
     private File inputFolder;
 
-    @Parameter(required = true)
+    @Parameter(property = "project.build.directory")
     private File outputFolder;
+
+    @Parameter private List<File> loadPaths;
+
+    @Parameter(defaultValue = "EXPANDED")
+    private Style style;
+
+    @Parameter(defaultValue = "false")
+    private boolean noCharset;
+
+    @Parameter(defaultValue = "true")
+    private boolean errorCSS;
+
+    @Parameter(defaultValue = "false")
+    private boolean update;
+
+    @Parameter(defaultValue = "false")
+    private boolean noSourceMap;
+
+    @Parameter(defaultValue = "RELATIVE")
+    private SourceMapURLs sourceMapURLs;
+
+    @Parameter(defaultValue = "false")
+    private boolean embedSources;
+
+    @Parameter(defaultValue = "false")
+    private boolean embedSourceMap;
+
+    @Parameter(defaultValue = "false")
+    private boolean stopOnError;
+
+    @Parameter(defaultValue = "true")
+    private boolean color;
+
+    @Parameter(defaultValue = "false")
+    private boolean noUnicode;
+
+    @Parameter(defaultValue = "true")
+    private boolean quiet;
+
+    @Parameter(defaultValue = "false")
+    private boolean quietDeps;
+
+    @Parameter(defaultValue = "false")
+    private boolean trace;
 
     public void execute() throws MojoExecutionException {
         DartSassExecutableExtractor dartSassExecutableExtractor =
@@ -50,6 +97,27 @@ public class CompileSassMojo extends AbstractMojo {
 
     private SassCommand buildSassCommand() throws MojoExecutionException {
         SassCommandBuilder sassCommandBuilder = SassCommandBuilderFactory.getCommanderBuilder();
+
+        if (loadPaths != null) {
+            for (File loadPath : loadPaths) {
+                sassCommandBuilder.withLoadPath(loadPath.toPath());
+            }
+        }
+
+        sassCommandBuilder.withStyle(style);
+        sassCommandBuilder.withNoCharset(noCharset);
+        sassCommandBuilder.withErrorCSS(errorCSS);
+        sassCommandBuilder.withUpdate(update);
+        sassCommandBuilder.withNoSourceMap(noSourceMap);
+        sassCommandBuilder.withSourceMapURLs(sourceMapURLs);
+        sassCommandBuilder.withEmbedSources(embedSources);
+        sassCommandBuilder.withEmbedSourceMap(embedSourceMap);
+        sassCommandBuilder.withStopOnError(stopOnError);
+        sassCommandBuilder.withColor(color);
+        sassCommandBuilder.withNoUnicode(noUnicode);
+        sassCommandBuilder.withQuiet(quiet);
+        sassCommandBuilder.withQuietDeps(quietDeps);
+        sassCommandBuilder.withTrace(trace);
 
         Path inputFolderPath = inputFolder.toPath();
 
