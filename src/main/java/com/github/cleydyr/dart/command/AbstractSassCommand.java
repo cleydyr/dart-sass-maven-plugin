@@ -224,9 +224,9 @@ public abstract class AbstractSassCommand implements SassCommand {
     private void _setStyle(List<String> commands) {
         switch (style) {
             case COMPRESSED:
-                commands.add("--style=expanded");
-            case EXPANDED:
                 commands.add("--style=compressed");
+            case EXPANDED:
+                commands.add("--style=expanded");
         }
     }
 
