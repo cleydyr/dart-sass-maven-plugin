@@ -15,7 +15,7 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
 
     private Style style = Style.EXPANDED;
 
-    private boolean charsetEnabled = false;
+    private boolean noCharsetEnabled = false;
 
     private boolean errorCSSEnabled = true;
 
@@ -58,8 +58,8 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
     }
 
     @Override
-    public SassCommandBuilder withCharset(boolean charsetEnabled) {
-        this.charsetEnabled = charsetEnabled;
+    public SassCommandBuilder withNoCharset(boolean noCharsetEnabled) {
+        this.noCharsetEnabled = noCharsetEnabled;
 
         return this;
     }
@@ -161,7 +161,7 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
     public SassCommand build() {
         AbstractSassCommand sassCommand = getSassCommandInstance();
 
-        sassCommand.setCharsetEnabled(charsetEnabled);
+        sassCommand.setNoCharsetEnabled(noCharsetEnabled);
         sassCommand.setColorEnabled(colorEnabled);
         ;
         sassCommand.setEmbedSourceMapEnabled(embedSourceMapEnabled);

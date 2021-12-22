@@ -10,7 +10,7 @@ public interface SassCommandBuilder {
 
     SassCommandBuilder withStyle(Style style);
 
-    SassCommandBuilder withCharset(boolean enabled);
+    SassCommandBuilder withNoCharset(boolean enabled);
 
     SassCommandBuilder withErrorCSS(boolean enabled);
 

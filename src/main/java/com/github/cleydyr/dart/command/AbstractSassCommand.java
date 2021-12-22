@@ -26,8 +26,8 @@ public abstract class AbstractSassCommand implements SassCommand {
         this.style = style;
     }
 
-    public void setCharsetEnabled(boolean charsetEnabled) {
-        this.charsetEnabled = charsetEnabled;
+    public void setNoCharsetEnabled(boolean noCharsetEnabled) {
+        this.noCharsetEnabled = noCharsetEnabled;
     }
 
     public void setErrorCSSEnabled(boolean errorCSSEnabled) {
@@ -84,7 +84,7 @@ public abstract class AbstractSassCommand implements SassCommand {
 
     private Style style;
 
-    private boolean charsetEnabled;
+    private boolean noCharsetEnabled;
 
     private boolean errorCSSEnabled;
 
@@ -163,7 +163,7 @@ public abstract class AbstractSassCommand implements SassCommand {
     }
 
     private void _setFlags(List<String> commands) {
-        if (!charsetEnabled) {
+        if (noCharsetEnabled) {
             commands.add("--no-charset");
         }
 
