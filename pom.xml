@@ -15,6 +15,12 @@
 	</developers>
 	<url>https://github.com/cleydyr/dart-sass-maven-plugin</url>
 
+	<scm>
+		<connection>scm:git:git://github.com/cleydyr/dart-sass-maven-plugin.git</connection>
+		<developerConnection>scm:git:ssh://github.com:cleydyr/dart-sass-maven-plugin.git</developerConnection>
+		<url>http://github.com/cleydyr/dart-sass-maven-plugin/tree/master</url>
+	</scm
+>
 	<licenses>
 		<license>
 			<name>MIT License</name>
