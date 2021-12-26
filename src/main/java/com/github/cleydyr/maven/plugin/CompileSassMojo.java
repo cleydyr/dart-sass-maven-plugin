@@ -22,59 +22,160 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-/** Goal that compiles a set of sass/scss files from an input directory to an output directory */
+/**
+ * Goal that compiles a set of sass/scss files from an input directory to an output directory.
+ */
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class CompileSassMojo extends AbstractMojo {
 
     private static final String[] ALLOWED_EXTENSIONS = new String[] {".scss", ".sass"};
 
+    /**
+     * Path to the folder where the sass/scss are located.
+     */
     @Parameter(defaultValue = "src/main/sass")
     private File inputFolder;
 
+    /**
+     * Path to the folder where the css and source map files will be created.
+     */
     @Parameter(property = "project.build.directory")
     private File outputFolder;
 
+    /**
+     * Paths from where additional load path for Sass to look for stylesheets will be loaded. It can
+     * be passed multiple times to provide multiple load paths. Earlier load paths will take
+     * precedence over later ones.
+     */
     @Parameter private List<File> loadPaths;
 
+    /**
+     * This option controls the output style of the resulting CSS. Dart Sass supports two output
+     * styles:<br>
+     * <ul>
+     * <li>expanded (the default), which writes each selector and declaration on its own line; and
+     * </li>
+     * <li>compressed, which removes as many extra characters as possible, and writes the entire
+     * stylesheet on a single line.</li>
+     * </ul>
+     * Use either <code>EXPANDED</code> or <code>COMPRESSED</code> in the plugin configuration.
+     */
     @Parameter(defaultValue = "EXPANDED")
     private Style style;
 
+    /**
+     * This flag tells Sass never to emit a <code>@charset</code> declaration or a UTF-8 byte-order
+     * mark. By default, or if the <code>charset</code> flag is activated, Sass will insert either a
+     * <code>@charset</code> declaration (in expanded output mode) or a byte-order mark (in
+     * compressed output mode) if the stylesheet contains any non-ASCII characters.
+     */
     @Parameter(defaultValue = "false")
     private boolean noCharset;
 
+    /**
+     * This flag tells Sass whether to emit a CSS file when an error occurs during compilation.
+     * This CSS file describes the error in a comment and in the content property of <code>
+     * body::before,</code> so that you can see the error message in the browser without needing to
+     * switch back to the terminal.<br>
+     * By default, error CSS is enabled if you’re compiling to at least one file on disk (as opposed
+     * to standard output). You can activate <code>errorCSS</code> explicitly to enable it even when
+     * you’re compiling to standard out (not supported by this Maven plugin), or set it explicitly
+     * to <code>false</code> to disable it everywhere. When it’s disabled, the <code>update</code>
+     * flag and <code>watch</code> flag (the latter being not yet supported by this Maven plugin)
+     * will delete CSS files instead when an error occurs.
+     */
     @Parameter(defaultValue = "true")
     private boolean errorCSS;
 
+    /**
+     * If the this flag is set to <code>true</code>, Sass will only compile stylesheets whose
+     * dependencies have been modified more recently than the corresponding CSS file was generated.
+     * It will also print status messages when updating stylesheets.
+     */
     @Parameter(defaultValue = "false")
     private boolean update;
 
+    /**
+     * If the <code>noSourceMap</code> flag is set to <code>true</code>, Sass won’t generate any
+     * source maps. It cannot be passed along with other source map options (namely <code>
+     * sourceMapURLs</code>, <code>embedSources</code> and <code>embedSourceMap</code>
+     */
     @Parameter(defaultValue = "false")
     private boolean noSourceMap;
 
+    /**
+     * This option controls how the source maps that Sass generates link back to the Sass files that
+     * contributed to the generated CSS. Dart Sass supports two types of URLs:
+     * <ul>
+     * <li> relative (the default) uses relative URLs from the location of the source map file to
+     * the locations of the Sass source file;</li> and
+     * <li>absolute uses the absolute file: URLs of the Sass source files. Note that absolute URLs
+     * will only work on the same computer that the CSS was compiled.</li>
+     * </ul>
+     * Use either <code>RELATIVE</code> or <code>ABSOLUTE</code> in the plugin configuration.
+     */
     @Parameter(defaultValue = "RELATIVE")
     private SourceMapURLs sourceMapURLs;
 
+    /**
+     * This flag tells Sass to embed the entire contents of the Sass files that contributed to the
+     * generated CSS in the source map. This may produce very large source maps, but it guarantees
+     * that the source will be available on any computer no matter how the CSS is served.
+     */
     @Parameter(defaultValue = "false")
     private boolean embedSources;
 
+    /**
+     * This flag tells Sass to embed the contents of the source map file in the generated CSS,
+     * rather than creating a separate file and linking to it from the CSS.
+     */
     @Parameter(defaultValue = "false")
     private boolean embedSourceMap;
 
+    /**
+     * This flag tells Sass to stop compiling immediately when an error is detected, rather than
+     * trying to compile other Sass files that may not contain errors. It’s mostly useful in
+     * many-to-many mode (which is the mode currently supported by this Maven plugin).
+     */
     @Parameter(defaultValue = "false")
     private boolean stopOnError;
 
+    /**
+     * This flag tells Sass to emit terminal colors. By default, it will emit colors if it looks
+     * like it’s being run on a terminal that supports them. Set it to <code>false</code> to tell
+     * Sass to not emit colors.
+     */
     @Parameter(defaultValue = "true")
     private boolean color;
 
+    /**
+     * This flag tells Sass only to emit ASCII characters to the terminal as part of error messages.
+     * By default, Sass will emit non-ASCII characters for these messages. This flag does not affect
+     * the CSS output.
+     */
     @Parameter(defaultValue = "false")
     private boolean noUnicode;
 
+    /**
+     * This flag tells Sass not to emit any warnings when compiling. By default, Sass emits warnings
+     * when deprecated features are used or when the <code>@warn</code> rule is encountered. It also
+     * silences the <code>@debug</code> rule.
+     */
     @Parameter(defaultValue = "true")
     private boolean quiet;
 
+    /**
+     * This flag tells Sass not to emit deprecation warnings that come from dependencies. It
+     * considers any file that’s transitively imported through a load path to be a “dependency”.
+     * This flag doesn’t affect the <code>@warn</code> rule or the <code>@debug</code> rule.
+     */
     @Parameter(defaultValue = "false")
     private boolean quietDeps;
 
+    /**
+     * This flag tells Sass to print the full Dart stack trace when an error is encountered. It’s
+     * used by the Sass team for debugging errors.
+     */
     @Parameter(defaultValue = "false")
     private boolean trace;
 
