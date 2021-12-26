@@ -129,12 +129,30 @@ public abstract class AbstractSassCommand implements SassCommand {
 
             InputStream inputStream = process.getInputStream();
 
+            InputStream errorInputStream = process.getErrorStream();
+
             String processOutput =
                     new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                             .lines()
                             .collect(Collectors.joining("\n"));
 
-            process.waitFor();
+            int exitCode = process.waitFor();
+
+            if (exitCode != 0) {
+                String errorOutput =
+                                new BufferedReader(new InputStreamReader(errorInputStream, StandardCharsets.UTF_8))
+                                        .lines()
+                                        .collect(Collectors.joining("\n"));
+
+                StringBuilder sb = new StringBuilder( 4 );
+
+                sb.append( "Process exited with code " );
+                sb.append( exitCode );
+                sb.append( "\n" );
+                sb.append( errorOutput );
+
+                throw new SassCommandException(sb.toString());
+            }
 
             return processOutput;
         } catch (InterruptedException interruptedException) {
