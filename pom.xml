@@ -5,7 +5,15 @@
 	<packaging>maven-plugin</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>dart-sass-maven-plugin Maven Mojo</name>
-	<url>http://maven.apache.org</url>
+	<description>A Maven plugin that allows to compile SASS using Dart Sass</description>
+	<developers>
+		<developer>
+			<id>cleydyr</id>
+			<url>https://github.com/cleydyr</url>
+			<name>Cleydyr de Albuquerque</name>
+		</developer>
+	</developers>
+	<url>https://github.com/cleydyr/dart-sass-maven-plugin</url>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
