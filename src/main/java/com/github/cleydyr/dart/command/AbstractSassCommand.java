@@ -150,6 +150,8 @@ public abstract class AbstractSassCommand implements SassCommand {
                 sb.append( exitCode );
                 sb.append( "\n" );
                 sb.append( errorOutput );
+                sb.append( "\n" );
+                sb.append( processOutput );
 
                 throw new SassCommandException(sb.toString());
             }
@@ -231,12 +233,18 @@ public abstract class AbstractSassCommand implements SassCommand {
     }
 
     private void _setSourceMapURLs(List<String> commands) {
+        if (sourceMapURLs == null) {
+            return;
+        }
+
         switch (sourceMapURLs) {
             case ABSOLUTE:
                 commands.add("--source-map-urls=absolute");
                 break;
             case RELATIVE:
                 commands.add("--source-map-urls=relative");
+                break;
+            default:
                 break;
         }
     }
