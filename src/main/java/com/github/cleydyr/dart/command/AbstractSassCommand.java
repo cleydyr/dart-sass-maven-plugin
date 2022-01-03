@@ -150,6 +150,8 @@ public abstract class AbstractSassCommand implements SassCommand {
                 sb.append( exitCode );
                 sb.append( "\n" );
                 sb.append( errorOutput );
+                sb.append( "\n" );
+                sb.append( processOutput );
 
                 throw new SassCommandException(sb.toString());
             }
