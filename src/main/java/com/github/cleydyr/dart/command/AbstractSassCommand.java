@@ -233,6 +233,10 @@ public abstract class AbstractSassCommand implements SassCommand {
     }
 
     private void _setSourceMapURLs(List<String> commands) {
+        if (sourceMapURLs == null) {
+            return;
+        }
+
         switch (sourceMapURLs) {
             case ABSOLUTE:
                 commands.add("--source-map-urls=absolute");
