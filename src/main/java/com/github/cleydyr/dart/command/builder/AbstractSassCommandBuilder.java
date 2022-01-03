@@ -163,7 +163,6 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
 
         sassCommand.setNoCharsetEnabled(noCharsetEnabled);
         sassCommand.setColorEnabled(colorEnabled);
-        ;
         sassCommand.setEmbedSourceMapEnabled(embedSourceMapEnabled);
         sassCommand.setEmbedSourcesEnabled(embedSourcesEnabled);
         sassCommand.setErrorCSSEnabled(errorCSSEnabled);
