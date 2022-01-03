@@ -87,7 +87,7 @@ This flag tells Sass never to emit a @charset declaration or a UTF-8 byte-order 
 
 `<noSourceMap>`
 
-If the noSourceMap flag is set to true, Sass won't generate any source maps. It cannot be passed along with other source map options (namely sourceMapURLs, embedSources and embedSourceMap   
+If the noSourceMap flag is set to true, Sass won't generate any source maps. It will void other source map options (namely sourceMapURLs, embedSources and embedSourceMap) if explicitly set.
 **Type**: boolean  
 **Required**: No  
 **Default**: false

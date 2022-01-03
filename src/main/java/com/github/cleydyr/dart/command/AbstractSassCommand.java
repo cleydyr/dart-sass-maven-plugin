@@ -238,6 +238,8 @@ public abstract class AbstractSassCommand implements SassCommand {
             case RELATIVE:
                 commands.add("--source-map-urls=relative");
                 break;
+            default:
+                break;
         }
     }
 

@@ -182,14 +182,9 @@ public class CompileSassMojo extends AbstractMojo {
     private long fileCount;
 
     public void execute() throws MojoExecutionException {
-        DartSassExecutableExtractor dartSassExecutableExtractor =
-                DartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
+        extractExecutable();
 
-        try {
-            dartSassExecutableExtractor.extract();
-        } catch (IOException ioException) {
-            throw new MojoExecutionException("Unable to extract sass executable", ioException);
-        }
+        unsetIncompatibleOptions();
 
         SassCommand sassCommand = buildSassCommand();
 
@@ -211,6 +206,26 @@ public class CompileSassMojo extends AbstractMojo {
             }
         } catch (SassCommandException sassCommandException) {
             throw new MojoExecutionException("Can't execute SASS command", sassCommandException);
+        }
+    }
+
+    public void unsetIncompatibleOptions() {
+        if (noSourceMap) {
+           sourceMapURLs = null;
+           embedSourceMap = false;
+           embedSources = false;
+        }
+    }
+
+    public void extractExecutable()
+        throws MojoExecutionException {
+        DartSassExecutableExtractor dartSassExecutableExtractor =
+                DartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
+
+        try {
+            dartSassExecutableExtractor.extract();
+        } catch (IOException ioException) {
+            throw new MojoExecutionException("Unable to extract sass executable", ioException);
         }
     }
 
@@ -273,5 +288,149 @@ public class CompileSassMojo extends AbstractMojo {
         String newFileName = fileName.replace(extension, ".css");
 
         return outputFolder.toPath().resolve(newFileName);
+    }
+
+    public File getInputFolder() {
+        return inputFolder;
+    }
+
+    public void setInputFolder( File inputFolder ) {
+        this.inputFolder = inputFolder;
+    }
+
+    public File getOutputFolder() {
+        return outputFolder;
+    }
+
+    public void setOutputFolder( File outputFolder ) {
+        this.outputFolder = outputFolder;
+    }
+
+    public List<File> getLoadPaths() {
+        return loadPaths;
+    }
+
+    public void setLoadPaths( List<File> loadPaths ) {
+        this.loadPaths = loadPaths;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle( Style style ) {
+        this.style = style;
+    }
+
+    public boolean isNoCharset() {
+        return noCharset;
+    }
+
+    public void setNoCharset( boolean noCharset ) {
+        this.noCharset = noCharset;
+    }
+
+    public boolean isErrorCSS() {
+        return errorCSS;
+    }
+
+    public void setErrorCSS( boolean errorCSS ) {
+        this.errorCSS = errorCSS;
+    }
+
+    public boolean isUpdate() {
+        return update;
+    }
+
+    public void setUpdate( boolean update ) {
+        this.update = update;
+    }
+
+    public boolean isNoSourceMap() {
+        return noSourceMap;
+    }
+
+    public void setNoSourceMap( boolean noSourceMap ) {
+        this.noSourceMap = noSourceMap;
+    }
+
+    public SourceMapURLs getSourceMapURLs() {
+        return sourceMapURLs;
+    }
+
+    public void setSourceMapURLs( SourceMapURLs sourceMapURLs ) {
+        this.sourceMapURLs = sourceMapURLs;
+    }
+
+    public boolean isEmbedSources() {
+        return embedSources;
+    }
+
+    public void setEmbedSources( boolean embedSources ) {
+        this.embedSources = embedSources;
+    }
+
+    public boolean isEmbedSourceMap() {
+        return embedSourceMap;
+    }
+
+    public void setEmbedSourceMap( boolean embedSourceMap ) {
+        this.embedSourceMap = embedSourceMap;
+    }
+
+    public boolean isStopOnError() {
+        return stopOnError;
+    }
+
+    public void setStopOnError( boolean stopOnError ) {
+        this.stopOnError = stopOnError;
+    }
+
+    public boolean isColor() {
+        return color;
+    }
+
+    public void setColor( boolean color ) {
+        this.color = color;
+    }
+
+    public boolean isNoUnicode() {
+        return noUnicode;
+    }
+
+    public void setNoUnicode( boolean noUnicode ) {
+        this.noUnicode = noUnicode;
+    }
+
+    public boolean isQuiet() {
+        return quiet;
+    }
+
+    public void setQuiet( boolean quiet ) {
+        this.quiet = quiet;
+    }
+
+    public boolean isQuietDeps() {
+        return quietDeps;
+    }
+
+    public void setQuietDeps( boolean quietDeps ) {
+        this.quietDeps = quietDeps;
+    }
+
+    public boolean isTrace() {
+        return trace;
+    }
+
+    public void setTrace( boolean trace ) {
+        this.trace = trace;
+    }
+
+    public long getFileCount() {
+        return fileCount;
+    }
+
+    public void setFileCount( long fileCount ) {
+        this.fileCount = fileCount;
     }
 }
