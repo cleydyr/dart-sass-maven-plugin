@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,8 +26,6 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class CompileSassMojo extends AbstractMojo {
-
-    private static final String[] ALLOWED_EXTENSIONS = new String[] {".scss", ".sass"};
 
     /**
      * Path to the folder where the sass/scss are located.
@@ -258,36 +255,12 @@ public class CompileSassMojo extends AbstractMojo {
         try {
             fileCount = Files.list(inputFolderPath).count();
 
-            Files.list(inputFolderPath)
-                    .forEach(
-                            inputFilePath -> {
-                                Arrays.stream(ALLOWED_EXTENSIONS)
-                                        .filter(inputFilePath.toString()::endsWith)
-                                        .forEach(
-                                                extension -> {
-                                                    Path outputFilePath =
-                                                            _createHomonymousFile(
-                                                                    inputFilePath, extension);
-
-                                                    sassCommandBuilder.withPaths(
-                                                            inputFilePath, outputFilePath);
-                                                });
-                            });
+            sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
         } catch (IOException e) {
             throw new MojoExecutionException("Can't list folder " + inputFolderPath, e);
         }
 
         return sassCommandBuilder.build();
-    }
-
-    private Path _createHomonymousFile(Path inputFilePath, String extension) {
-        Path fileNamePath = inputFilePath.getName(inputFilePath.getNameCount() - 1);
-
-        String fileName = fileNamePath.toString();
-
-        String newFileName = fileName.replace(extension, ".css");
-
-        return outputFolder.toPath().resolve(newFileName);
     }
 
     public File getInputFolder() {

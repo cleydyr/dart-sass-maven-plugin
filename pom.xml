@@ -54,6 +54,11 @@
 			<version>2.2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-verifier</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 	</dependencies>
 
 	<reporting>
