@@ -1,26 +1,39 @@
-# dart-sass-maven-plugin
+[![Maven](https://img.shields.io/maven-central/v/io.github.cleydyr/dart-sass-maven-plugin.svg)](https://repo1.maven.org/maven2/io/github/cleydyr/dart-sass-maven-plugin/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+# Dart Sass Maven Plugin
+
 A Maven plugin that allows to compile SASS using Dart Sass
 
-# dart-sass-maven-plugin
-A Maven plugin that allows to compile SASS using Dart Sass
+<img height="48" src="https://sass-lang.com/assets/img/logos/logo-b6e1ef6e.svg">
 
 ## Usage
-```
+```xml
 <build>
 ...
-		<plugins>
-			<plugin>
-				<groupId>io.github.cleydyr</groupId>
-				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>0.1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile-sass</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        <plugins>
+            <plugin>
+                <groupId>io.github.cleydyr</groupId>
+                <artifactId>dart-sass-maven-plugin</artifactId>
+                <version>0.1.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-css-using-sass</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>compile-sass</goal>
+                        </goals>
+                        <configuration>
+                            <inputFolder>${basedir}/src/main/webapp/resources/css</inputFolder>
+                            <outputFolder>${basedir}/src/main/webapp/resources/css</outputFolder>
+                            <update>true</update>
+                            <noSourceMap>true</noSourceMap>
+                            <style>COMPRESSED</style>
+                            <quiet>false</quiet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 ...
   </plugins>
 </build>
