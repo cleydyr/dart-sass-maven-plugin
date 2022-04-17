@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -253,12 +255,13 @@ public class CompileSassMojo extends AbstractMojo {
         Path inputFolderPath = inputFolder.toPath();
 
         try {
-            try (Stream<Path> stream = Files.walk(inputFolderPath)) {
-                            .parallel()
+            try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
+                fileCount = walk.parallel()
                             .filter(p -> !Files.isDirectory(p))   // files only
                             .map(p -> p.toString().toLowerCase()) // convert path to string
                             .filter(f -> f.endsWith("sass") || f.endsWith("scss"))  // check end with
                             .count();
+            }
 
             sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
         } catch (IOException e) {
