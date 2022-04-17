@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -28,6 +29,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class CompileSassMojo extends AbstractMojo {
+    private static String[] ALLOWED_EXTENSIONS = {".css", ".sass", ".scss"};
 
     /**
      * Path to the folder where the sass/scss are located.
@@ -259,7 +261,7 @@ public class CompileSassMojo extends AbstractMojo {
                 fileCount = walk.parallel()
                             .filter(p -> !Files.isDirectory(p))   // files only
                             .map(p -> p.toString().toLowerCase()) // convert path to string
-                            .filter(f -> f.endsWith(".sass") || f.endsWith(".scss") || f.endsWith(".css"))  // check file extension
+                            .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
                             .count();
             }
 
@@ -269,6 +271,10 @@ public class CompileSassMojo extends AbstractMojo {
         }
 
         return sassCommandBuilder.build();
+    }
+
+    private static boolean _hasAllowedExtension(String fileName) {
+        return Arrays.stream(ALLOWED_EXTENSIONS).anyMatch(fileName::endsWith);
     }
 
     public File getInputFolder() {
