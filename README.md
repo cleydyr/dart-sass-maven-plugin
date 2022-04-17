@@ -44,7 +44,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 ### compile-sass
 Goal that compiles a set of sass/scss files from an input directory to an output directory.
 
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.0.1:compile-sass`
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.1.1:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
