@@ -259,7 +259,7 @@ public class CompileSassMojo extends AbstractMojo {
                 fileCount = walk.parallel()
                             .filter(p -> !Files.isDirectory(p))   // files only
                             .map(p -> p.toString().toLowerCase()) // convert path to string
-                            .filter(f -> f.endsWith(".sass") || f.endsWith(".scss"))  // check file extension
+                            .filter(f -> f.endsWith(".sass") || f.endsWith(".scss") || f.endsWith(".css"))  // check file extension
                             .count();
             }
 
