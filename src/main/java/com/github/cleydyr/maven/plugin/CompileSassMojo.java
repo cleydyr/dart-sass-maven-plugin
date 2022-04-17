@@ -253,7 +253,7 @@ public class CompileSassMojo extends AbstractMojo {
         Path inputFolderPath = inputFolder.toPath();
 
         try {
-            fileCount = Files.walk(inputFolderPath)
+            try (Stream<Path> stream = Files.walk(inputFolderPath)) {
                             .parallel()
                             .filter(p -> !Files.isDirectory(p))   // files only
                             .map(p -> p.toString().toLowerCase()) // convert path to string
