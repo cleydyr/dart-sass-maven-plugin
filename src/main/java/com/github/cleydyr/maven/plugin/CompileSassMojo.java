@@ -253,7 +253,12 @@ public class CompileSassMojo extends AbstractMojo {
         Path inputFolderPath = inputFolder.toPath();
 
         try {
-            fileCount = Files.list(inputFolderPath).count();
+            fileCount = Files.walk(inputFolderPath)
+                            .parallel()
+                            .filter(p -> !Files.isDirectory(p))   // files only
+                            .map(p -> p.toString().toLowerCase()) // convert path to string
+                            .filter(f -> f.endsWith("sass") || f.endsWith("scss"))  // check end with
+                            .count();
 
             sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
         } catch (IOException e) {
