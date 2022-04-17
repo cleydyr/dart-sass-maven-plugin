@@ -23,14 +23,6 @@ A Maven plugin that allows to compile SASS using Dart Sass
                         <goals>
                             <goal>compile-sass</goal>
                         </goals>
-                        <configuration>
-                            <inputFolder>${basedir}/src/main/webapp/resources/css</inputFolder>
-                            <outputFolder>${basedir}/src/main/webapp/resources/css</outputFolder>
-                            <update>true</update>
-                            <noSourceMap>true</noSourceMap>
-                            <style>COMPRESSED</style>
-                            <quiet>false</quiet>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
