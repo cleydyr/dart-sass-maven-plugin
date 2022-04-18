@@ -260,7 +260,7 @@ public class CompileSassMojo extends AbstractMojo {
             try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
                 fileCount = walk.parallel()
                             .filter(p -> !Files.isDirectory(p))   // files only
-                            .map(p -> p.toString().toLowerCase()) // convert path to string
+                            .map(p -> p.toString()) // convert path to string
                             .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
                             .count();
             }
