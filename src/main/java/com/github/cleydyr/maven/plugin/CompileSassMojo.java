@@ -6,17 +6,18 @@ import com.github.cleydyr.dart.command.enums.SourceMapURLs;
 import com.github.cleydyr.dart.command.enums.Style;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
+import com.github.cleydyr.dart.command.files.FileCounter;
+import com.github.cleydyr.dart.command.files.FileCounterException;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+
+import javax.inject.Inject;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -29,9 +30,14 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class CompileSassMojo extends AbstractMojo {
-    private static String[] ALLOWED_EXTENSIONS = {".css", ".sass", ".scss"};
+    private FileCounter fileCounter;
 
-    /**
+    @Inject
+    public CompileSassMojo(FileCounter fileCounter) {
+		this.fileCounter = fileCounter;
+	}
+
+	/**
      * Path to the folder where the sass/scss are located.
      */
     @Parameter(defaultValue = "src/main/sass")
@@ -256,27 +262,15 @@ public class CompileSassMojo extends AbstractMojo {
 
         Path inputFolderPath = inputFolder.toPath();
 
-        fileCount = _getProcessableFileCount(inputFolderPath);
+        try {
+			fileCount = fileCounter.getProcessableFileCount(inputFolderPath);
+		} catch (FileCounterException fileCounterException) {
+			throw new MojoExecutionException("Error while obtaining file count: ", fileCounterException);
+		}
 
         sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
 
         return sassCommandBuilder.build();
-    }
-
-    private static long _getProcessableFileCount(Path inputFolderPath) throws MojoExecutionException {
-        try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
-            return walk.parallel()
-                        .filter(p -> !Files.isDirectory(p))   // files only
-                        .map(p -> p.toString()) // convert path to string
-                        .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
-                        .count();
-        } catch (IOException e) {
-            throw new MojoExecutionException("Can't list folder " + inputFolderPath, e);
-        }
-    }
-
-    private static boolean _hasAllowedExtension(String fileName) {
-        return Arrays.stream(ALLOWED_EXTENSIONS).anyMatch(fileName::endsWith);
     }
 
     public File getInputFolder() {
