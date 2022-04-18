@@ -256,14 +256,12 @@ public class CompileSassMojo extends AbstractMojo {
 
         Path inputFolderPath = inputFolder.toPath();
 
-        try {
-            try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
-                fileCount = walk.parallel()
-                            .filter(p -> !Files.isDirectory(p))   // files only
-                            .map(p -> p.toString()) // convert path to string
-                            .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
-                            .count();
-            }
+        try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
+            fileCount = walk.parallel()
+                        .filter(p -> !Files.isDirectory(p))   // files only
+                        .map(p -> p.toString()) // convert path to string
+                        .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
+                        .count();
 
             sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
         } catch (IOException e) {
