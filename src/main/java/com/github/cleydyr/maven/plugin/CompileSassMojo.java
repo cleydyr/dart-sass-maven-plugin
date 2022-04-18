@@ -256,8 +256,16 @@ public class CompileSassMojo extends AbstractMojo {
 
         Path inputFolderPath = inputFolder.toPath();
 
+        fileCount = _getProcessableFileCount(inputFolderPath);
+
+        sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
+
+        return sassCommandBuilder.build();
+    }
+
+    private static long _getProcessableFileCount(Path inputFolderPath) throws MojoExecutionException {
         try (Stream<Path> walk  = Files.walk(inputFolderPath)) {
-            fileCount = walk.parallel()
+            return walk.parallel()
                         .filter(p -> !Files.isDirectory(p))   // files only
                         .map(p -> p.toString()) // convert path to string
                         .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
@@ -265,10 +273,6 @@ public class CompileSassMojo extends AbstractMojo {
         } catch (IOException e) {
             throw new MojoExecutionException("Can't list folder " + inputFolderPath, e);
         }
-
-        sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
-
-        return sassCommandBuilder.build();
     }
 
     private static boolean _hasAllowedExtension(String fileName) {
