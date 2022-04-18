@@ -262,11 +262,11 @@ public class CompileSassMojo extends AbstractMojo {
                         .map(p -> p.toString()) // convert path to string
                         .filter(CompileSassMojo::_hasAllowedExtension)  // check file extension
                         .count();
-
-            sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
         } catch (IOException e) {
             throw new MojoExecutionException("Can't list folder " + inputFolderPath, e);
         }
+
+        sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
 
         return sassCommandBuilder.build();
     }
