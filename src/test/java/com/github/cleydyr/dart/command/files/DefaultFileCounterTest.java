@@ -33,7 +33,7 @@ public class DefaultFileCounterTest extends TestCase {
 	}
 
 	public void testFileCount() throws Exception {
-		File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/test-project");
+		File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/test-project/src/main/sass");
 
 		FileCounter fileCounter = new DefaultFileCounter();
 
