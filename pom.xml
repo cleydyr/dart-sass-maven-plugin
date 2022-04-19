@@ -61,6 +61,7 @@
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-verifier</artifactId>
 			<version>1.7.2</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -175,6 +176,19 @@
 					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.sisu</groupId>
+				<artifactId>sisu-maven-plugin</artifactId>
+				<version>0.3.3</version>
+				<executions>
+					<execution>
+						<id>generate-index</id>
+						<goals>
+							<goal>main-index</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
