@@ -61,5 +61,7 @@ public class CompileSassMojoTest extends TestCase {
                 "There should be " + expectedFilesSub.length + " files in the sub-folder",
                 expectedFilesSub.length,
                 Files.list(subfolder).count());
+
+        TestUtil.executeGoal(testDir, "clean");
     }
 }
