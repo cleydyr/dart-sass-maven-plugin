@@ -37,6 +37,6 @@ public class DefaultFileCounterTest extends TestCase {
 
 		FileCounter fileCounter = new DefaultFileCounter();
 
-		assertEquals(fileCounter.getProcessableFileCount(testDir.toPath()), 3);
+		assertEquals(3, fileCounter.getProcessableFileCount(testDir.toPath()));
 	}
 }
