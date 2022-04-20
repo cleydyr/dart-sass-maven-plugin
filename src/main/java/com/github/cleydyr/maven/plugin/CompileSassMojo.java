@@ -168,7 +168,7 @@ public class CompileSassMojo extends AbstractMojo {
      * when deprecated features are used or when the <code>@warn</code> rule is encountered. It also
      * silences the <code>@debug</code> rule.
      */
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = "false")
     private boolean quiet;
 
     /**

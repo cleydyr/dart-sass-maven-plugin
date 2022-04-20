@@ -116,7 +116,7 @@ User Property: project.build.directory
 This flag tells Sass not to emit any warnings when compiling. By default, Sass emits warnings when deprecated features are used or when the @warn rule is encountered. It also silences the @debug rule.   
 **Type**: boolean  
 **Required**: No  
-**Default**: true
+**Default**: false
 
 `<quietDeps>`
 
