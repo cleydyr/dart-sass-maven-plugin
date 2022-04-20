@@ -2,7 +2,6 @@ package com.github.cleydyr.maven.plugin;
 
 import javax.inject.Inject;
 
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -13,7 +12,7 @@ import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFact
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files.
  */
-@Mojo(name = "watch-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
+@Mojo(name = "watch-sass")
 public class WatchSassMojo extends CompileSassMojo {
 	/**
      * This flag tells Sass to manually check for changes to the source files every so often
