@@ -1,15 +1,14 @@
 package com.github.cleydyr.dart.command;
 
+import com.github.cleydyr.dart.command.enums.SourceMapURLs;
+import com.github.cleydyr.dart.command.enums.Style;
+import com.github.cleydyr.dart.command.exception.SassCommandException;
+import com.github.cleydyr.dart.command.parameter.ParameterPair;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.github.cleydyr.dart.command.enums.SourceMapURLs;
-import com.github.cleydyr.dart.command.enums.Style;
-import com.github.cleydyr.dart.command.exception.SassCommandException;
-import com.github.cleydyr.dart.command.parameter.ParameterPair;
 
 public abstract class AbstractSassCommand implements SassCommand {
     private List<Path> loadPaths;
@@ -78,13 +77,13 @@ public abstract class AbstractSassCommand implements SassCommand {
         this.parameterPairs = parameterPairs;
     }
 
-	public void setWatchEnabled(boolean watchEnabled) {
-		this.watchEnabled = watchEnabled;
-	}
+    public void setWatchEnabled(boolean watchEnabled) {
+        this.watchEnabled = watchEnabled;
+    }
 
-	public void setPollEnabled(boolean pollEnabled) {
-		this.pollEnabled = pollEnabled;
-	}
+    public void setPollEnabled(boolean pollEnabled) {
+        this.pollEnabled = pollEnabled;
+    }
 
     private Style style;
 
@@ -118,7 +117,7 @@ public abstract class AbstractSassCommand implements SassCommand {
 
     private Collection<ParameterPair> parameterPairs = new ArrayList<>();
 
-	private boolean pollEnabled;
+    private boolean pollEnabled;
 
     @Override
     public void execute() throws SassCommandException {
@@ -142,11 +141,11 @@ public abstract class AbstractSassCommand implements SassCommand {
             int exitCode = process.waitFor();
 
             if (exitCode != 0) {
-                StringBuilder sb = new StringBuilder( 4 );
+                StringBuilder sb = new StringBuilder(4);
 
-                sb.append( "Process exited with code " );
-                sb.append( exitCode );
-                sb.append( "\n" );
+                sb.append("Process exited with code ");
+                sb.append(exitCode);
+                sb.append("\n");
 
                 throw new SassCommandException(sb.toString());
             }
@@ -224,13 +223,13 @@ public abstract class AbstractSassCommand implements SassCommand {
             commands.add("--trace");
         }
 
-		if (watchEnabled) {
-			commands.add("--watch");
+        if (watchEnabled) {
+            commands.add("--watch");
 
-			if (pollEnabled) {
-				commands.add("--poll");
-			}
-		}
+            if (pollEnabled) {
+                commands.add("--poll");
+            }
+        }
     }
 
     private void _setSourceMapURLs(List<String> commands) {

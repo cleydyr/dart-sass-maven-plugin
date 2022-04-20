@@ -10,23 +10,20 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class PosixDartSassExecutableExtractor implements DartSassExecutableExtractor {
-    private static String[] _RESOURCE_NAMES =
-            new String[] {"sass", "src/sass.snapshot", "src/dart"};
+    private static String[] _RESOURCE_NAMES = new String[] {"sass", "src/sass.snapshot", "src/dart"};
 
     @Override
     public void extract() throws IOException {
         Path executableFolder = createExecutableFolder();
 
         for (String resourceName : _RESOURCE_NAMES) {
-            InputStream resourceInputStream =
-                    getClass()
-                            .getResourceAsStream(
-                                    "/sass-binaries/"
-                                            + OSDetector.getOSName()
-                                            + "/"
-                                            + OSDetector.getOSArchitecture()
-                                            + "/"
-                                            + resourceName);
+            InputStream resourceInputStream = getClass()
+                    .getResourceAsStream("/sass-binaries/"
+                            + OSDetector.getOSName()
+                            + "/"
+                            + OSDetector.getOSArchitecture()
+                            + "/"
+                            + resourceName);
 
             Path resourcePath = executableFolder.resolve(resourceName);
 
@@ -38,10 +35,7 @@ public class PosixDartSassExecutableExtractor implements DartSassExecutableExtra
 
             Files.setPosixFilePermissions(
                     resourcePath,
-                    new HashSet<>(
-                            Arrays.asList(
-                                    PosixFilePermission.OWNER_EXECUTE,
-                                    PosixFilePermission.OWNER_READ)));
+                    new HashSet<>(Arrays.asList(PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.OWNER_READ)));
         }
     }
 }

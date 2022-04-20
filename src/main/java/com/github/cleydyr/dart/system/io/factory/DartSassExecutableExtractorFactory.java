@@ -4,6 +4,5 @@ import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 
 public interface DartSassExecutableExtractorFactory {
 
-	DartSassExecutableExtractor getDartSassExecutableExtractor();
-
+    DartSassExecutableExtractor getDartSassExecutableExtractor();
 }

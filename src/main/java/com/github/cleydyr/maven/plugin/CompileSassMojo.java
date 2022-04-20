@@ -1,20 +1,5 @@
 package com.github.cleydyr.maven.plugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
 import com.github.cleydyr.dart.command.SassCommand;
 import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
 import com.github.cleydyr.dart.command.enums.SourceMapURLs;
@@ -25,6 +10,18 @@ import com.github.cleydyr.dart.command.files.FileCounter;
 import com.github.cleydyr.dart.command.files.FileCounterException;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import javax.inject.Inject;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory.
@@ -38,14 +35,16 @@ public class CompileSassMojo extends AbstractMojo {
     protected DartSassExecutableExtractor dartSassExecutableExtractor;
 
     @Inject
-    public CompileSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory,
-    		DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
-		this.fileCounter = fileCounter;
-		this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
-		this.dartSassExecutableExtractor = dartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
-	}
+    public CompileSassMojo(
+            FileCounter fileCounter,
+            SassCommandBuilderFactory sassCommandBuilderFactory,
+            DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
+        this.fileCounter = fileCounter;
+        this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
+        this.dartSassExecutableExtractor = dartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
+    }
 
-	/**
+    /**
      * Path to the folder where the sass/scss are located.
      */
     @Parameter(defaultValue = "src/main/sass")
@@ -62,7 +61,8 @@ public class CompileSassMojo extends AbstractMojo {
      * be passed multiple times to provide multiple load paths. Earlier load paths will take
      * precedence over later ones.
      */
-    @Parameter private List<File> loadPaths;
+    @Parameter
+    private List<File> loadPaths;
 
     /**
      * This option controls the output style of the resulting CSS. Dart Sass supports two output
@@ -211,11 +211,11 @@ public class CompileSassMojo extends AbstractMojo {
             long elapsedTime = Duration.between(start, finish).toMillis();
 
             try {
-            	long fileCount = fileCounter.getProcessableFileCount(inputFolder.toPath());
+                long fileCount = fileCounter.getProcessableFileCount(inputFolder.toPath());
 
-            	getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
+                getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
             } catch (FileCounterException fileCounterException) {
-            	throw new MojoExecutionException("Error while obtaining file count: ", fileCounterException);
+                throw new MojoExecutionException("Error while obtaining file count: ", fileCounterException);
             }
         } catch (SassCommandException sassCommandException) {
             throw new MojoExecutionException("Can't execute SASS command", sassCommandException);
@@ -224,14 +224,13 @@ public class CompileSassMojo extends AbstractMojo {
 
     public void unsetIncompatibleOptions() {
         if (noSourceMap) {
-           sourceMapURLs = null;
-           embedSourceMap = false;
-           embedSources = false;
+            sourceMapURLs = null;
+            embedSourceMap = false;
+            embedSources = false;
         }
     }
 
-    public void extractExecutable()
-        throws MojoExecutionException {
+    public void extractExecutable() throws MojoExecutionException {
 
         try {
             dartSassExecutableExtractor.extract();
@@ -256,8 +255,8 @@ public class CompileSassMojo extends AbstractMojo {
         return sassCommandBuilder.build();
     }
 
-	protected void setOptions() {
-		sassCommandBuilder.withStyle(style);
+    protected void setOptions() {
+        sassCommandBuilder.withStyle(style);
         sassCommandBuilder.withNoCharset(noCharset);
         sassCommandBuilder.withErrorCSS(errorCSS);
         sassCommandBuilder.withUpdate(update);
@@ -271,13 +270,13 @@ public class CompileSassMojo extends AbstractMojo {
         sassCommandBuilder.withQuiet(quiet);
         sassCommandBuilder.withQuietDeps(quietDeps);
         sassCommandBuilder.withTrace(trace);
-	}
+    }
 
     public File getInputFolder() {
         return inputFolder;
     }
 
-    public void setInputFolder( File inputFolder ) {
+    public void setInputFolder(File inputFolder) {
         this.inputFolder = inputFolder;
     }
 
@@ -285,7 +284,7 @@ public class CompileSassMojo extends AbstractMojo {
         return outputFolder;
     }
 
-    public void setOutputFolder( File outputFolder ) {
+    public void setOutputFolder(File outputFolder) {
         this.outputFolder = outputFolder;
     }
 
@@ -293,7 +292,7 @@ public class CompileSassMojo extends AbstractMojo {
         return loadPaths;
     }
 
-    public void setLoadPaths( List<File> loadPaths ) {
+    public void setLoadPaths(List<File> loadPaths) {
         this.loadPaths = loadPaths;
     }
 
@@ -301,7 +300,7 @@ public class CompileSassMojo extends AbstractMojo {
         return style;
     }
 
-    public void setStyle( Style style ) {
+    public void setStyle(Style style) {
         this.style = style;
     }
 
@@ -309,7 +308,7 @@ public class CompileSassMojo extends AbstractMojo {
         return noCharset;
     }
 
-    public void setNoCharset( boolean noCharset ) {
+    public void setNoCharset(boolean noCharset) {
         this.noCharset = noCharset;
     }
 
@@ -317,7 +316,7 @@ public class CompileSassMojo extends AbstractMojo {
         return errorCSS;
     }
 
-    public void setErrorCSS( boolean errorCSS ) {
+    public void setErrorCSS(boolean errorCSS) {
         this.errorCSS = errorCSS;
     }
 
@@ -325,7 +324,7 @@ public class CompileSassMojo extends AbstractMojo {
         return update;
     }
 
-    public void setUpdate( boolean update ) {
+    public void setUpdate(boolean update) {
         this.update = update;
     }
 
@@ -333,7 +332,7 @@ public class CompileSassMojo extends AbstractMojo {
         return noSourceMap;
     }
 
-    public void setNoSourceMap( boolean noSourceMap ) {
+    public void setNoSourceMap(boolean noSourceMap) {
         this.noSourceMap = noSourceMap;
     }
 
@@ -341,7 +340,7 @@ public class CompileSassMojo extends AbstractMojo {
         return sourceMapURLs;
     }
 
-    public void setSourceMapURLs( SourceMapURLs sourceMapURLs ) {
+    public void setSourceMapURLs(SourceMapURLs sourceMapURLs) {
         this.sourceMapURLs = sourceMapURLs;
     }
 
@@ -349,7 +348,7 @@ public class CompileSassMojo extends AbstractMojo {
         return embedSources;
     }
 
-    public void setEmbedSources( boolean embedSources ) {
+    public void setEmbedSources(boolean embedSources) {
         this.embedSources = embedSources;
     }
 
@@ -357,7 +356,7 @@ public class CompileSassMojo extends AbstractMojo {
         return embedSourceMap;
     }
 
-    public void setEmbedSourceMap( boolean embedSourceMap ) {
+    public void setEmbedSourceMap(boolean embedSourceMap) {
         this.embedSourceMap = embedSourceMap;
     }
 
@@ -365,7 +364,7 @@ public class CompileSassMojo extends AbstractMojo {
         return stopOnError;
     }
 
-    public void setStopOnError( boolean stopOnError ) {
+    public void setStopOnError(boolean stopOnError) {
         this.stopOnError = stopOnError;
     }
 
@@ -373,7 +372,7 @@ public class CompileSassMojo extends AbstractMojo {
         return color;
     }
 
-    public void setColor( boolean color ) {
+    public void setColor(boolean color) {
         this.color = color;
     }
 
@@ -381,7 +380,7 @@ public class CompileSassMojo extends AbstractMojo {
         return noUnicode;
     }
 
-    public void setNoUnicode( boolean noUnicode ) {
+    public void setNoUnicode(boolean noUnicode) {
         this.noUnicode = noUnicode;
     }
 
@@ -389,7 +388,7 @@ public class CompileSassMojo extends AbstractMojo {
         return quiet;
     }
 
-    public void setQuiet( boolean quiet ) {
+    public void setQuiet(boolean quiet) {
         this.quiet = quiet;
     }
 
@@ -397,7 +396,7 @@ public class CompileSassMojo extends AbstractMojo {
         return quietDeps;
     }
 
-    public void setQuietDeps( boolean quietDeps ) {
+    public void setQuietDeps(boolean quietDeps) {
         this.quietDeps = quietDeps;
     }
 
@@ -405,7 +404,7 @@ public class CompileSassMojo extends AbstractMojo {
         return trace;
     }
 
-    public void setTrace( boolean trace ) {
+    public void setTrace(boolean trace) {
         this.trace = trace;
     }
 }

@@ -8,8 +8,7 @@ import java.nio.file.Paths;
 public interface DartSassExecutableExtractor {
 
     default Path createExecutableFolder() throws IOException {
-        Path executableFolder =
-                Paths.get(System.getProperty("java.io.tmpdir"), "dart-sass-maven-plugin");
+        Path executableFolder = Paths.get(System.getProperty("java.io.tmpdir"), "dart-sass-maven-plugin");
 
         if (!Files.isDirectory(executableFolder)) {
             Files.createDirectory(executableFolder);
