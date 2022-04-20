@@ -41,13 +41,6 @@ Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.2.0:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
-### watch-sass
-Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
-
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.2.0:watch-sass`
-
-By default it binds to no lifecycle phase.
-
 #### Parameter details
 `<color>`
 
@@ -174,3 +167,19 @@ If the this flag is set to true, Sass will only compile stylesheets whose depend
 **Type**: boolean
 **Required**: No
 **Default**: false
+
+### watch-sass
+Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
+
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.2.0:watch-sass`
+
+By default it binds to no lifecycle phase.
+
+#### Parameter details
+
+In addition to the parameters that are available to the `compile-sass` goal, the following parameter is also available:
+
+`<poll>`
+
+This flag tells Sass to manually check for changes to the source files every so often instead of relying on the operating system to notify it when something changes. This may be necessary if you’re editing Sass on a remote drive where the operating system’s notification system doesn’t work.
+
