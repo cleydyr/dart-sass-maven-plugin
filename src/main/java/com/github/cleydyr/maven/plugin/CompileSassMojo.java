@@ -35,10 +35,14 @@ public class CompileSassMojo extends AbstractMojo {
 
     protected SassCommandBuilder sassCommandBuilder;
 
+    protected DartSassExecutableExtractor dartSassExecutableExtractor;
+
     @Inject
-    public CompileSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory) {
+    public CompileSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory,
+    		DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
 		this.fileCounter = fileCounter;
 		this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
+		this.dartSassExecutableExtractor = dartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
 	}
 
 	/**
@@ -228,8 +232,6 @@ public class CompileSassMojo extends AbstractMojo {
 
     public void extractExecutable()
         throws MojoExecutionException {
-        DartSassExecutableExtractor dartSassExecutableExtractor =
-                DartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
 
         try {
             dartSassExecutableExtractor.extract();

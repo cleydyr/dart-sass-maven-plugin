@@ -8,6 +8,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
 import com.github.cleydyr.dart.command.files.FileCounter;
+import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files.
@@ -24,8 +25,9 @@ public class WatchSassMojo extends CompileSassMojo {
     private boolean poll;
 
 	 @Inject
-	public WatchSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory) {
-		super(fileCounter, sassCommandBuilderFactory);
+	public WatchSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory,
+			DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
+		super(fileCounter, sassCommandBuilderFactory, dartSassExecutableExtractorFactory);
 	}
 
 	 @Override
