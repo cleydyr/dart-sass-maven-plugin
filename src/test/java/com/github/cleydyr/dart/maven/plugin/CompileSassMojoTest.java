@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import junit.framework.TestCase;
-
 import org.apache.maven.it.util.ResourceExtractor;
 
 public class CompileSassMojoTest extends TestCase {

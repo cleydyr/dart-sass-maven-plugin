@@ -161,19 +161,19 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
         return this;
     }
 
-	@Override
-	public SassCommandBuilder withWatch(boolean watchEnabled) {
-		this.watchEnabled = watchEnabled;
+    @Override
+    public SassCommandBuilder withWatch(boolean watchEnabled) {
+        this.watchEnabled = watchEnabled;
 
-		return this;
-	}
+        return this;
+    }
 
-	@Override
-	public SassCommandBuilder withPoll(boolean pollEnabled) {
-		this.pollEnabled = pollEnabled;
+    @Override
+    public SassCommandBuilder withPoll(boolean pollEnabled) {
+        this.pollEnabled = pollEnabled;
 
-		return this;
-	}
+        return this;
+    }
 
     @Override
     public SassCommand build() {

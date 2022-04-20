@@ -6,8 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class WindowsDartSassExecutableExtractor implements DartSassExecutableExtractor {
-    private static String[] _RESOURCE_NAMES =
-            new String[] {"sass.bat", "src/sass.snapshot", "src/dart.exe"};
+    private static String[] _RESOURCE_NAMES = new String[] {"sass.bat", "src/sass.snapshot", "src/dart.exe"};
 
     @Override
     public void extract() throws IOException {
