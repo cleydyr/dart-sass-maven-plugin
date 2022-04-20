@@ -21,7 +21,7 @@
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>0.1.1</version>
+				<version>0.2.0</version>
 				<configuration>
 					<outputFolder>${project.build.directory}/static/styles</outputFolder>
 					<style>COMPRESSED</style>
