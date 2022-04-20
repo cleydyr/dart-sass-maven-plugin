@@ -37,4 +37,12 @@ public class WatchSassMojo extends CompileSassMojo {
 		sassCommandBuilder.withWatch(true);
 		sassCommandBuilder.withPoll(poll);
 	}
+
+	public boolean isPoll() {
+		return poll;
+	}
+
+	public void setPoll(boolean poll) {
+		this.poll = poll;
+	}
 }
