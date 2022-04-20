@@ -1,5 +1,6 @@
 [![Maven](https://img.shields.io/maven-central/v/io.github.cleydyr/dart-sass-maven-plugin.svg)](https://repo1.maven.org/maven2/io/github/cleydyr/dart-sass-maven-plugin/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java CI](https://github.com/cleydyr/dart-sass-maven-plugin/workflows/Java%20CI/badge.svg)](https://github.com/cleydyr/dart-sass-maven-plugin/actions/)
 
 # Dart Sass Maven Plugin
 
