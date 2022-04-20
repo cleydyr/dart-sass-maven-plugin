@@ -1,19 +1,15 @@
 package com.github.cleydyr.dart.command;
 
-import com.github.cleydyr.dart.command.enums.SourceMapURLs;
-import com.github.cleydyr.dart.command.enums.Style;
-import com.github.cleydyr.dart.command.exception.SassCommandException;
-import com.github.cleydyr.dart.command.parameter.ParameterPair;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import com.github.cleydyr.dart.command.enums.SourceMapURLs;
+import com.github.cleydyr.dart.command.enums.Style;
+import com.github.cleydyr.dart.command.exception.SassCommandException;
+import com.github.cleydyr.dart.command.parameter.ParameterPair;
 
 public abstract class AbstractSassCommand implements SassCommand {
     private List<Path> loadPaths;
@@ -82,6 +78,14 @@ public abstract class AbstractSassCommand implements SassCommand {
         this.parameterPairs = parameterPairs;
     }
 
+	public void setWatchEnabled(boolean watchEnabled) {
+		this.watchEnabled = watchEnabled;
+	}
+
+	public void setPollEnabled(boolean pollEnabled) {
+		this.pollEnabled = pollEnabled;
+	}
+
     private Style style;
 
     private boolean noCharsetEnabled;
@@ -110,7 +114,11 @@ public abstract class AbstractSassCommand implements SassCommand {
 
     private boolean traceEnabled;
 
+    private boolean watchEnabled;
+
     private Collection<ParameterPair> parameterPairs = new ArrayList<>();
+
+	private boolean pollEnabled;
 
     @Override
     public String execute() throws SassCommandException {
@@ -123,40 +131,27 @@ public abstract class AbstractSassCommand implements SassCommand {
         setArguments(commands);
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(commands);
+            ProcessBuilder processBuilder = new ProcessBuilder(commands).inheritIO();
+
+            processBuilder.redirectErrorStream(true);
+
+            processBuilder.inheritIO();
 
             Process process = processBuilder.start();
-
-            InputStream inputStream = process.getInputStream();
-
-            InputStream errorInputStream = process.getErrorStream();
-
-            String processOutput =
-                    new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                            .lines()
-                            .collect(Collectors.joining("\n"));
 
             int exitCode = process.waitFor();
 
             if (exitCode != 0) {
-                String errorOutput =
-                                new BufferedReader(new InputStreamReader(errorInputStream, StandardCharsets.UTF_8))
-                                        .lines()
-                                        .collect(Collectors.joining("\n"));
-
                 StringBuilder sb = new StringBuilder( 4 );
 
                 sb.append( "Process exited with code " );
                 sb.append( exitCode );
                 sb.append( "\n" );
-                sb.append( errorOutput );
-                sb.append( "\n" );
-                sb.append( processOutput );
 
                 throw new SassCommandException(sb.toString());
             }
 
-            return processOutput;
+            return "";
         } catch (InterruptedException interruptedException) {
             throw new SassCommandException(interruptedException);
         } catch (IOException ioException) {
@@ -230,6 +225,14 @@ public abstract class AbstractSassCommand implements SassCommand {
         if (traceEnabled) {
             commands.add("--trace");
         }
+
+		if (watchEnabled) {
+			commands.add("--watch");
+
+			if (pollEnabled) {
+				commands.add("--poll");
+			}
+		}
     }
 
     private void _setSourceMapURLs(List<String> commands) {

@@ -41,6 +41,10 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
 
     private boolean traceEnabled = false;
 
+    private boolean watchEnabled = false;
+
+    private boolean pollEnabled = false;
+
     private Collection<ParameterPair> parameterPairs = new ArrayList<>();
 
     @Override
@@ -157,6 +161,20 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
         return this;
     }
 
+	@Override
+	public SassCommandBuilder withWatch(boolean watchEnabled) {
+		this.watchEnabled = watchEnabled;
+
+		return this;
+	}
+
+	@Override
+	public SassCommandBuilder withPoll(boolean pollEnabled) {
+		this.pollEnabled = pollEnabled;
+
+		return this;
+	}
+
     @Override
     public SassCommand build() {
         AbstractSassCommand sassCommand = getSassCommandInstance();
@@ -177,6 +195,8 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
         sassCommand.setStyle(style);
         sassCommand.setTraceEnabled(traceEnabled);
         sassCommand.setUpdateEnabled(updateEnabled);
+        sassCommand.setWatchEnabled(watchEnabled);
+        sassCommand.setPollEnabled(pollEnabled);
 
         return sassCommand;
     }

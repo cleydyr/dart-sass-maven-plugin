@@ -236,7 +236,7 @@ public class CompileSassMojo extends AbstractMojo {
         }
     }
 
-    private SassCommand buildSassCommand() throws MojoExecutionException {
+    protected SassCommand buildSassCommand() throws MojoExecutionException {
         SassCommandBuilder sassCommandBuilder = SassCommandBuilderFactory.getCommanderBuilder();
 
         if (loadPaths != null) {
@@ -245,20 +245,7 @@ public class CompileSassMojo extends AbstractMojo {
             }
         }
 
-        sassCommandBuilder.withStyle(style);
-        sassCommandBuilder.withNoCharset(noCharset);
-        sassCommandBuilder.withErrorCSS(errorCSS);
-        sassCommandBuilder.withUpdate(update);
-        sassCommandBuilder.withNoSourceMap(noSourceMap);
-        sassCommandBuilder.withSourceMapURLs(sourceMapURLs);
-        sassCommandBuilder.withEmbedSources(embedSources);
-        sassCommandBuilder.withEmbedSourceMap(embedSourceMap);
-        sassCommandBuilder.withStopOnError(stopOnError);
-        sassCommandBuilder.withColor(color);
-        sassCommandBuilder.withNoUnicode(noUnicode);
-        sassCommandBuilder.withQuiet(quiet);
-        sassCommandBuilder.withQuietDeps(quietDeps);
-        sassCommandBuilder.withTrace(trace);
+        setOptions(sassCommandBuilder);
 
         Path inputFolderPath = inputFolder.toPath();
 
@@ -272,6 +259,23 @@ public class CompileSassMojo extends AbstractMojo {
 
         return sassCommandBuilder.build();
     }
+
+	protected void setOptions(SassCommandBuilder sassCommandBuilder) {
+		sassCommandBuilder.withStyle(style);
+        sassCommandBuilder.withNoCharset(noCharset);
+        sassCommandBuilder.withErrorCSS(errorCSS);
+        sassCommandBuilder.withUpdate(update);
+        sassCommandBuilder.withNoSourceMap(noSourceMap);
+        sassCommandBuilder.withSourceMapURLs(sourceMapURLs);
+        sassCommandBuilder.withEmbedSources(embedSources);
+        sassCommandBuilder.withEmbedSourceMap(embedSourceMap);
+        sassCommandBuilder.withStopOnError(stopOnError);
+        sassCommandBuilder.withColor(color);
+        sassCommandBuilder.withNoUnicode(noUnicode);
+        sassCommandBuilder.withQuiet(quiet);
+        sassCommandBuilder.withQuietDeps(quietDeps);
+        sassCommandBuilder.withTrace(trace);
+	}
 
     public File getInputFolder() {
         return inputFolder;

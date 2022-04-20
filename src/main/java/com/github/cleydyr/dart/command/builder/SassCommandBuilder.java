@@ -38,5 +38,9 @@ public interface SassCommandBuilder {
 
     SassCommandBuilder withPaths(Path inputFilePath, Path outputFilePath);
 
+    SassCommandBuilder withWatch(boolean watchEnabled);
+
+    SassCommandBuilder withPoll(boolean pollEnabled);
+
     SassCommand build();
 }
