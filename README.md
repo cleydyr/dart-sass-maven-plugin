@@ -40,6 +40,13 @@ Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.1.1:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
+### watch-sass
+Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
+
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.1.1:watch-sass`
+
+By default it binds to no lifecycle phase.
+
 #### Parameter details
 `<color>`
 
