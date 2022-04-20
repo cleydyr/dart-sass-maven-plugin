@@ -6,7 +6,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
+import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
 import com.github.cleydyr.dart.command.files.FileCounter;
 
 /**
@@ -24,13 +24,13 @@ public class WatchSassMojo extends CompileSassMojo {
     private boolean poll;
 
 	 @Inject
-	public WatchSassMojo(FileCounter fileCounter) {
-		super(fileCounter);
+	public WatchSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory) {
+		super(fileCounter, sassCommandBuilderFactory);
 	}
 
 	 @Override
-	protected void setOptions(SassCommandBuilder sassCommandBuilder) {
-		super.setOptions(sassCommandBuilder);
+	protected void setOptions() {
+		super.setOptions();
 
 		sassCommandBuilder.withWatch(true);
 		sassCommandBuilder.withPoll(poll);

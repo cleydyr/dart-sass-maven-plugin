@@ -14,7 +14,7 @@ import org.apache.maven.it.util.ResourceExtractor;
 
 public class CompileSassMojoTest extends TestCase {
     public void testNoSourceMapFlag() throws Exception {
-        CompileSassMojo compileSassMojo = new CompileSassMojo(new DefaultFileCounter());
+        CompileSassMojo compileSassMojo = new CompileSassMojo(new DefaultFileCounter(), () -> null);
 
         compileSassMojo.setSourceMapURLs(SourceMapURLs.RELATIVE);
         compileSassMojo.setNoSourceMap(true);

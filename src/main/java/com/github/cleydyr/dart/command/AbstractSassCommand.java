@@ -121,7 +121,7 @@ public abstract class AbstractSassCommand implements SassCommand {
 	private boolean pollEnabled;
 
     @Override
-    public String execute() throws SassCommandException {
+    public void execute() throws SassCommandException {
         List<String> commands = new ArrayList<>();
 
         setExecutable(commands);
@@ -150,8 +150,6 @@ public abstract class AbstractSassCommand implements SassCommand {
 
                 throw new SassCommandException(sb.toString());
             }
-
-            return "";
         } catch (InterruptedException interruptedException) {
             throw new SassCommandException(interruptedException);
         } catch (IOException ioException) {

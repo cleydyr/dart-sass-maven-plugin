@@ -1,15 +1,5 @@
 package com.github.cleydyr.maven.plugin;
 
-import com.github.cleydyr.dart.command.SassCommand;
-import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
-import com.github.cleydyr.dart.command.enums.SourceMapURLs;
-import com.github.cleydyr.dart.command.enums.Style;
-import com.github.cleydyr.dart.command.exception.SassCommandException;
-import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
-import com.github.cleydyr.dart.command.files.FileCounter;
-import com.github.cleydyr.dart.command.files.FileCounterException;
-import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
-import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,6 +15,17 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.github.cleydyr.dart.command.SassCommand;
+import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
+import com.github.cleydyr.dart.command.enums.SourceMapURLs;
+import com.github.cleydyr.dart.command.enums.Style;
+import com.github.cleydyr.dart.command.exception.SassCommandException;
+import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
+import com.github.cleydyr.dart.command.files.FileCounter;
+import com.github.cleydyr.dart.command.files.FileCounterException;
+import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
+import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
+
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory.
  */
@@ -32,9 +33,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class CompileSassMojo extends AbstractMojo {
     private FileCounter fileCounter;
 
+    protected SassCommandBuilder sassCommandBuilder;
+
     @Inject
-    public CompileSassMojo(FileCounter fileCounter) {
+    public CompileSassMojo(FileCounter fileCounter, SassCommandBuilderFactory sassCommandBuilderFactory) {
 		this.fileCounter = fileCounter;
+		this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
 	}
 
 	/**
@@ -186,8 +190,6 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean trace;
 
-    private long fileCount;
-
     public void execute() throws MojoExecutionException {
         extractExecutable();
 
@@ -198,18 +200,18 @@ public class CompileSassMojo extends AbstractMojo {
         try {
             Instant start = Instant.now();
 
-            String output = sassCommand.execute();
+            sassCommand.execute();
 
             Instant finish = Instant.now();
 
             long elapsedTime = Duration.between(start, finish).toMillis();
 
-            getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
+            try {
+            	long fileCount = fileCounter.getProcessableFileCount(inputFolder.toPath());
 
-            if (!output.isEmpty()) {
-                getLog().info("sass command output:");
-
-                getLog().info(output);
+            	getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
+            } catch (FileCounterException fileCounterException) {
+            	throw new MojoExecutionException("Error while obtaining file count: ", fileCounterException);
             }
         } catch (SassCommandException sassCommandException) {
             throw new MojoExecutionException("Can't execute SASS command", sassCommandException);
@@ -237,30 +239,22 @@ public class CompileSassMojo extends AbstractMojo {
     }
 
     protected SassCommand buildSassCommand() throws MojoExecutionException {
-        SassCommandBuilder sassCommandBuilder = SassCommandBuilderFactory.getCommanderBuilder();
-
         if (loadPaths != null) {
             for (File loadPath : loadPaths) {
                 sassCommandBuilder.withLoadPath(loadPath.toPath());
             }
         }
 
-        setOptions(sassCommandBuilder);
+        setOptions();
 
         Path inputFolderPath = inputFolder.toPath();
-
-        try {
-			fileCount = fileCounter.getProcessableFileCount(inputFolderPath);
-		} catch (FileCounterException fileCounterException) {
-			throw new MojoExecutionException("Error while obtaining file count: ", fileCounterException);
-		}
 
         sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
 
         return sassCommandBuilder.build();
     }
 
-	protected void setOptions(SassCommandBuilder sassCommandBuilder) {
+	protected void setOptions() {
 		sassCommandBuilder.withStyle(style);
         sassCommandBuilder.withNoCharset(noCharset);
         sassCommandBuilder.withErrorCSS(errorCSS);
@@ -411,13 +405,5 @@ public class CompileSassMojo extends AbstractMojo {
 
     public void setTrace( boolean trace ) {
         this.trace = trace;
-    }
-
-    public long getFileCount() {
-        return fileCount;
-    }
-
-    public void setFileCount( long fileCount ) {
-        this.fileCount = fileCount;
     }
 }
