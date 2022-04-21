@@ -6,16 +6,18 @@ import com.github.cleydyr.dart.command.files.DefaultFileCounter;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import com.github.cleydyr.maven.plugin.WatchSassMojo;
-import com.google.common.io.Files;
 import java.io.File;
+import java.nio.file.Files;
 import junit.framework.TestCase;
 import org.mockito.Mockito;
 
 public class WatchSassMojoTest extends TestCase {
+    private String _tmpDirPrefix = getClass().getName();
+
     public void testWatchWithoutPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 
-        File stubFile = Files.createTempDir();
+        File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
                 new DefaultFileCounter(), () -> mockSassCommandBuilder, _mockDartSassExecutableExtractorFactory());
@@ -32,7 +34,7 @@ public class WatchSassMojoTest extends TestCase {
     public void testWatchWithPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 
-        File stubFile = Files.createTempDir();
+        File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
                 new DefaultFileCounter(), () -> mockSassCommandBuilder, _mockDartSassExecutableExtractorFactory());

@@ -48,6 +48,12 @@
 			<artifactId>maven-core</artifactId>
 			<version>${maven.version}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.inject</groupId>
+					<artifactId>guice</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
@@ -204,6 +210,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.sonatype.ossindex.maven</groupId>
+				<artifactId>ossindex-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>audit-dependencies</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>audit</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -228,6 +248,23 @@
 											</versionRange>
 										<goals>
 											<goal>main-index</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.sonatype.ossindex.maven
+										</groupId>
+										<artifactId>
+											ossindex-maven-plugin
+										</artifactId>
+										<versionRange>[3.1.0,)</versionRange>
+										<goals>
+											<goal>audit</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
