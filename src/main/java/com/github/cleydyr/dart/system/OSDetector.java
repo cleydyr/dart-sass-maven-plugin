@@ -16,6 +16,10 @@ public class OSDetector {
     static {
         String osName = System.getProperty("os.name");
 
+        if (osName == null) {
+            throw new Error("os.name system property is not set");
+        }
+
         if (osName.contains("Mac OS")) {
             _DETECTED_OS = OS_MAC_OS;
 
@@ -31,6 +35,10 @@ public class OSDetector {
         }
 
         String osArchitecture = System.getProperty("os.arch");
+
+        if (osArchitecture == null) {
+            throw new Error("os.arch system property is not set");
+        }
 
         if (osArchitecture.equals("aarch64")) {
             _DETECTED_ARCHITECTURE = "aarch64";
