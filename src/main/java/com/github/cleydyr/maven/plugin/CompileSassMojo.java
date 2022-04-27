@@ -252,7 +252,11 @@ public class CompileSassMojo extends AbstractMojo {
 
         sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
 
-        return sassCommandBuilder.build();
+        try {
+            return sassCommandBuilder.build();
+        } catch (SassCommandException e) {
+            throw new MojoExecutionException(e);
+        }
     }
 
     protected void setOptions() {

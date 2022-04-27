@@ -2,6 +2,7 @@ package com.github.cleydyr.dart.maven.plugin;
 
 import com.github.cleydyr.dart.command.SassCommand;
 import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
+import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.files.DefaultFileCounter;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
@@ -49,12 +50,13 @@ public class WatchSassMojoTest extends TestCase {
         Mockito.verify(mockSassCommandBuilder, Mockito.times(1)).withPoll(true);
     }
 
-    private SassCommandBuilder _mockSassCommandBuilder() {
+    private SassCommandBuilder _mockSassCommandBuilder() throws SassCommandException {
         SassCommandBuilder mockSassCommandBuilder = Mockito.mock(SassCommandBuilder.class);
 
         SassCommand mockSassCommand = Mockito.mock(SassCommand.class);
 
         Mockito.when(mockSassCommandBuilder.build()).thenReturn(mockSassCommand);
+
         return mockSassCommandBuilder;
     }
 
