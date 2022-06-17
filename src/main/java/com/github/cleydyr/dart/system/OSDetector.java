@@ -45,7 +45,7 @@ public class OSDetector {
         } else if (osArchitecture.contains("64")) {
             _DETECTED_ARCHITECTURE = "x64";
         } else {
-            _DETECTED_ARCHITECTURE = "x86";
+            _DETECTED_ARCHITECTURE = "ia32";
         }
     }
 
