@@ -16,7 +16,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>0.2.0</version>
+				<version>0.3.0</version>
 				<executions>
 					<execution>
 						<id>generate-css-using-sass</id>
