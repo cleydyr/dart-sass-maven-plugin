@@ -52,5 +52,4 @@ public interface DartSassExecutableExtractor {
     String[] getResourceNames();
 
     default void setResourcePermissions(Path resourcePath) throws IOException {}
-    ;
 }
