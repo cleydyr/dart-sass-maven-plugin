@@ -7,18 +7,12 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class PosixDartSassExecutableExtractor implements DartSassExecutableExtractor {
-    private static String[] _RESOURCE_NAMES = new String[] {"sass", "src/sass.snapshot", "src/dart"};
+public abstract class PosixDartSassExecutableExtractor implements DartSassExecutableExtractor {
 
     @Override
     public void setResourcePermissions(Path resourcePath) throws IOException {
         Files.setPosixFilePermissions(
                 resourcePath,
                 new HashSet<>(Arrays.asList(PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.OWNER_READ)));
-    }
-
-    @Override
-    public String[] getResourceNames() {
-        return _RESOURCE_NAMES;
     }
 }

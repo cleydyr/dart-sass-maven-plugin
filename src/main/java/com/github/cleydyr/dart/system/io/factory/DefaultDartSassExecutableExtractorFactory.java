@@ -2,7 +2,7 @@ package com.github.cleydyr.dart.system.io.factory;
 
 import com.github.cleydyr.dart.system.OSDetector;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
-import com.github.cleydyr.dart.system.io.PosixDartSassExecutableExtractor;
+import com.github.cleydyr.dart.system.io.PosixDartSassNativeExecutableExtractor;
 import com.github.cleydyr.dart.system.io.WindowsDartSassExecutableExtractor;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -16,6 +16,6 @@ public class DefaultDartSassExecutableExtractorFactory implements DartSassExecut
             return new WindowsDartSassExecutableExtractor();
         }
 
-        return new PosixDartSassExecutableExtractor();
+        return new PosixDartSassNativeExecutableExtractor();
     }
 }
