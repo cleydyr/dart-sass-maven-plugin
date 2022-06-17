@@ -1,10 +1,10 @@
-name: Java CI on Windows
+name: Java CI on Mac
 
 on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-12
 
     steps:
       - uses: actions/checkout@v3
