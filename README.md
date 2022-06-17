@@ -48,7 +48,7 @@ The above compatibility mirrors which releases are available at the official [Da
 ### compile-sass
 Goal that compiles a set of sass/scss files from an input directory to an output directory.
 
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.2.0:compile-sass`
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.3.0:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
@@ -182,7 +182,7 @@ If the this flag is set to true, Sass will only compile stylesheets whose depend
 ### watch-sass
 Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
 
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.2.0:watch-sass`
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.3.0:watch-sass`
 
 By default it binds to no lifecycle phase.
 
