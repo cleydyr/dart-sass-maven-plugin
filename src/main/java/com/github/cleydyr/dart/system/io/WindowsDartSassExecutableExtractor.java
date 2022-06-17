@@ -14,7 +14,7 @@ public class WindowsDartSassExecutableExtractor implements DartSassExecutableExt
 
         for (String resourceName : _RESOURCE_NAMES) {
             InputStream resourceInputStream =
-                    getClass().getResourceAsStream("/sass-binaries/windows/x64/" + resourceName);
+                    getClass().getResourceAsStream("/sass-binaries/windows/x64/dart-sass" + resourceName);
 
             Path resourcePath = executableFolder.resolve(resourceName);
 

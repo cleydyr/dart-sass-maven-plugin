@@ -34,6 +34,7 @@
 		<maven.version>3.8.5</maven.version>
 		<maven.plugin.version>3.6.4</maven.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<dart.sass.version>1.52.3</dart.sass.version>
 	</properties>
 
 	<dependencies>
@@ -222,6 +223,97 @@
 						<goals>
 							<goal>audit</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<executions>
+					<execution>
+						<id>download-linux-arm64</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-arm64.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/aarch64</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-linux-ia32</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-ia32.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/ia32</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-linux-x64</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-x64.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/x64</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-macos-arm64</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-macos-arm64.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/macos/aarch64</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-macos-x64</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-macos-x64.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/macos/x64</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-windows-x64</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-windows-x64.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/windows/x64</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-windows-ia32</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-windows-ia32.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/windows/ia32</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

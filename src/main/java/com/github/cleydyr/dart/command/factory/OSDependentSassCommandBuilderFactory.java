@@ -36,7 +36,7 @@ public class OSDependentSassCommandBuilderFactory implements SassCommandBuilderF
                         @Override
                         protected void setExecutable(List<String> commands) {
                             commands.add(tmpDirPath
-                                    .resolve("dart-sass-maven-plugin/sass.bat")
+                                    .resolve("dart-sass-maven-plugin/dart-sass/sass.bat")
                                     .toString());
                         }
                     };
@@ -46,7 +46,7 @@ public class OSDependentSassCommandBuilderFactory implements SassCommandBuilderF
                     @Override
                     protected void setExecutable(List<String> commands) {
                         commands.add(tmpDirPath
-                                .resolve("dart-sass-maven-plugin/sass")
+                                .resolve("dart-sass-maven-plugin/dart-sass/sass")
                                 .toString());
                     }
                 };

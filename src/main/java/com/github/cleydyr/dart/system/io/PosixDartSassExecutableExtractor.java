@@ -22,7 +22,7 @@ public class PosixDartSassExecutableExtractor implements DartSassExecutableExtra
                             + OSDetector.getOSName()
                             + "/"
                             + OSDetector.getOSArchitecture()
-                            + "/"
+                            + "/dart-sass/"
                             + resourceName);
 
             Path resourcePath = executableFolder.resolve(resourceName);
