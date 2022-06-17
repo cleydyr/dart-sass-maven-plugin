@@ -1,6 +1,9 @@
 package com.github.cleydyr.dart.system.io;
 
+import com.github.cleydyr.dart.command.exception.SassCommandException;
+import com.github.cleydyr.dart.system.OSDetector;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,5 +26,37 @@ public interface DartSassExecutableExtractor {
         return executableFolder;
     }
 
-    void extract() throws IOException;
+    default void extract() throws Exception {
+        Path executableFolder = createExecutableFolder();
+
+        for (String resourceName : getResourceNames()) {
+            InputStream resourceInputStream = getClass()
+                    .getResourceAsStream("/sass-binaries/"
+                            + OSDetector.getOSName()
+                            + "/"
+                            + OSDetector.getOSArchitecture()
+                            + "/dart-sass/"
+                            + resourceName);
+
+            if (resourceInputStream == null) {
+                throw new SassCommandException(String.format(
+                        "Can't extract file for system %s and architecture %s",
+                        OSDetector.getOSName(), OSDetector.getOSArchitecture()));
+            }
+
+            Path resourcePath = executableFolder.resolve(resourceName);
+
+            if (Files.exists(resourcePath)) {
+                continue;
+            }
+
+            Files.copy(resourceInputStream, resourcePath);
+
+            setResourcePermissions(resourcePath);
+        }
+    }
+
+    String[] getResourceNames();
+
+    default void setResourcePermissions(Path resourcePath) throws IOException {}
 }

@@ -1,6 +1,12 @@
 package com.github.cleydyr.dart.system;
 
 public class OSDetector {
+    public static final String ARCH_IA32 = "ia32";
+
+    public static final String ARCH_X64 = "x64";
+
+    public static final String ARCH_AARCH64 = "aarch64";
+
     public static final String OS_MAC_OS = "macos";
 
     public static final String OS_WINDOWS = "windows";
@@ -40,12 +46,12 @@ public class OSDetector {
             throw new Error("os.arch system property is not set");
         }
 
-        if (osArchitecture.equals("aarch64")) {
-            _DETECTED_ARCHITECTURE = "aarch64";
+        if (osArchitecture.equals(ARCH_AARCH64)) {
+            _DETECTED_ARCHITECTURE = ARCH_AARCH64;
         } else if (osArchitecture.contains("64")) {
-            _DETECTED_ARCHITECTURE = "x64";
+            _DETECTED_ARCHITECTURE = ARCH_X64;
         } else {
-            _DETECTED_ARCHITECTURE = "x86";
+            _DETECTED_ARCHITECTURE = ARCH_IA32;
         }
     }
 

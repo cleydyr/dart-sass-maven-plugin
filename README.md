@@ -32,6 +32,17 @@ A Maven plugin that allows to compile SASS using Dart Sass
 </build>
 ```
 
+## Supported systems
+Dart Sass Maven Plugin will run on the following combination of operating systems and architectures
+
+|  |Linux|Mac|Windows|
+|--|-----|---|-------|
+|x86|✅|❌|✅|
+|x64|✅|✅|✅
+|arm64|✅|✅|❌
+
+The above compatibility mirrors which releases are available at the official [Dart Sass releases page](https://github.com/sass/dart-sass/releases).
+
 ## Goals
 
 ### compile-sass
