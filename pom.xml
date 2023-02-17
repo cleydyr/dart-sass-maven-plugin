@@ -232,6 +232,19 @@
 				<version>1.6.8</version>
 				<executions>
 					<execution>
+						<id>download-linux-arm</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-arm.tar.gz</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/aarch32</outputDirectory>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
 						<id>download-linux-arm64</id>
 						<phase>generate-resources</phase>
 						<goals>
@@ -241,6 +254,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-arm64.tar.gz</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/aarch64</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -253,6 +267,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-ia32.tar.gz</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/ia32</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -265,6 +280,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-linux-x64.tar.gz</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/linux/x64</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -277,6 +293,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-macos-arm64.tar.gz</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/macos/aarch64</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -289,6 +306,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-macos-x64.tar.gz</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/macos/x64</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -301,6 +319,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-windows-x64.zip</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/windows/x64</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -313,6 +332,7 @@
 							<url>https://github.com/sass/dart-sass/releases/download/${dart.sass.version}/dart-sass-${dart.sass.version}-windows-ia32.zip</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.basedir}/src/main/resources/sass-binaries/windows/ia32</outputDirectory>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 				</executions>

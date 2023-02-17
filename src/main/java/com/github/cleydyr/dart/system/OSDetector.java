@@ -5,6 +5,10 @@ public class OSDetector {
 
     public static final String ARCH_X64 = "x64";
 
+    public static final String ARCH_ARM = "arm";
+
+    public static final String ARCH_AARCH32 = "aarch32";
+
     public static final String ARCH_AARCH64 = "aarch64";
 
     public static final String OS_MAC_OS = "macos";
@@ -46,7 +50,9 @@ public class OSDetector {
             throw new Error("os.arch system property is not set");
         }
 
-        if (osArchitecture.equals(ARCH_AARCH64)) {
+        if (osArchitecture.equals(ARCH_ARM)) {
+            _DETECTED_ARCHITECTURE = ARCH_AARCH32;
+        } else if (osArchitecture.equals(ARCH_AARCH64)) {
             _DETECTED_ARCHITECTURE = ARCH_AARCH64;
         } else if (osArchitecture.contains("64")) {
             _DETECTED_ARCHITECTURE = ARCH_X64;
