@@ -16,7 +16,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>0.3.0</version>
+				<version>0.4.0</version>
 				<executions>
 					<execution>
 						<id>generate-css-using-sass</id>
@@ -38,8 +38,9 @@ Dart Sass Maven Plugin will run on the following combination of operating system
 |  |Linux|Mac|Windows|
 |--|-----|---|-------|
 |x86|✅|❌|✅|
-|x64|✅|✅|✅
-|arm64|✅|✅|❌
+|x64|✅|✅|✅|
+|arm64|✅|✅|❌|
+|arm|✅|❌|❌|
 
 The above compatibility mirrors which releases are available at the official [Dart Sass releases page](https://github.com/sass/dart-sass/releases).
 
@@ -48,7 +49,7 @@ The above compatibility mirrors which releases are available at the official [Da
 ### compile-sass
 Goal that compiles a set of sass/scss files from an input directory to an output directory.
 
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.3.0:compile-sass`
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
@@ -182,7 +183,7 @@ If the this flag is set to true, Sass will only compile stylesheets whose depend
 ### watch-sass
 Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
 
-Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.3.0:watch-sass`
+Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:watch-sass`
 
 By default it binds to no lifecycle phase.
 
