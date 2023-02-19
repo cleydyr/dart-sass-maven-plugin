@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 public interface DartSassExecutableExtractor {
 
@@ -56,7 +57,7 @@ public interface DartSassExecutableExtractor {
         }
     }
 
-    String[] getResourceNames();
+    Collection<String> getResourceNames();
 
     default void setResourcePermissions(Path resourcePath) throws IOException {}
 }

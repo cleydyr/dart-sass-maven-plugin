@@ -1,10 +1,15 @@
 package com.github.cleydyr.dart.system.io;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 public class WindowsDartSassExecutableExtractor implements DartSassExecutableExtractor {
-    private static String[] _RESOURCE_NAMES = new String[] {"sass.bat", "src/sass.snapshot", "src/dart.exe"};
+    private static Collection<String> RESOURCE_NAMES =
+            Collections.unmodifiableList(Arrays.asList("sass.bat", "src/sass.snapshot", "src/dart.exe"));
 
     @Override
-    public String[] getResourceNames() {
-        return _RESOURCE_NAMES;
+    public Collection<String> getResourceNames() {
+        return RESOURCE_NAMES;
     }
 }
