@@ -54,6 +54,8 @@ public class CompileSassMojoTest extends TestCase {
             "subfolder/test-sub1.css.map",
             "subfolder/test-sub2.css",
             "subfolder/test-sub2.css.map",
+            "subfolder/test-sub3.css",
+            "subfolder/test-sub3.css.map"
         };
 
         assertEquals(

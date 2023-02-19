@@ -210,7 +210,7 @@ public class CompileSassMojo extends AbstractMojo {
             long elapsedTime = Duration.between(start, finish).toMillis();
 
             try {
-                long fileCount = fileCounter.getProcessableFileCount(inputFolder.toPath());
+                long fileCount = fileCounter.getProcessableFileCount(inputFolder.toPath(), outputFolder.toPath());
 
                 getLog().info("Compiled " + fileCount + " files in " + elapsedTime + " ms");
             } catch (FileCounterException fileCounterException) {
