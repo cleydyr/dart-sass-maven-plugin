@@ -34,7 +34,7 @@
 		<maven.version>3.8.5</maven.version>
 		<maven.plugin.version>3.6.4</maven.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dart.sass.version>1.58.3</dart.sass.version>
+		<dart.sass.version>1.62.1</dart.sass.version>
 	</properties>
 
 	<dependencies>
