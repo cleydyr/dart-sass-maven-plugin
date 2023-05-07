@@ -227,4 +227,3 @@ This flag tells Sass to manually check for changes to the source files every so 
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
-
