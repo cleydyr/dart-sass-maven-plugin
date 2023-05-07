@@ -13,15 +13,26 @@ public class ZipFilesystemExecutableResourcesProvider extends FilesystemExecutab
 
     @Override
     protected InputStream getResourceFromReleaseArchive(String resourceName, File release) throws IOException {
-        try (ZipFile zipFile = new ZipFile(release)) {
-            InputStream inputStream = zipFile.getInputStream(zipFile.getEntry(resourceName));
+        ZipFile zipFile = new ZipFile(release);
 
-            if (inputStream == null) {
-                throw new IOException("Can't find resource " + resourceName + " inside release archive at "
-                        + release.getAbsolutePath());
+        InputStream inputStream = zipFile.getInputStream(zipFile.getEntry(resourceName));
+
+        if (inputStream == null) {
+            throw new IOException(
+                    "Can't find resource " + resourceName + " inside release archive at " + release.getAbsolutePath());
+        }
+
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return inputStream.read();
             }
 
-            return inputStream;
-        }
+            @Override
+            public void close() throws IOException {
+                inputStream.close();
+                zipFile.close();
+            }
+        };
     }
 }

@@ -48,23 +48,24 @@ public abstract class AbstractDartSassExecutableExtractor implements DartSassExe
 
     private void extractResourcesToFolder(Path executableFolder) throws SassCommandException, IOException {
         for (String resourceName : resourceNames) {
-            InputStream resourceInputStream = getResourceInputStream("dart-sass/" + resourceName);
+            try (InputStream resourceInputStream = getResourceInputStream("dart-sass/" + resourceName)) {
 
-            if (resourceInputStream == null) {
-                throw new SassCommandException(String.format(
-                        "Can't extract file for system %s and architecture %s",
-                        OSDetector.getOSName(), OSDetector.getOSArchitecture()));
+                if (resourceInputStream == null) {
+                    throw new SassCommandException(String.format(
+                            "Can't extract file for system %s and architecture %s",
+                            OSDetector.getOSName(), OSDetector.getOSArchitecture()));
+                }
+
+                Path resourcePath = executableFolder.resolve(resourceName);
+
+                if (Files.exists(resourcePath)) {
+                    continue;
+                }
+
+                Files.copy(resourceInputStream, resourcePath);
+
+                setResourcePermissions(resourcePath);
             }
-
-            Path resourcePath = executableFolder.resolve(resourceName);
-
-            if (Files.exists(resourcePath)) {
-                continue;
-            }
-
-            Files.copy(resourceInputStream, resourcePath);
-
-            setResourcePermissions(resourcePath);
         }
     }
 
