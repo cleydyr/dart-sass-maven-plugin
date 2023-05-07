@@ -42,6 +42,9 @@ Dart Sass Maven Plugin will run on any combination of operating systems and arch
 |arm64|✅|✅|❌|
 |arm|✅|❌|❌|
 
+## Offline operation
+In previous versions, this plugin included all released archives for a given Dart Sass version. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass, if it's not found on the temporary folder or on the cached files directory. Should this plugin be used in an air-capped environment, you should provide an release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>`. The release archive should be on the subpath `<os>`/`<arch>`/`<version>`/release inside the cached files directory.
+
 ## Goals
 
 ### compile-sass
@@ -224,3 +227,4 @@ This flag tells Sass to manually check for changes to the source files every so 
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
+
