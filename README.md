@@ -16,7 +16,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>0.4.0</version>
+				<version>1.0.0</version>
 				<executions>
 					<execution>
 						<id>generate-css-using-sass</id>
@@ -33,7 +33,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 ```
 
 ## Supported systems
-Dart Sass Maven Plugin will run on the following combination of operating systems and architectures
+Dart Sass Maven Plugin will run on any combination of operating systems and architectures that are available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases. As of now they are:
 
 |  |Linux|Mac|Windows|
 |--|-----|---|-------|
@@ -41,8 +41,6 @@ Dart Sass Maven Plugin will run on the following combination of operating system
 |x64|✅|✅|✅|
 |arm64|✅|✅|❌|
 |arm|✅|❌|❌|
-
-The above compatibility mirrors which releases are available at the official [Dart Sass releases page](https://github.com/sass/dart-sass/releases).
 
 ## Goals
 
@@ -54,6 +52,35 @@ Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:compile-sass`
 Binds by default to the lifecycle phase: `process-resources`.
 
 #### Parameter details
+`<arch>`
+
+This parameter represents the Dart Sass architecture that should be used to compile Sass files. If letf unset, it will be autodetected by the plugin. Accepted values are "x64", "aarch32", "aarch64" and "ia32".<br>
+**Type**: String<br>
+**Required**: No<br>
+
+`<os>`
+
+This parameter represents the Dart Sass operating system that should be used to compile Sass files. If letf unset, it will be autodetected by the plugin. Accepted values are "linux", "macos" and "windows".<br>
+**Type**: String<br>
+**Required**: No
+
+`<version>`
+
+This parameter represents the Dart Sass version that should be used to compile Sass files. If left unset, the version available at https://github.com/sass/dart-sass/releases/latest will be used.<br>
+**Type**: String<br>
+**Required**: No<br>
+
+`<cachedFilesDirectory>`
+
+This parameter represents a path in the local file system where the release archive downloaded from the internet will be stored. If letf unset, it will default to
+<ul>
+<li>$HOME/.cache/dart-sass-maven-plugin/ on *nix operating systems; or</li>
+<li>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache on Windows operating systems.</li>
+</ul>
+
+**Type**: java.io.File<br>
+**Required**: No
+
 `<color>`
 
 This flag tells Sass to emit terminal colors. By default, it will emit colors if it looks like it's being run on a terminal that supports them. Set it to false to tell Sass to not emit colors.<br>

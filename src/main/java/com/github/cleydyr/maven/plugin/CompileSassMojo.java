@@ -209,7 +209,7 @@ public class CompileSassMojo extends AbstractMojo {
     private boolean trace;
 
     /**
-     * This parameter representes the Dart Sass version that should be used to compile Sass files.
+     * This parameter represents the Dart Sass version that should be used to compile Sass files.
      * If left unset, the version available at https://github.com/sass/dart-sass/releases/latest
      * will be used.
      */
@@ -217,7 +217,7 @@ public class CompileSassMojo extends AbstractMojo {
     private String version;
 
     /**
-     * This parameter representes the Dart Sass architecture that should be used to compile Sass
+     * This parameter represents the Dart Sass architecture that should be used to compile Sass
      * files. If letf unset, it will be autodetected by the plugin. Accepted values are
      * "x64", "aarch32", "aarch64" and "ia32".
      */
@@ -225,7 +225,7 @@ public class CompileSassMojo extends AbstractMojo {
     private String arch;
 
     /**
-     * This parameter representes the Dart Sass operating system that should be used to compile
+     * This parameter represents the Dart Sass operating system that should be used to compile
      * Sass files. If letf unset, it will be autodetected by the plugin. Accepted values are
      * "linux", "macos" and "windows".
      */
@@ -233,7 +233,7 @@ public class CompileSassMojo extends AbstractMojo {
     private String os;
 
     /**
-     * This parameter representes a path in the local file system where the release archive
+     * This parameter represents a path in the local file system where the release archive
      * downloaded from the internet will stored. If letf unset, it will default to
      * <ul>
      *  <li><code>$HOME/.cache/dart-sass-maven-plugin/</code> on *nix operating systems; or</li>
