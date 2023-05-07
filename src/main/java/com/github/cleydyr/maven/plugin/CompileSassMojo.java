@@ -31,7 +31,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory.
  */
-@Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
+@Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, threadSafe = true)
 public class CompileSassMojo extends AbstractMojo {
     private FileCounter fileCounter;
 
@@ -42,6 +42,8 @@ public class CompileSassMojo extends AbstractMojo {
     protected GithubLatestVersionProvider githubLatestVersionProvider;
 
     protected Supplier<File> cachedFilesDirectoryProvider;
+
+    private static final Object LOCK = new Object();
 
     @Inject
     public CompileSassMojo(
@@ -250,9 +252,11 @@ public class CompileSassMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         verifyDefaultParameters();
 
-        extractExecutable();
-
         unsetIncompatibleOptions();
+
+        synchronized (LOCK) {
+            extractExecutable();
+        }
 
         SassCommand sassCommand = buildSassCommand();
 
