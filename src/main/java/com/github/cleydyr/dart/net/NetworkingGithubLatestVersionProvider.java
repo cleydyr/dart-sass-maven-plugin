@@ -62,11 +62,4 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
         connection.setInstanceFollowRedirects(false);
         return connection;
     }
-
-    public static void main(String[] args) {
-        NetworkingGithubLatestVersionProvider networkingGithubLatestVersionProvider =
-                new NetworkingGithubLatestVersionProvider();
-
-        System.out.println(networkingGithubLatestVersionProvider.get());
-    }
 }
