@@ -4,6 +4,7 @@ import com.github.cleydyr.dart.command.SassCommand;
 import com.github.cleydyr.dart.command.enums.SourceMapURLs;
 import com.github.cleydyr.dart.command.enums.Style;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
+import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import java.nio.file.Path;
 
 public interface SassCommandBuilder {
@@ -43,5 +44,5 @@ public interface SassCommandBuilder {
 
     SassCommandBuilder withPoll(boolean pollEnabled);
 
-    SassCommand build() throws SassCommandException;
+    SassCommand build(DartSassReleaseParameter DartSassReleaseParameter) throws SassCommandException;
 }

@@ -1,6 +1,7 @@
 package com.github.cleydyr.dart.maven.plugin.test.util;
 
 import java.io.File;
+import java.util.Random;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 
@@ -24,5 +25,17 @@ public class TestUtil {
         verifier.executeGoal(goal);
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
+    }
+
+    public static String randomAlphaString(int size) {
+        char[] chars = new char[size];
+
+        Random rand = new Random();
+
+        for (int i = 0; i < size; i++) {
+            chars[i] = (char) ('a' + rand.nextInt(26));
+        }
+
+        return new String(chars);
     }
 }

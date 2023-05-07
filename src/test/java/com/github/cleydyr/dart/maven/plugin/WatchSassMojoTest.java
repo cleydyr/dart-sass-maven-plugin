@@ -4,7 +4,9 @@ import com.github.cleydyr.dart.command.SassCommand;
 import com.github.cleydyr.dart.command.builder.SassCommandBuilder;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.files.DefaultFileCounter;
+import com.github.cleydyr.dart.net.DummyGithubLatestVersionProvider;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
+import com.github.cleydyr.dart.system.io.OSDependentDefaultCachedFilesDirectoryProviderFactory;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import com.github.cleydyr.maven.plugin.WatchSassMojo;
 import java.io.File;
@@ -21,7 +23,11 @@ public class WatchSassMojoTest extends TestCase {
         File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
-                new DefaultFileCounter(), () -> mockSassCommandBuilder, _mockDartSassExecutableExtractorFactory());
+                new DefaultFileCounter(),
+                () -> mockSassCommandBuilder,
+                _mockDartSassExecutableExtractorFactory(),
+                new DummyGithubLatestVersionProvider(),
+                new OSDependentDefaultCachedFilesDirectoryProviderFactory());
 
         watchSassMojo.setInputFolder(stubFile);
         watchSassMojo.setOutputFolder(stubFile);
@@ -38,7 +44,11 @@ public class WatchSassMojoTest extends TestCase {
         File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
-                new DefaultFileCounter(), () -> mockSassCommandBuilder, _mockDartSassExecutableExtractorFactory());
+                new DefaultFileCounter(),
+                () -> mockSassCommandBuilder,
+                _mockDartSassExecutableExtractorFactory(),
+                new DummyGithubLatestVersionProvider(),
+                new OSDependentDefaultCachedFilesDirectoryProviderFactory());
 
         watchSassMojo.setInputFolder(stubFile);
         watchSassMojo.setOutputFolder(stubFile);
@@ -55,7 +65,7 @@ public class WatchSassMojoTest extends TestCase {
 
         SassCommand mockSassCommand = Mockito.mock(SassCommand.class);
 
-        Mockito.when(mockSassCommandBuilder.build()).thenReturn(mockSassCommand);
+        Mockito.when(mockSassCommandBuilder.build(Mockito.any())).thenReturn(mockSassCommand);
 
         return mockSassCommandBuilder;
     }
@@ -63,6 +73,6 @@ public class WatchSassMojoTest extends TestCase {
     private DartSassExecutableExtractorFactory _mockDartSassExecutableExtractorFactory() {
         DartSassExecutableExtractor mockDartSassExecutableExtractor = Mockito.mock(DartSassExecutableExtractor.class);
 
-        return () -> mockDartSassExecutableExtractor;
+        return (any0, any1) -> mockDartSassExecutableExtractor;
     }
 }

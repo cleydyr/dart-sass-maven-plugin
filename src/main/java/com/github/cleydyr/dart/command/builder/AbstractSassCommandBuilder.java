@@ -6,6 +6,7 @@ import com.github.cleydyr.dart.command.enums.SourceMapURLs;
 import com.github.cleydyr.dart.command.enums.Style;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.parameter.ParameterPair;
+import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -177,8 +178,8 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
     }
 
     @Override
-    public SassCommand build() throws SassCommandException {
-        AbstractSassCommand sassCommand = getSassCommandInstance();
+    public SassCommand build(DartSassReleaseParameter dartSassReleaseParameter) throws SassCommandException {
+        AbstractSassCommand sassCommand = getSassCommandInstance(dartSassReleaseParameter);
 
         sassCommand.setNoCharsetEnabled(noCharsetEnabled);
         sassCommand.setColorEnabled(colorEnabled);
@@ -202,5 +203,6 @@ public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
         return sassCommand;
     }
 
-    protected abstract AbstractSassCommand getSassCommandInstance() throws SassCommandException;
+    protected abstract AbstractSassCommand getSassCommandInstance(DartSassReleaseParameter dartSassReleaseParameter)
+            throws SassCommandException;
 }

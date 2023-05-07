@@ -1,13 +1,22 @@
 package com.github.cleydyr.dart.system.io;
 
+import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
-public abstract class PosixDartSassExecutableExtractor implements DartSassExecutableExtractor {
+public abstract class PosixDartSassExecutableExtractor extends AbstractDartSassExecutableExtractor {
+
+    public PosixDartSassExecutableExtractor(
+            DartSassReleaseParameter dartSassReleaseParameter,
+            ExecutableResourcesProvider executableResourcesProvider,
+            Collection<String> resourceNames) {
+        super(dartSassReleaseParameter, executableResourcesProvider, resourceNames);
+    }
 
     private static final HashSet<PosixFilePermission> PERMISSION_SET =
             new HashSet<>(Arrays.asList(PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.OWNER_READ));

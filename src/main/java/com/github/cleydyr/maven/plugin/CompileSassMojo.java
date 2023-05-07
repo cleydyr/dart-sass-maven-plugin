@@ -8,16 +8,22 @@ import com.github.cleydyr.dart.command.exception.SassCommandException;
 import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
 import com.github.cleydyr.dart.command.files.FileCounter;
 import com.github.cleydyr.dart.command.files.FileCounterException;
+import com.github.cleydyr.dart.net.GithubLatestVersionProvider;
+import com.github.cleydyr.dart.release.DartSassReleaseParameter;
+import com.github.cleydyr.dart.system.OSDetector;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
+import com.github.cleydyr.dart.system.io.DefaultCachedFilesDirectoryProviderFactory;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -31,16 +37,25 @@ public class CompileSassMojo extends AbstractMojo {
 
     protected SassCommandBuilder sassCommandBuilder;
 
-    protected DartSassExecutableExtractor dartSassExecutableExtractor;
+    protected DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory;
+
+    protected GithubLatestVersionProvider githubLatestVersionProvider;
+
+    protected Supplier<File> cachedFilesDirectoryProvider;
 
     @Inject
     public CompileSassMojo(
             FileCounter fileCounter,
             SassCommandBuilderFactory sassCommandBuilderFactory,
-            DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
+            DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory,
+            GithubLatestVersionProvider githubLatestVersionProvider,
+            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory) {
         this.fileCounter = fileCounter;
         this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
-        this.dartSassExecutableExtractor = dartSassExecutableExtractorFactory.getDartSassExecutableExtractor();
+        this.dartSassExecutableExtractorFactory = dartSassExecutableExtractorFactory;
+        this.githubLatestVersionProvider = githubLatestVersionProvider;
+        this.cachedFilesDirectoryProvider = cachedFilesDirectoryProviderFactory.get();
+        this.logger = getLog();
     }
 
     /**
@@ -193,7 +208,48 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean trace;
 
+    /**
+     * This parameter representes the Dart Sass version that should be used to compile Sass files.
+     * If left unset, the version available at https://github.com/sass/dart-sass/releases/latest
+     * will be used.
+     */
+    @Parameter
+    private String version;
+
+    /**
+     * This parameter representes the Dart Sass architecture that should be used to compile Sass
+     * files. If letf unset, it will be autodetected by the plugin. Accepted values are
+     * "x64", "aarch32", "aarch64" and "ia32".
+     */
+    @Parameter
+    private String arch;
+
+    /**
+     * This parameter representes the Dart Sass operating system that should be used to compile
+     * Sass files. If letf unset, it will be autodetected by the plugin. Accepted values are
+     * "linux", "macos" and "windows".
+     */
+    @Parameter
+    private String os;
+
+    /**
+     * This parameter representes a path in the local file system where the release archive
+     * downloaded from the internet will stored. If letf unset, it will default to
+     * <ul>
+     *  <li><code>$HOME/.cache/dart-sass-maven-plugin/</code> on *nix operating systems; or</li>
+     *  <li><code>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache</code> on Windows operating systems.</li>
+     * </ul>
+     */
+    @Parameter
+    private File cachedFilesDirectory;
+
+    private Log logger;
+
+    private DartSassReleaseParameter dartSassReleaseParameter;
+
     public void execute() throws MojoExecutionException {
+        verifyDefaultParameters();
+
         extractExecutable();
 
         unsetIncompatibleOptions();
@@ -221,6 +277,38 @@ public class CompileSassMojo extends AbstractMojo {
         }
     }
 
+    protected void verifyDefaultParameters() throws MojoExecutionException {
+        if (os == null) {
+            os = OSDetector.getOSName();
+            logger.info("Auto-detected operating system: " + os);
+        } else if (!OSDetector.isAcceptedOSName(os)) {
+            logger.warn("os value " + os + " is not among the accepted values: " + OSDetector.ACCEPTED_OSES.toString());
+        }
+
+        if (arch == null) {
+            arch = OSDetector.getOSArchitecture();
+
+            logger.info("Auto-detected operating system architecture: " + arch);
+        } else if (!OSDetector.isAcceptedArchitecture(arch)) {
+            logger.warn("architecture value " + arch + " is not among the accepted values: "
+                    + OSDetector.ACCEPTED_ARCHITECTURES.toString());
+        }
+
+        if (version == null) {
+            version = githubLatestVersionProvider.get();
+
+            logger.info("Auto-detected latest version: " + version);
+        }
+
+        if (cachedFilesDirectory == null) {
+            cachedFilesDirectory = cachedFilesDirectoryProvider.get();
+
+            logger.info("Auto-detected cached files directory: " + cachedFilesDirectory);
+        }
+
+        dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
+    }
+
     public void unsetIncompatibleOptions() {
         if (noSourceMap) {
             sourceMapURLs = null;
@@ -230,6 +318,9 @@ public class CompileSassMojo extends AbstractMojo {
     }
 
     public void extractExecutable() throws MojoExecutionException {
+        DartSassExecutableExtractor dartSassExecutableExtractor =
+                dartSassExecutableExtractorFactory.getDartSassExecutableExtractor(
+                        dartSassReleaseParameter, cachedFilesDirectory);
 
         try {
             dartSassExecutableExtractor.extract();
@@ -252,7 +343,7 @@ public class CompileSassMojo extends AbstractMojo {
         sassCommandBuilder.withPaths(inputFolderPath, outputFolder.toPath());
 
         try {
-            return sassCommandBuilder.build();
+            return sassCommandBuilder.build(dartSassReleaseParameter);
         } catch (SassCommandException e) {
             throw new MojoExecutionException(e);
         }

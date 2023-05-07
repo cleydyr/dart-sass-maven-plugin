@@ -1,5 +1,8 @@
 package com.github.cleydyr.dart.system;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class OSDetector {
     public static final String ARCH_IA32 = "ia32";
 
@@ -7,15 +10,21 @@ public class OSDetector {
 
     public static final String ARCH_ARM = "arm";
 
-    public static final String ARCH_AARCH32 = "aarch32";
+    public static final String AARCH32 = "aarch32";
 
-    public static final String ARCH_AARCH64 = "aarch64";
+    public static final String AARCH64 = "aarch64";
+
+    public static final String ARCH_ARM64 = "arm64";
 
     public static final String OS_MAC_OS = "macos";
 
     public static final String OS_WINDOWS = "windows";
 
     public static final String OS_LINUX = "linux";
+
+    public static final Collection<String> ACCEPTED_OSES = new ArrayList<>();
+
+    public static final Collection<String> ACCEPTED_ARCHITECTURES = new ArrayList<>();
 
     private static final String _DETECTED_OS;
 
@@ -24,6 +33,14 @@ public class OSDetector {
     private static final boolean _IS_WINDOWS;
 
     static {
+        for (String os : new String[] {OS_LINUX, OS_MAC_OS, OS_WINDOWS}) {
+            ACCEPTED_OSES.add(os);
+        }
+
+        for (String arch : new String[] {ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64}) {
+            ACCEPTED_ARCHITECTURES.add(arch);
+        }
+
         String osName = System.getProperty("os.name");
 
         if (osName == null) {
@@ -50,10 +67,10 @@ public class OSDetector {
             throw new Error("os.arch system property is not set");
         }
 
-        if (osArchitecture.equals(ARCH_ARM)) {
-            _DETECTED_ARCHITECTURE = ARCH_AARCH32;
-        } else if (osArchitecture.equals(ARCH_AARCH64)) {
-            _DETECTED_ARCHITECTURE = ARCH_AARCH64;
+        if (osArchitecture.equals(AARCH32)) {
+            _DETECTED_ARCHITECTURE = ARCH_ARM;
+        } else if (osArchitecture.equals(AARCH64)) {
+            _DETECTED_ARCHITECTURE = ARCH_ARM64;
         } else if (osArchitecture.contains("64")) {
             _DETECTED_ARCHITECTURE = ARCH_X64;
         } else {
@@ -71,5 +88,13 @@ public class OSDetector {
 
     public static boolean isWindows() {
         return _IS_WINDOWS;
+    }
+
+    public static boolean isAcceptedOSName(String osName) {
+        return ACCEPTED_OSES.stream().anyMatch(osName::equals);
+    }
+
+    public static boolean isAcceptedArchitecture(String architecture) {
+        return ACCEPTED_ARCHITECTURES.stream().anyMatch(architecture::equals);
     }
 }

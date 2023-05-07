@@ -2,6 +2,8 @@ package com.github.cleydyr.maven.plugin;
 
 import com.github.cleydyr.dart.command.factory.SassCommandBuilderFactory;
 import com.github.cleydyr.dart.command.files.FileCounter;
+import com.github.cleydyr.dart.net.GithubLatestVersionProvider;
+import com.github.cleydyr.dart.system.io.DefaultCachedFilesDirectoryProviderFactory;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import javax.inject.Inject;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -25,8 +27,15 @@ public class WatchSassMojo extends CompileSassMojo {
     public WatchSassMojo(
             FileCounter fileCounter,
             SassCommandBuilderFactory sassCommandBuilderFactory,
-            DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory) {
-        super(fileCounter, sassCommandBuilderFactory, dartSassExecutableExtractorFactory);
+            DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory,
+            GithubLatestVersionProvider githubLatestVersionProvider,
+            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory) {
+        super(
+                fileCounter,
+                sassCommandBuilderFactory,
+                dartSassExecutableExtractorFactory,
+                githubLatestVersionProvider,
+                cachedFilesDirectoryProviderFactory);
     }
 
     @Override
