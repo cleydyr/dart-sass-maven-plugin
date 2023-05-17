@@ -15,6 +15,9 @@ import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.DefaultCachedFilesDirectoryProviderFactory;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -23,14 +26,18 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.settings.MavenSettingsBuilder;
+import org.apache.maven.settings.Proxy;
+import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory.
  */
+@SuppressWarnings("deprecation")
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, threadSafe = true)
 public class CompileSassMojo extends AbstractMojo {
     private FileCounter fileCounter;
@@ -43,6 +50,10 @@ public class CompileSassMojo extends AbstractMojo {
 
     protected Supplier<File> cachedFilesDirectoryProvider;
 
+    private DartSassReleaseParameter dartSassReleaseParameter;
+
+    private URL proxyHost;
+
     private static final Object LOCK = new Object();
 
     @Inject
@@ -51,13 +62,37 @@ public class CompileSassMojo extends AbstractMojo {
             SassCommandBuilderFactory sassCommandBuilderFactory,
             DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory,
             GithubLatestVersionProvider githubLatestVersionProvider,
-            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory) {
+            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory,
+            MavenSettingsBuilder mavenSettingsBuilder) {
         this.fileCounter = fileCounter;
         this.sassCommandBuilder = sassCommandBuilderFactory.getCommanderBuilder();
         this.dartSassExecutableExtractorFactory = dartSassExecutableExtractorFactory;
         this.githubLatestVersionProvider = githubLatestVersionProvider;
         this.cachedFilesDirectoryProvider = cachedFilesDirectoryProviderFactory.get();
-        this.logger = getLog();
+
+        if (mavenSettingsBuilder == null) {
+            return;
+        }
+
+        try {
+            Settings settings = mavenSettingsBuilder.buildSettings();
+
+            Proxy activeProxy = settings.getActiveProxy();
+
+            if (activeProxy == null) {
+                return;
+            }
+
+            String host = activeProxy.getHost();
+
+            int port = activeProxy.getPort();
+
+            String protocol = activeProxy.getProtocol();
+
+            proxyHost = new URL(protocol + "://" + host + ":" + port);
+        } catch (IOException | XmlPullParserException e) {
+            getLog().warn("Error while parsing maven settings. Settings like proxy will be ignored.");
+        }
     }
 
     /**
@@ -245,11 +280,9 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter
     private File cachedFilesDirectory;
 
-    private Log logger;
-
-    private DartSassReleaseParameter dartSassReleaseParameter;
-
     public void execute() throws MojoExecutionException {
+        validateProxyHostSyntax();
+
         verifyDefaultParameters();
 
         unsetIncompatibleOptions();
@@ -284,30 +317,31 @@ public class CompileSassMojo extends AbstractMojo {
     protected void verifyDefaultParameters() throws MojoExecutionException {
         if (os == null) {
             os = OSDetector.getOSName();
-            logger.info("Auto-detected operating system: " + os);
+            getLog().info("Auto-detected operating system: " + os);
         } else if (!OSDetector.isAcceptedOSName(os)) {
-            logger.warn("os value " + os + " is not among the accepted values: " + OSDetector.ACCEPTED_OSES.toString());
+            getLog().warn("os value " + os + " is not among the accepted values: "
+                    + OSDetector.ACCEPTED_OSES.toString());
         }
 
         if (arch == null) {
             arch = OSDetector.getOSArchitecture();
 
-            logger.info("Auto-detected operating system architecture: " + arch);
+            getLog().info("Auto-detected operating system architecture: " + arch);
         } else if (!OSDetector.isAcceptedArchitecture(arch)) {
-            logger.warn("architecture value " + arch + " is not among the accepted values: "
+            getLog().warn("architecture value " + arch + " is not among the accepted values: "
                     + OSDetector.ACCEPTED_ARCHITECTURES.toString());
         }
 
         if (version == null) {
             version = githubLatestVersionProvider.get();
 
-            logger.info("Auto-detected latest version: " + version);
+            getLog().info("Auto-detected latest version: " + version);
         }
 
         if (cachedFilesDirectory == null) {
             cachedFilesDirectory = cachedFilesDirectoryProvider.get();
 
-            logger.info("Auto-detected cached files directory: " + cachedFilesDirectory);
+            getLog().info("Auto-detected cached files directory: " + cachedFilesDirectory);
         }
 
         dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
@@ -324,12 +358,24 @@ public class CompileSassMojo extends AbstractMojo {
     public void extractExecutable() throws MojoExecutionException {
         DartSassExecutableExtractor dartSassExecutableExtractor =
                 dartSassExecutableExtractorFactory.getDartSassExecutableExtractor(
-                        dartSassReleaseParameter, cachedFilesDirectory);
+                        dartSassReleaseParameter, cachedFilesDirectory, proxyHost);
 
         try {
             dartSassExecutableExtractor.extract();
         } catch (Exception exception) {
             throw new MojoExecutionException("Unable to extract sass executable", exception);
+        }
+    }
+
+    private void validateProxyHostSyntax() throws MojoExecutionException {
+        if (proxyHost == null) {
+            return;
+        }
+
+        try {
+            proxyHost.toURI();
+        } catch (URISyntaxException e) {
+            throw new MojoExecutionException(e);
         }
     }
 

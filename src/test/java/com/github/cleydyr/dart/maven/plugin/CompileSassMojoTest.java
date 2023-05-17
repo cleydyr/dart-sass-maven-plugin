@@ -18,9 +18,10 @@ public class CompileSassMojoTest extends TestCase {
         CompileSassMojo compileSassMojo = new CompileSassMojo(
                 new DefaultFileCounter(),
                 () -> null,
-                (any0, any1) -> null,
+                (any0, any1, any2) -> null,
                 new DummyGithubLatestVersionProvider(),
-                new OSDependentDefaultCachedFilesDirectoryProviderFactory());
+                new OSDependentDefaultCachedFilesDirectoryProviderFactory(),
+                null);
 
         compileSassMojo.setSourceMapURLs(SourceMapURLs.RELATIVE);
         compileSassMojo.setNoSourceMap(true);

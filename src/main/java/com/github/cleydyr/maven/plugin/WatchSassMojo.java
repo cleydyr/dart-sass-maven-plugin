@@ -8,10 +8,12 @@ import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFact
 import javax.inject.Inject;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.settings.MavenSettingsBuilder;
 
 /**
  * Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files.
  */
+@SuppressWarnings("deprecation")
 @Mojo(name = "watch-sass")
 public class WatchSassMojo extends CompileSassMojo {
     /**
@@ -29,13 +31,15 @@ public class WatchSassMojo extends CompileSassMojo {
             SassCommandBuilderFactory sassCommandBuilderFactory,
             DartSassExecutableExtractorFactory dartSassExecutableExtractorFactory,
             GithubLatestVersionProvider githubLatestVersionProvider,
-            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory) {
+            DefaultCachedFilesDirectoryProviderFactory cachedFilesDirectoryProviderFactory,
+            MavenSettingsBuilder mavenSettingsBuilder) {
         super(
                 fileCounter,
                 sassCommandBuilderFactory,
                 dartSassExecutableExtractorFactory,
                 githubLatestVersionProvider,
-                cachedFilesDirectoryProviderFactory);
+                cachedFilesDirectoryProviderFactory,
+                mavenSettingsBuilder);
     }
 
     @Override

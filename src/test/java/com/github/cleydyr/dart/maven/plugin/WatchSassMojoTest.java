@@ -27,7 +27,8 @@ public class WatchSassMojoTest extends TestCase {
                 () -> mockSassCommandBuilder,
                 _mockDartSassExecutableExtractorFactory(),
                 new DummyGithubLatestVersionProvider(),
-                new OSDependentDefaultCachedFilesDirectoryProviderFactory());
+                new OSDependentDefaultCachedFilesDirectoryProviderFactory(),
+                null);
 
         watchSassMojo.setInputFolder(stubFile);
         watchSassMojo.setOutputFolder(stubFile);
@@ -48,7 +49,8 @@ public class WatchSassMojoTest extends TestCase {
                 () -> mockSassCommandBuilder,
                 _mockDartSassExecutableExtractorFactory(),
                 new DummyGithubLatestVersionProvider(),
-                new OSDependentDefaultCachedFilesDirectoryProviderFactory());
+                new OSDependentDefaultCachedFilesDirectoryProviderFactory(),
+                null);
 
         watchSassMojo.setInputFolder(stubFile);
         watchSassMojo.setOutputFolder(stubFile);
@@ -73,6 +75,6 @@ public class WatchSassMojoTest extends TestCase {
     private DartSassExecutableExtractorFactory _mockDartSassExecutableExtractorFactory() {
         DartSassExecutableExtractor mockDartSassExecutableExtractor = Mockito.mock(DartSassExecutableExtractor.class);
 
-        return (any0, any1) -> mockDartSassExecutableExtractor;
+        return (any0, any1, any2) -> mockDartSassExecutableExtractor;
     }
 }

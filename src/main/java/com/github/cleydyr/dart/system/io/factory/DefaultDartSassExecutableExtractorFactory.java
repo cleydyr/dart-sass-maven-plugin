@@ -10,6 +10,8 @@ import com.github.cleydyr.dart.system.io.TarFilesystemExecutableResourcesProvide
 import com.github.cleydyr.dart.system.io.WindowsDartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.ZipFilesystemExecutableResourcesProvider;
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -18,17 +20,22 @@ import javax.inject.Singleton;
 public class DefaultDartSassExecutableExtractorFactory implements DartSassExecutableExtractorFactory {
     @Override
     public DartSassExecutableExtractor getDartSassExecutableExtractor(
-            DartSassReleaseParameter dartSassReleaseParameter, File cachedFileDirectory) {
-        if (OSDetector.isWindows()) {
-            ExecutableResourcesProvider executableResourcesProvider = new ZipFilesystemExecutableResourcesProvider(
-                    cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader());
+            DartSassReleaseParameter dartSassReleaseParameter, File cachedFileDirectory, URL proxyHost) {
+        try {
+            if (OSDetector.isWindows()) {
+                ExecutableResourcesProvider executableResourcesProvider;
+                executableResourcesProvider = new ZipFilesystemExecutableResourcesProvider(
+                        cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxyHost));
 
-            return new WindowsDartSassExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
+                return new WindowsDartSassExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
+            }
+
+            ExecutableResourcesProvider executableResourcesProvider = new TarFilesystemExecutableResourcesProvider(
+                    cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxyHost));
+
+            return new PosixDartSassSnapshotExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
-
-        ExecutableResourcesProvider executableResourcesProvider = new TarFilesystemExecutableResourcesProvider(
-                cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader());
-
-        return new PosixDartSassSnapshotExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
     }
 }
