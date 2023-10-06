@@ -317,6 +317,7 @@ public class CompileSassMojo extends AbstractMojo {
     protected void verifyDefaultParameters() throws MojoExecutionException {
         if (os == null) {
             os = OSDetector.getOSName();
+
             getLog().info("Auto-detected operating system: " + os);
         } else if (!OSDetector.isAcceptedOSName(os)) {
             getLog().warn("os value " + os + " is not among the accepted values: "
