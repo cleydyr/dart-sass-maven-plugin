@@ -13,41 +13,41 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class AbstractSassCommandBuilder implements SassCommandBuilder {
-    private List<Path> loadPaths = new ArrayList<>();
+    private final List<Path> loadPaths = new ArrayList<>();
 
     private Style style = Style.EXPANDED;
 
-    private boolean noCharsetEnabled = false;
+    private boolean noCharsetEnabled;
 
     private boolean errorCSSEnabled = true;
 
-    private boolean updateEnabled = false;
+    private boolean updateEnabled;
 
-    private boolean noSourceMapEnabled = false;
+    private boolean noSourceMapEnabled;
 
     private SourceMapURLs sourceMapURLs = SourceMapURLs.RELATIVE;
 
-    private boolean embedSourcesEnabled = false;
+    private boolean embedSourcesEnabled;
 
-    private boolean embedSourceMapEnabled = false;
+    private boolean embedSourceMapEnabled;
 
-    private boolean stopOnErrorEnabled = false;
+    private boolean stopOnErrorEnabled;
 
     private boolean colorEnabled = true;
 
-    private boolean noUnicodeEnabled = false;
+    private boolean noUnicodeEnabled;
 
-    private boolean quietEnabled = false;
+    private boolean quietEnabled;
 
-    private boolean quietDepsEnabled = false;
+    private boolean quietDepsEnabled;
 
-    private boolean traceEnabled = false;
+    private boolean traceEnabled;
 
-    private boolean watchEnabled = false;
+    private boolean watchEnabled;
 
-    private boolean pollEnabled = false;
+    private boolean pollEnabled;
 
-    private Collection<ParameterPair> parameterPairs = new ArrayList<>();
+    private final Collection<ParameterPair> parameterPairs = new ArrayList<>();
 
     @Override
     public SassCommandBuilder withLoadPath(Path loadPath) {

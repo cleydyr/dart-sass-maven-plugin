@@ -1,5 +1,7 @@
 package com.github.cleydyr.dart.command;
 
+import static com.github.cleydyr.dart.command.enums.Style.COMPRESSED;
+
 import com.github.cleydyr.dart.command.enums.SourceMapURLs;
 import com.github.cleydyr.dart.command.enums.Style;
 import com.github.cleydyr.dart.command.exception.SassCommandException;
@@ -141,13 +143,8 @@ public abstract class AbstractSassCommand implements SassCommand {
             int exitCode = process.waitFor();
 
             if (exitCode != 0) {
-                StringBuilder sb = new StringBuilder(4);
-
-                sb.append("Process exited with code ");
-                sb.append(exitCode);
-                sb.append("\n");
-
-                throw new SassCommandException(sb.toString());
+                throw new SassCommandException(
+                        "Process [" + processBuilder.command() + "] exited with code " + exitCode + '\n');
             }
         } catch (InterruptedException interruptedException) {
             throw new SassCommandException(interruptedException);
@@ -250,13 +247,10 @@ public abstract class AbstractSassCommand implements SassCommand {
     }
 
     private void _setStyle(List<String> commands) {
-        switch (style) {
-            case COMPRESSED:
-                commands.add("--style=compressed");
-                break;
-            case EXPANDED:
-                commands.add("--style=expanded");
-                break;
+        if (style == COMPRESSED) {
+            commands.add("--style=compressed");
+        } else {
+            commands.add("--style=expanded");
         }
     }
 
