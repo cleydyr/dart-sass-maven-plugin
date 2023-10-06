@@ -321,7 +321,7 @@ public class CompileSassMojo extends AbstractMojo {
             getLog().info("Auto-detected operating system: " + os);
         } else if (!OSDetector.isAcceptedOSName(os)) {
             getLog().warn("os value " + os + " is not among the accepted values: "
-                    + OSDetector.ACCEPTED_OSES.toString());
+                    + OSDetector.ACCEPTED_OSES);
         }
 
         if (arch == null) {
@@ -330,7 +330,7 @@ public class CompileSassMojo extends AbstractMojo {
             getLog().info("Auto-detected operating system architecture: " + arch);
         } else if (!OSDetector.isAcceptedArchitecture(arch)) {
             getLog().warn("architecture value " + arch + " is not among the accepted values: "
-                    + OSDetector.ACCEPTED_ARCHITECTURES.toString());
+                    + OSDetector.ACCEPTED_ARCHITECTURES);
         }
 
         if (version == null) {
