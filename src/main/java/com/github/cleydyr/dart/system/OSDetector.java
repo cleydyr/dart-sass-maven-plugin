@@ -2,6 +2,7 @@ package com.github.cleydyr.dart.system;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class OSDetector {
     public static final String ARCH_IA32 = "ia32";
@@ -33,13 +34,9 @@ public class OSDetector {
     private static final boolean _IS_WINDOWS;
 
     static {
-        for (String os : new String[] {OS_LINUX, OS_MAC_OS, OS_WINDOWS}) {
-            ACCEPTED_OSES.add(os);
-        }
+        Collections.addAll(ACCEPTED_OSES, OS_LINUX, OS_MAC_OS, OS_WINDOWS);
 
-        for (String arch : new String[] {ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64}) {
-            ACCEPTED_ARCHITECTURES.add(arch);
-        }
+        Collections.addAll(ACCEPTED_ARCHITECTURES, ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64);
 
         String osName = System.getProperty("os.name");
 
