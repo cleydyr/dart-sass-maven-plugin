@@ -154,7 +154,7 @@ public class CompileSassMojo extends AbstractMojo {
     private boolean errorCSS;
 
     /**
-     * If the this flag is set to <code>true</code>, Sass will only compile stylesheets whose
+     * If this flag is set to <code>true</code>, Sass will only compile stylesheets whose
      * dependencies have been modified more recently than the corresponding CSS file was generated.
      * It will also print status messages when updating stylesheets.
      */
@@ -232,8 +232,8 @@ public class CompileSassMojo extends AbstractMojo {
 
     /**
      * This flag tells Sass not to emit deprecation warnings that come from dependencies. It
-     * considers any file that’s transitively imported through a load path to be a “dependency”.
-     * This flag doesn’t affect the <code>@warn</code> rule or the <code>@debug</code> rule.
+     * considers any file that's transitively imported through a load path to be a “dependency”.
+     * This flag doesn't affect the <code>@warn</code> rule or the <code>@debug</code> rule.
      */
     @Parameter(defaultValue = "false")
     private boolean quietDeps;
@@ -255,7 +255,7 @@ public class CompileSassMojo extends AbstractMojo {
 
     /**
      * This parameter represents the Dart Sass architecture that should be used to compile Sass
-     * files. If letf unset, it will be autodetected by the plugin. Accepted values are
+     * files. If left unset, it will be autodetected by the plugin. Accepted values are
      * "x64", "aarch32", "aarch64" and "ia32".
      */
     @Parameter
@@ -263,7 +263,7 @@ public class CompileSassMojo extends AbstractMojo {
 
     /**
      * This parameter represents the Dart Sass operating system that should be used to compile
-     * Sass files. If letf unset, it will be autodetected by the plugin. Accepted values are
+     * Sass files. If left unset, it will be autodetected by the plugin. Accepted values are
      * "linux", "macos" and "windows".
      */
     @Parameter
@@ -271,7 +271,7 @@ public class CompileSassMojo extends AbstractMojo {
 
     /**
      * This parameter represents a path in the local file system where the release archive
-     * downloaded from the internet will stored. If letf unset, it will default to
+     * downloaded from the internet will be stored. If left unset, it will default to
      * <ul>
      *  <li><code>$HOME/.cache/dart-sass-maven-plugin/</code> on *nix operating systems; or</li>
      *  <li><code>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache</code> on Windows operating systems.</li>
@@ -320,8 +320,7 @@ public class CompileSassMojo extends AbstractMojo {
 
             getLog().info("Auto-detected operating system: " + os);
         } else if (!OSDetector.isAcceptedOSName(os)) {
-            getLog().warn("os value " + os + " is not among the accepted values: "
-                    + OSDetector.ACCEPTED_OSES);
+            getLog().warn("os value " + os + " is not among the accepted values: " + OSDetector.ACCEPTED_OSES);
         }
 
         if (arch == null) {
