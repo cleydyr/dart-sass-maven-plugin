@@ -3,7 +3,7 @@ package com.github.cleydyr.dart.net;
 public class DummyGithubLatestVersionProvider implements GithubLatestVersionProvider {
 
     @Override
-    public String get() {
+    public String get(String os, String arch) {
         return "1.68.0";
     }
 }

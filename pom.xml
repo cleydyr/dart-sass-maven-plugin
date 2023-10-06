@@ -92,6 +92,11 @@
 			<artifactId>commons-compress</artifactId>
 			<version>1.24.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.kohsuke</groupId>
+			<artifactId>github-api</artifactId>
+			<version>1.315</version>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>

@@ -1,106 +1,106 @@
 package com.github.cleydyr.dart.net;
 
+import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URL;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.maven.settings.MavenSettingsBuilder;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.kohsuke.github.*;
+import org.kohsuke.github.extras.ImpatientHttpConnector;
 
 @Singleton
 @Named
 @SuppressWarnings("deprecation")
 @Component(role = GithubLatestVersionProvider.class)
 public class NetworkingGithubLatestVersionProvider implements GithubLatestVersionProvider {
-
-    public static final String GITHUB_DART_SASS_RELEASES_TAG_PREFIX = "https://github.com/sass/dart-sass/releases/tag/";
-    public static final String GITHUB_SASS_DART_SASS_LATEST_RELEASE_URI =
-            "https://github.com/sass/dart-sass/releases/latest";
-
     @Requirement
     private Logger logger;
 
     @Requirement
     private MavenSettingsBuilder mavenSettingsBuilder;
 
-    private GithubLatestVersionProvider fallbackVersionProvider = new DummyGithubLatestVersionProvider();
+    private final GithubLatestVersionProvider fallbackVersionProvider = new DummyGithubLatestVersionProvider();
 
     @Override
-    public String get() {
+    public String get(String os, String arch) {
         try {
-            HttpURLConnection connection = setupConnection();
+            GitHub github = new GitHubBuilder()
+                    .withConnector(new ImpatientHttpConnector(this::setupConnection))
+                    .build();
 
-            int responseCode = connection.getResponseCode();
+            GHRepository repository = github.getRepository("sass/dart-sass");
 
-            if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                String location = connection.getHeaderField(HttpHeaders.LOCATION);
+            PagedIterable<GHRelease> ghReleases = repository.listReleases();
 
-                if (location.startsWith(GITHUB_DART_SASS_RELEASES_TAG_PREFIX)) {
-                    return location.substring(GITHUB_DART_SASS_RELEASES_TAG_PREFIX.length());
+            for (GHRelease ghRelease : ghReleases) {
+                logger.debug("Checking release " + ghRelease.getName());
+
+                String version = ghRelease.getTagName();
+
+                DartSassReleaseParameter dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
+
+                for (GHAsset ghAsset : ghRelease.getAssets()) {
+                    logger.debug("Checking asset " + ghAsset.getName());
+
+                    if (ghAsset.getName().equals(dartSassReleaseParameter.getArtifactName())) {
+                        return version;
+                    }
                 }
 
-                logger.warn("Couldn't parse latest release location. Redirected from "
-                        + GITHUB_SASS_DART_SASS_LATEST_RELEASE_URI + " to " + location);
-            } else {
-                logger.warn("Didn't get redirection from url " + GITHUB_SASS_DART_SASS_LATEST_RELEASE_URI);
+                logger.info("Skipping version " + version + " because it doesn't have a matching asset");
             }
-
         } catch (IOException e) {
-            logger.warn("Error while getting latest version from " + GITHUB_SASS_DART_SASS_LATEST_RELEASE_URI, e);
+            logger.warn("Error while getting latest version from GitHub API", e);
         }
 
-        logger.warn("Falling back to latest known release (" + fallbackVersionProvider.get() + ")");
+        logger.warn("Falling back to latest known release (" + fallbackVersionProvider.get(os, arch) + ")");
 
-        return fallbackVersionProvider.get();
+        return fallbackVersionProvider.get(os, arch);
     }
 
-    public HttpURLConnection setupConnection() throws MalformedURLException, IOException, ProtocolException {
-        URL url = new URL(GITHUB_SASS_DART_SASS_LATEST_RELEASE_URI);
-
-        HttpURLConnection connection = null;
-
+    public HttpURLConnection setupConnection(URL url) throws IOException {
         if (mavenSettingsBuilder == null) {
-            connection = (HttpURLConnection) url.openConnection();
-        } else {
-            try {
-                Settings settings = mavenSettingsBuilder.buildSettings();
-
-                org.apache.maven.settings.Proxy activeProxy = settings.getActiveProxy();
-
-                if (activeProxy != null) {
-                    String hostname = activeProxy.getHost();
-
-                    int port = activeProxy.getPort();
-
-                    Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(hostname, port));
-
-                    connection = (HttpURLConnection) url.openConnection(proxy);
-                } else {
-                    connection = (HttpURLConnection) url.openConnection();
-                }
-
-            } catch (IOException | XmlPullParserException e) {
-                logger.warn("Error while parsing maven settings. Settings like proxy will be ignored.");
-
-                connection = (HttpURLConnection) url.openConnection();
-            }
+            return (HttpURLConnection) url.openConnection();
         }
 
-        connection.setRequestMethod("GET");
+        return setupWithMavenSettings(url);
+    }
 
-        connection.setInstanceFollowRedirects(false);
+    public HttpURLConnection setupWithMavenSettings(URL url) throws IOException {
+        try {
+            Settings settings = mavenSettingsBuilder.buildSettings();
 
-        return connection;
+            org.apache.maven.settings.Proxy activeProxy = settings.getActiveProxy();
+
+            if (activeProxy == null) {
+                return (HttpURLConnection) url.openConnection();
+            }
+
+            Proxy proxy = getProxy(activeProxy);
+
+            return (HttpURLConnection) url.openConnection(proxy);
+        } catch (IOException | XmlPullParserException e) {
+            logger.warn("Error while parsing maven settings. Settings like proxy will be ignored.");
+
+            return (HttpURLConnection) url.openConnection();
+        }
+    }
+
+    private static Proxy getProxy(org.apache.maven.settings.Proxy activeProxy) {
+        String hostname = activeProxy.getHost();
+
+        int port = activeProxy.getPort();
+
+        return new Proxy(Type.HTTP, new InetSocketAddress(hostname, port));
     }
 }

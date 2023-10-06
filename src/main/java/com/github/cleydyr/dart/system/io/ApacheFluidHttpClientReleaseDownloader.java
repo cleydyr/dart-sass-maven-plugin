@@ -1,7 +1,6 @@
 package com.github.cleydyr.dart.system.io;
 
 import com.github.cleydyr.dart.release.DartSassReleaseParameter;
-import com.github.cleydyr.dart.system.OSDetector;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -11,8 +10,7 @@ import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.HttpHost;
 
 public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader {
-    private static final String RELEASE_URI_PATTERN =
-            "https://github.com/sass/dart-sass/releases/download/%s/dart-sass-%s-%s-%s.%s";
+    private static final String RELEASE_URI_PATTERN = "https://github.com/sass/dart-sass/releases/download/%s/%s";
 
     private HttpHost httpProxy;
 
@@ -44,16 +42,6 @@ public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader
     }
 
     private String getReleaseURI(DartSassReleaseParameter release) {
-        return String.format(
-                RELEASE_URI_PATTERN,
-                release.getVersion(),
-                release.getVersion(),
-                release.getOS(),
-                release.getArch(),
-                getExtension(release.getOS()));
-    }
-
-    private String getExtension(String os) {
-        return OSDetector.OS_WINDOWS.equals(os) ? "zip" : "tar.gz";
+        return String.format(RELEASE_URI_PATTERN, release.getVersion(), release.getArtifactName());
     }
 }

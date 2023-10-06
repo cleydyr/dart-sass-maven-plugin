@@ -333,7 +333,7 @@ public class CompileSassMojo extends AbstractMojo {
         }
 
         if (version == null) {
-            version = githubLatestVersionProvider.get();
+            version = githubLatestVersionProvider.get(os, arch);
 
             getLog().info("Auto-detected latest version: " + version);
         }

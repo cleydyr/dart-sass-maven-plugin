@@ -36,4 +36,12 @@ public class DartSassReleaseParameter {
     public String getVersion() {
         return version;
     }
+
+    public String getArtifactName() {
+        return String.format("dart-sass-%s-%s-%s.%s", version, os, arch, getArtifactExtension());
+    }
+
+    private String getArtifactExtension() {
+        return "windows".equals(os) ? "zip" : "tar.gz";
+    }
 }
