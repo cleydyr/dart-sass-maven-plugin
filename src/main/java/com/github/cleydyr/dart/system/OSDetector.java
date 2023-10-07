@@ -64,9 +64,9 @@ public class OSDetector {
             throw new Error("os.arch system property is not set");
         }
 
-        if (osArchitecture.equals(AARCH32)) {
+        if (AARCH32.equals(osArchitecture)) {
             _DETECTED_ARCHITECTURE = ARCH_ARM;
-        } else if (osArchitecture.equals(AARCH64)) {
+        } else if (AARCH64.equals(osArchitecture)) {
             _DETECTED_ARCHITECTURE = ARCH_ARM64;
         } else if (osArchitecture.contains("64")) {
             _DETECTED_ARCHITECTURE = ARCH_X64;

@@ -11,8 +11,8 @@ import javax.inject.Singleton;
 @Named
 @Singleton
 public class DefaultFileCounter implements FileCounter {
-    private static String[] ALLOWED_EXTENSIONS_DIFFERENT_FOLDERS = {".css", ".sass", ".scss"};
-    private static String[] ALLOWED_EXTENSIONS_SAME_FOLDER = {".sass", ".scss"};
+    private static final String[] ALLOWED_EXTENSIONS_DIFFERENT_FOLDERS = {".css", ".sass", ".scss"};
+    private static final String[] ALLOWED_EXTENSIONS_SAME_FOLDER = {".sass", ".scss"};
 
     @Override
     public long getProcessableFileCount(Path inputFolderPath, Path outputFolderPath) throws FileCounterException {
@@ -40,7 +40,7 @@ public class DefaultFileCounter implements FileCounter {
         return hasAllowedExtension(fileName, ALLOWED_EXTENSIONS_DIFFERENT_FOLDERS);
     }
 
-    public boolean hasAllowedExtension(String fileName, String[] allowedExtensions) {
+    public boolean hasAllowedExtension(String fileName, String... allowedExtensions) {
         if (fileName == null) {
             throw new IllegalArgumentException("fileName can't be null");
         }

@@ -26,6 +26,7 @@ public abstract class AbstractDartSassExecutableExtractor implements DartSassExe
         this.resourceNames = resourceNames;
     }
 
+    @Override
     public void extract() throws Exception {
         extractResourcesToFolder(createExecutableFolder());
     }

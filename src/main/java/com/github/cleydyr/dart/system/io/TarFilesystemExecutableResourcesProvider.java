@@ -19,9 +19,9 @@ public class TarFilesystemExecutableResourcesProvider extends FilesystemExecutab
         TarArchiveInputStream tarArchiveInputStream = new TarArchiveInputStream(
                 new GzipCompressorInputStream(new BufferedInputStream(Files.newInputStream(release.toPath()))));
 
-        TarArchiveEntry entry;
-
-        while ((entry = tarArchiveInputStream.getNextTarEntry()) != null) {
+        for (TarArchiveEntry entry = tarArchiveInputStream.getNextTarEntry();
+                entry != null;
+                entry = tarArchiveInputStream.getNextTarEntry()) {
             if (entry.getName().equals(resourceName)) {
                 return tarArchiveInputStream;
             }

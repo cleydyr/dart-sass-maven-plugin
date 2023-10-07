@@ -280,6 +280,7 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter
     private File cachedFilesDirectory;
 
+    @Override
     public void execute() throws MojoExecutionException {
         validateProxyHostSyntax();
 
