@@ -18,5 +18,7 @@ public class WindowsDartSassExecutableExtractor extends AbstractDartSassExecutab
     }
 
     @Override
-    void setResourcePermissions(Path resourcePath) throws IOException {}
+    void setResourcePermissions(Path resourcePath) throws IOException {
+        // There's no need to set permissions on Windows.
+    }
 }
