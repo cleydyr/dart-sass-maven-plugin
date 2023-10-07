@@ -44,5 +44,5 @@ public interface SassCommandBuilder {
 
     SassCommandBuilder withPoll(boolean pollEnabled);
 
-    SassCommand build(DartSassReleaseParameter DartSassReleaseParameter) throws SassCommandException;
+    SassCommand build(DartSassReleaseParameter dartSassReleaseParameter) throws SassCommandException;
 }

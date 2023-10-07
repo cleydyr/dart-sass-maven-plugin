@@ -74,5 +74,5 @@ public abstract class AbstractDartSassExecutableExtractor implements DartSassExe
         return executableResourcesProvider.getInputStream(dartSassReleaseParameter, resourceName);
     }
 
-    void setResourcePermissions(Path resourcePath) throws IOException {}
+    abstract void setResourcePermissions(Path resourcePath) throws IOException;
 }

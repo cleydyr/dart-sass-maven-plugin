@@ -15,12 +15,12 @@ import junit.framework.TestCase;
 import org.mockito.Mockito;
 
 public class WatchSassMojoTest extends TestCase {
-    private String _tmpDirPrefix = getClass().getName();
+    private final String tmpDirPrefix = getClass().getName();
 
     public void testWatchWithoutPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 
-        File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
+        File stubFile = Files.createTempDirectory(tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
                 new DefaultFileCounter(),
@@ -42,7 +42,7 @@ public class WatchSassMojoTest extends TestCase {
     public void testWatchWithPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 
-        File stubFile = Files.createTempDirectory(_tmpDirPrefix).toFile();
+        File stubFile = Files.createTempDirectory(tmpDirPrefix).toFile();
 
         WatchSassMojo watchSassMojo = new WatchSassMojo(
                 new DefaultFileCounter(),

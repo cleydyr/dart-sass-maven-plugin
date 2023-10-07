@@ -27,11 +27,11 @@ public class OSDetector {
 
     public static final Collection<String> ACCEPTED_ARCHITECTURES = new ArrayList<>();
 
-    private static final String _DETECTED_OS;
+    private static final String DETECTED_OS;
 
-    private static final String _DETECTED_ARCHITECTURE;
+    private static final String DETECTED_ARCHITECTURE;
 
-    private static final boolean _IS_WINDOWS;
+    private static final boolean IS_WINDOWS;
 
     static {
         Collections.addAll(ACCEPTED_OSES, OS_LINUX, OS_MAC_OS, OS_WINDOWS);
@@ -45,17 +45,17 @@ public class OSDetector {
         }
 
         if (osName.contains("Mac OS")) {
-            _DETECTED_OS = OS_MAC_OS;
+            DETECTED_OS = OS_MAC_OS;
 
-            _IS_WINDOWS = false;
+            IS_WINDOWS = false;
         } else if (osName.contains("Windows")) {
-            _DETECTED_OS = OS_WINDOWS;
+            DETECTED_OS = OS_WINDOWS;
 
-            _IS_WINDOWS = true;
+            IS_WINDOWS = true;
         } else {
-            _DETECTED_OS = OS_LINUX;
+            DETECTED_OS = OS_LINUX;
 
-            _IS_WINDOWS = false;
+            IS_WINDOWS = false;
         }
 
         String osArchitecture = System.getProperty("os.arch");
@@ -65,26 +65,26 @@ public class OSDetector {
         }
 
         if (AARCH32.equals(osArchitecture)) {
-            _DETECTED_ARCHITECTURE = ARCH_ARM;
+            DETECTED_ARCHITECTURE = ARCH_ARM;
         } else if (AARCH64.equals(osArchitecture)) {
-            _DETECTED_ARCHITECTURE = ARCH_ARM64;
+            DETECTED_ARCHITECTURE = ARCH_ARM64;
         } else if (osArchitecture.contains("64")) {
-            _DETECTED_ARCHITECTURE = ARCH_X64;
+            DETECTED_ARCHITECTURE = ARCH_X64;
         } else {
-            _DETECTED_ARCHITECTURE = ARCH_IA32;
+            DETECTED_ARCHITECTURE = ARCH_IA32;
         }
     }
 
     public static String getOSName() {
-        return _DETECTED_OS;
+        return DETECTED_OS;
     }
 
     public static String getOSArchitecture() {
-        return _DETECTED_ARCHITECTURE;
+        return DETECTED_ARCHITECTURE;
     }
 
     public static boolean isWindows() {
-        return _IS_WINDOWS;
+        return IS_WINDOWS;
     }
 
     public static boolean isAcceptedOSName(String osName) {
