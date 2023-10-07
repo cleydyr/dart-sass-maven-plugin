@@ -1,5 +1,7 @@
 package com.github.cleydyr.dart.release;
 
+import com.github.cleydyr.dart.system.OSDetector;
+
 public class DartSassReleaseParameter {
     private final String os;
 
@@ -42,6 +44,6 @@ public class DartSassReleaseParameter {
     }
 
     private String getArtifactExtension() {
-        return "windows".equals(os) ? "zip" : "tar.gz";
+        return OSDetector.OS_WINDOWS.equals(os) ? "zip" : "tar.gz";
     }
 }
