@@ -2,6 +2,7 @@ package com.github.cleydyr.dart.system.io;
 
 import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import com.github.cleydyr.dart.system.OSDetector;
+import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import com.github.cleydyr.dart.system.io.utils.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,27 +27,31 @@ public abstract class AbstractDartSassExecutableExtractor implements DartSassExe
     }
 
     @Override
-    public void extract() throws IOException {
+    public void extract() {
         extractResourcesToFolder(createExecutableFolder());
     }
 
-    private Path createExecutableFolder() throws IOException {
+    private Path createExecutableFolder() {
         Path executableFolder = SystemUtils.getExecutableTempFolder(dartSassReleaseParameter);
 
-        if (!Files.isDirectory(executableFolder)) {
-            Files.createDirectories(executableFolder);
+        try {
+            if (!Files.isDirectory(executableFolder)) {
+                Files.createDirectories(executableFolder);
+            }
+
+            Path srcDir = executableFolder.resolve("src");
+
+            if (!Files.isDirectory(srcDir)) {
+                Files.createDirectory(srcDir);
+            }
+
+            return executableFolder;
+        } catch (IOException e) {
+            throw new DartSassExecutableExtractorException("Can't create executable folder", e);
         }
-
-        Path srcDir = executableFolder.resolve("src");
-
-        if (!Files.isDirectory(srcDir)) {
-            Files.createDirectory(srcDir);
-        }
-
-        return executableFolder;
     }
 
-    private void extractResourcesToFolder(Path executableFolder) throws IOException {
+    private void extractResourcesToFolder(Path executableFolder) {
         for (String resourceName : resourceNames) {
             try (InputStream resourceInputStream = getResourceInputStream("dart-sass/" + resourceName)) {
 
@@ -65,6 +70,8 @@ public abstract class AbstractDartSassExecutableExtractor implements DartSassExe
                 Files.copy(resourceInputStream, resourcePath);
 
                 setResourcePermissions(resourcePath);
+            } catch (IOException e) {
+                throw new DartSassExecutableExtractorException("Can't extract dart sass executable", e);
             }
         }
     }

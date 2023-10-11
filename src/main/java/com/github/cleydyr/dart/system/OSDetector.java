@@ -1,5 +1,6 @@
 package com.github.cleydyr.dart.system;
 
+import com.github.cleydyr.dart.system.exception.OSDetectionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,7 +42,7 @@ public class OSDetector {
         String osName = System.getProperty("os.name");
 
         if (osName == null) {
-            throw new Error("os.name system property is not set");
+            throw new OSDetectionException("os.name system property is not set");
         }
 
         if (osName.contains("Mac OS")) {
@@ -61,7 +62,7 @@ public class OSDetector {
         String osArchitecture = System.getProperty("os.arch");
 
         if (osArchitecture == null) {
-            throw new Error("os.arch system property is not set");
+            throw new OSDetectionException("os.arch system property is not set");
         }
 
         if (AARCH32.equals(osArchitecture)) {

@@ -1,6 +1,7 @@
 package com.github.cleydyr.dart.system.io;
 
 import com.github.cleydyr.dart.release.DartSassReleaseParameter;
+import com.github.cleydyr.dart.system.io.exception.ReleaseDownloadException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -12,14 +13,10 @@ import org.apache.hc.core5.http.HttpHost;
 public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader {
     private static final String RELEASE_URI_PATTERN = "https://github.com/sass/dart-sass/releases/download/%s/%s";
 
-    private HttpHost httpProxy;
+    private final HttpHost httpProxy;
 
     public ApacheFluidHttpClientReleaseDownloader(URL proxyHost) throws URISyntaxException {
-        if (proxyHost == null) {
-            return;
-        }
-
-        this.httpProxy = HttpHost.create(proxyHost.toURI());
+        this.httpProxy = proxyHost == null ? null : HttpHost.create(proxyHost.toURI());
     }
 
     @Override
@@ -27,11 +24,7 @@ public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader
         String releaseURI = getReleaseURI(release);
 
         try {
-            Request request = Request.get(new URI(releaseURI));
-
-            if (httpProxy != null) {
-                request = request.viaProxy(httpProxy);
-            }
+            Request request = Request.get(new URI(releaseURI)).viaProxy(httpProxy);
 
             request.execute().saveContent(destination);
         } catch (IOException e) {

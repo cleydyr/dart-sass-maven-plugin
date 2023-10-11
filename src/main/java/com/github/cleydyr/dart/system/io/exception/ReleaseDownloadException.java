@@ -1,4 +1,4 @@
-package com.github.cleydyr.dart.system.io;
+package com.github.cleydyr.dart.system.io.exception;
 
 import java.io.IOException;
 

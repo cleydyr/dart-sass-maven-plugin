@@ -19,7 +19,7 @@ public class DefaultFileCounter implements FileCounter {
         try (Stream<Path> walk = Files.walk(inputFolderPath)) {
             return walk.parallel()
                     .filter(p -> !Files.isDirectory(p)) // files only
-                    .map(p -> p.toString()) // convert path to string
+                    .map(Path::toString) // convert path to string
                     .filter(
                             inputFolderPath.equals(outputFolderPath)
                                     ? this::hasAllowedExtensionSameFolder

@@ -9,6 +9,7 @@ import com.github.cleydyr.dart.system.io.PosixDartSassSnapshotExecutableExtracto
 import com.github.cleydyr.dart.system.io.TarFilesystemExecutableResourcesProvider;
 import com.github.cleydyr.dart.system.io.WindowsDartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.ZipFilesystemExecutableResourcesProvider;
+import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,7 +36,7 @@ public class DefaultDartSassExecutableExtractorFactory implements DartSassExecut
 
             return new PosixDartSassSnapshotExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new DartSassExecutableExtractorException("Error while creating DartSassExecutableExtractor", e);
         }
     }
 }

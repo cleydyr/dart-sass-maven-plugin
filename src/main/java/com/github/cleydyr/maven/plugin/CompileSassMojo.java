@@ -13,6 +13,7 @@ import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import com.github.cleydyr.dart.system.OSDetector;
 import com.github.cleydyr.dart.system.io.DartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.DefaultCachedFilesDirectoryProviderFactory;
+import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
 import java.io.IOException;
@@ -363,7 +364,7 @@ public class CompileSassMojo extends AbstractMojo {
 
         try {
             dartSassExecutableExtractor.extract();
-        } catch (Exception exception) {
+        } catch (DartSassExecutableExtractorException exception) {
             throw new MojoExecutionException("Unable to extract sass executable", exception);
         }
     }
