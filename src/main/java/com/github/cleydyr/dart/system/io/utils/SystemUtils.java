@@ -5,6 +5,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SystemUtils {
+    private SystemUtils() {
+        // Utility class
+    }
+
     public static Path getExecutableTempFolder(DartSassReleaseParameter dartSassReleaseParameter) {
         String os = dartSassReleaseParameter.getOS();
 

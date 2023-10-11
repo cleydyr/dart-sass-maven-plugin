@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class OSDetector {
+    private OSDetector() {
+        // Utility class
+    }
+
     public static final String ARCH_IA32 = "ia32";
 
     public static final String ARCH_X64 = "x64";

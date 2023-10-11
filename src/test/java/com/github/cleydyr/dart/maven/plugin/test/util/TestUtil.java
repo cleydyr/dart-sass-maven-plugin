@@ -6,6 +6,9 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 
 public class TestUtil {
+    private TestUtil() {
+        // Utility class
+    }
 
     public static void installMainPlugin() throws VerificationException {
         String mainPluginDir = System.getProperty("basedir");
