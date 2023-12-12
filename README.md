@@ -1,14 +1,16 @@
+<div align="center">
+<img src="https://sass-lang.com/assets/img/logos/logo.svg" height="70" >
+
+# Dart Sass Maven Plugin
+</div>
+
 [![Maven](https://img.shields.io/maven-central/v/io.github.cleydyr/dart-sass-maven-plugin.svg)](https://repo1.maven.org/maven2/io/github/cleydyr/dart-sass-maven-plugin/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java Linux CI](https://github.com/cleydyr/dart-sass-maven-plugin/actions/workflows/java-ci-linux.yaml/badge.svg)](https://github.com/cleydyr/dart-sass-maven-plugin/actions/)
 [![Java Mac CI](https://github.com/cleydyr/dart-sass-maven-plugin/actions/workflows/java-ci-mac.yaml/badge.svg)](https://github.com/cleydyr/dart-sass-maven-plugin/actions/)
 [![Java Windows CI](https://github.com/cleydyr/dart-sass-maven-plugin/actions/workflows/java-ci-windows.yaml/badge.svg)](https://github.com/cleydyr/dart-sass-maven-plugin/actions/)
 
-# Dart Sass Maven Plugin
-
 A Maven plugin that allows to compile SASS using Dart Sass
-
-<img height="48" src="https://sass-lang.com/assets/img/logos/logo.svg">
 
 ## Usage
 ```xml
