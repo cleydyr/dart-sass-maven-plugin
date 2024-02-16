@@ -11,6 +11,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 <img height="48" src="https://sass-lang.com/assets/img/logos/logo-b6e1ef6e.svg">
 
 ## Usage
+
 ```xml
 <build>
 ...
@@ -35,33 +36,39 @@ A Maven plugin that allows to compile SASS using Dart Sass
 ```
 
 ## Supported systems
+
 Dart Sass Maven Plugin will run on any combination of operating systems and architectures that are available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As of now they are:
 
 |       | Linux | Mac | Windows |
-|-------|-------|-----|---------|
-| x86   | ✅     | ❌   | ✅       |
-| x64   | ✅     | ✅   | ✅       |
-| arm64 | ✅     | ✅   | ❌       |
-| arm   | ✅     | ❌   | ❌       |
+| ----- | ----- | --- | ------- |
+| x86   | ✅    | ❌  | ✅      |
+| x64   | ✅    | ✅  | ✅      |
+| arm64 | ✅    | ✅  | ❌      |
+| arm   | ✅    | ❌  | ❌      |
 
 ## Automatic detection of operating system and architecture
+
 Dart Sass Maven Plugin will try to autodetect the operating system and architecture of the machine where it's running. If it fails to do so, it will fall back to the following defaults:
 
-* Architecture: ia32
-* Operating system: linux
+- Architecture: ia32
+- Operating system: linux
 
 ## Automatic detection of Dart Sass version
+
 Dart Sass Maven Plugin will try to autodetect the latest Dart Sass version available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As a fallback, in [the case of the artifacts for a given os/arch not being available](https://github.com/cleydyr/dart-sass-maven-plugin/issues/31), it will try to use the latest version available for the same os/arch combination (available on GitHub or cached in the local file system, if possible).
 
 ## Offline operation
+
 In previous versions, this plugin included all released archives for a given Dart Sass version. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass, if it's not found on the temporary folder or on the cached files' directory. Should this plugin be used in an air-capped environment, you should provide a release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>`. The release archive should be a file named `release` on the subpath `<os>`/`<arch>`/`<version>`/ inside the cached files' directory.
 
 ## Proxy connections
+
 This plugin will detect Maven's proxy configurations and use it if necessary to download a release artifact and query GitHub to discover the latest Dart Sass release.
 
 ## Goals
 
 ### compile-sass
+
 Goal that compiles a set of sass/scss files from an input directory to an output directory.
 
 Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:compile-sass`
@@ -69,6 +76,7 @@ Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:compile-sass`
 Binds by default to the lifecycle phase: `process-resources`.
 
 #### Parameter details
+
 `<arch>`
 
 This parameter represents the Dart Sass architecture that should be used to compile Sass files. If left unset, it will be autodetected by the plugin. Accepted values are "x64", "aarch32", "aarch64" and "ia32".<br>
@@ -90,6 +98,7 @@ This parameter represents the Dart Sass version that should be used to compile S
 `<cachedFilesDirectory>`
 
 This parameter represents a path in the local file system where the release archive downloaded from the internet will be stored. If left unset, it will default to
+
 <ul>
 <li>$HOME/.cache/dart-sass-maven-plugin/ on *nix operating systems; or</li>
 <li>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache on Windows operating systems.</li>
@@ -225,6 +234,7 @@ If this flag is set to true, Sass will only compile stylesheets whose dependenci
 **Default**: false
 
 ### watch-sass
+
 Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
 
 Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:watch-sass`
