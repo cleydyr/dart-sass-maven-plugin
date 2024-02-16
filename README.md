@@ -50,7 +50,7 @@ Dart Sass Maven Plugin will run on any operating systems and architectures avail
 
 ## Automatic detection of operating system and architecture
 
-Dart Sass Maven Plugin will detect the operating system and architecture of the machine where it's running automatically. If it fails to do so, it will fall back to the following defaults:
+The Dart Sass Maven Plugin will automatically detect the operating system and architecture of the machine where it's running. If it fails to do so, it will fall back to the following defaults:
 
 - Architecture: `ia32`
 - Operating system: `linux`
@@ -135,7 +135,7 @@ This flag tells Sass to embed all the contents of the Sass files that contribute
 
 `<errorCSS>`
 
-This flag tells Sass whether to emit a CSS file when an error occurs during compilation. This CSS file describes the error in a comment and in the content property of `body::before` so that you can see the error message in the browser without needing to switch back to the terminal.
+This flag tells Sass whether to emit a CSS file when an error occurs during compilation. This CSS file describes the error in a comment and in the content property of `body::before` so that you can see the error message in the browser without switching back to the terminal.
 By default, error CSS is enabled if you're compiling to at least one file on disk (as opposed to standard output). You can activate errorCSS explicitly to enable it even when compiling to standard out (not supported by this Maven plugin) or set it explicitly to false to disable it everywhere. When it's disabled, the update flag and watch flag (the latter being not yet supported by this Maven plugin) will delete CSS files instead when an error occurs.<br>
 **Type**: boolean<br>
 **Required**: No<br>
@@ -163,7 +163,7 @@ This flag tells Sass never to emit a @charset declaration or a UTF-8 byte-order 
 
 `<noSourceMap>`
 
-If the `noSourceMap` flag is set, Sass won't generate any source maps. If explicitly set, it will void other source map options (namely sourceMapURLs, embedSources, and embedSourceMap).<br>
+Sass won't generate any source maps if the `noSourceMap` flag is set. If explicitly set, it will void other source map options (namely sourceMapURLs, embedSources, and embedSourceMap).<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
@@ -221,7 +221,7 @@ This flag tells Sass to stop compiling immediately when an error is detected rat
 This option controls the output style of the resulting CSS. Dart Sass supports two output styles:
 
 - `EXPANDED` (the default), which writes each selector and declaration on its own line; and
-- `COMPRESSED`, which removes as many extra characters as possible, and writes the entire stylesheet on a single line.
+- `COMPRESSED`, which removes as many extra characters as possible and writes the entire stylesheet on a single line.
 
 Use either EXPANDED or COMPRESSED in the plugin configuration.
 
@@ -231,7 +231,7 @@ Use either EXPANDED or COMPRESSED in the plugin configuration.
 
 `<trace>`
 
-This flag tells Sass to print the full Dart stack trace when an error is encountered. It's used by the Sass team for debugging errors.<br>
+This flag tells Sass to print the full Dart stack trace when encountering an error. It's used by the Sass team for debugging errors.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
@@ -245,7 +245,7 @@ If this flag is set to true, Sass will only compile stylesheets whose dependenci
 
 ### watch-sass
 
-This goal compiles a set of sass/scss files from an input directory to an output directory and keeps the process open watching for changes in the source files. Each time a source file changes, a message will be written to the standard output.
+This goal compiles a set of sass/scss files from an input directory to an output directory and keeps the process open watching for changes in the source files. A message will be written to the standard output each time a source file changes.
 
 Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:watch-sass`
 
