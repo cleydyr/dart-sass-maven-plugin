@@ -57,7 +57,7 @@ Dart Sass Maven Plugin will detect the operating system and architecture of the 
 
 ## Automatic detection of Dart Sass version
 
-Dart Sass Maven Plugin will determine the latest Dart Sass version available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases) if the <version> parameter is not set. As a fallback, if [the case of the artifacts for a given OS/arch are unavailable](https://github.com/cleydyr/dart-sass-maven-plugin/issues/31), it will use the latest version available for the same OS/arch combination (available on GitHub or cached in the local file system, if possible).
+Dart Sass Maven Plugin will determine the latest Dart Sass version available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases) if the <version> parameter is not set. As a fallback, if [the artifacts for a given OS/arch are unavailable](https://github.com/cleydyr/dart-sass-maven-plugin/issues/31), it will use the latest version available for the same OS/arch combination (available on GitHub or cached in the local file system, if possible).
 
 > [!WARNING]
 > It's recommended to use a fixed version parameter value in your project to help achieve a [reproducible build](https://reproducible-builds.org/) and avoid errors caused by GitHub temporarily blocking the client's IP when the plugin checks for the latest version multiple times from the same IP. That may happen in an automated CI environment with frequent builds for example.
