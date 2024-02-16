@@ -43,7 +43,7 @@ Dart Sass Maven Plugin will run on any operating systems and architectures avail
 
 |       | Linux | Mac | Windows |
 | ----- | ----- | --- | ------- |
-| x86   | ✅    | ❌  | ✅      |
+| ia32  | ✅    | ❌  | ✅      |
 | x64   | ✅    | ✅  | ✅      |
 | arm64 | ✅    | ✅  | ❌      |
 | arm   | ✅    | ❌  | ❌      |
