@@ -13,6 +13,7 @@
 A Maven plugin that allows to compile SASS using Dart Sass
 
 ## Usage
+
 ```xml
 <build>
 ...
@@ -20,7 +21,7 @@ A Maven plugin that allows to compile SASS using Dart Sass
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>1.1.0</version>
+				<version>1.2.0</version>
 				<executions>
 					<execution>
 						<id>generate-css-using-sass</id>
@@ -37,40 +38,47 @@ A Maven plugin that allows to compile SASS using Dart Sass
 ```
 
 ## Supported systems
-Dart Sass Maven Plugin will run on any combination of operating systems and architectures that are available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As of now they are:
+
+Dart Sass Maven Plugin will run on any operating systems and architectures available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As of now, they are:
 
 |       | Linux | Mac | Windows |
-|-------|-------|-----|---------|
-| x86   | ✅     | ❌   | ✅       |
-| x64   | ✅     | ✅   | ✅       |
-| arm64 | ✅     | ✅   | ❌       |
-| arm   | ✅     | ❌   | ❌       |
+| ----- | ----- | --- | ------- |
+| x86   | ✅    | ❌  | ✅      |
+| x64   | ✅    | ✅  | ✅      |
+| arm64 | ✅    | ✅  | ❌      |
+| arm   | ✅    | ❌  | ❌      |
 
 ## Automatic detection of operating system and architecture
-Dart Sass Maven Plugin will try to autodetect the operating system and architecture of the machine where it's running. If it fails to do so, it will fall back to the following defaults:
 
-* Architecture: ia32
-* Operating system: linux
+Dart Sass Maven Plugin will detect the operating system and architecture of the machine where it's running automatically. If it fails to do so, it will fall back to the following defaults:
+
+- Architecture: `ia32`
+- Operating system: `linux`
 
 ## Automatic detection of Dart Sass version
-Dart Sass Maven Plugin will try to autodetect the latest Dart Sass version available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As a fallback, in [the case of the artifacts for a given os/arch not being available](https://github.com/cleydyr/dart-sass-maven-plugin/issues/31), it will try to use the latest version available for the same os/arch combination (available on GitHub or cached in the local file system, if possible).
+
+Dart Sass Maven Plugin will determine the latest Dart Sass version available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases) if the <version> parameter is not set. As a fallback, if [the case of the artifacts for a given OS/arch are unavailable](https://github.com/cleydyr/dart-sass-maven-plugin/issues/31), it will use the latest version available for the same OS/arch combination (available on GitHub or cached in the local file system, if possible).
 
 ## Offline operation
-In previous versions, this plugin included all released archives for a given Dart Sass version. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass, if it's not found on the temporary folder or on the cached files' directory. Should this plugin be used in an air-capped environment, you should provide a release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>`. The release archive should be a file named `release` on the subpath `<os>`/`<arch>`/`<version>`/ inside the cached files' directory.
+
+This plugin included all released archives for a given Dart Sass version in previous versions. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass if it's not found in the temporary folder or in the cached files' directory. Should this plugin be used in an air-capped environment, you should provide a release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>` parameter. The release archive should be a file named `release` on the subpath `<os>`/`<arch>`/`<version>`/ inside the cached files' directory.
 
 ## Proxy connections
+
 This plugin will detect Maven's proxy configurations and use it if necessary to download a release artifact and query GitHub to discover the latest Dart Sass release.
 
 ## Goals
 
 ### compile-sass
-Goal that compiles a set of sass/scss files from an input directory to an output directory.
+
+This goal compiles a set of sass/scss files from an input directory to an output directory.
 
 Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:compile-sass`
 
 Binds by default to the lifecycle phase: `process-resources`.
 
 #### Parameter details
+
 `<arch>`
 
 This parameter represents the Dart Sass architecture that should be used to compile Sass files. If left unset, it will be autodetected by the plugin. Accepted values are "x64", "aarch32", "aarch64" and "ia32".<br>
@@ -92,6 +100,7 @@ This parameter represents the Dart Sass version that should be used to compile S
 `<cachedFilesDirectory>`
 
 This parameter represents a path in the local file system where the release archive downloaded from the internet will be stored. If left unset, it will default to
+
 <ul>
 <li>$HOME/.cache/dart-sass-maven-plugin/ on *nix operating systems; or</li>
 <li>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache on Windows operating systems.</li>
@@ -102,29 +111,29 @@ This parameter represents a path in the local file system where the release arch
 
 `<color>`
 
-This flag tells Sass to emit terminal colors. By default, it will emit colors if it looks like it's being run on a terminal that supports them. Set it to false to tell Sass to not emit colors.<br>
+This flag tells Sass to emit terminal colors. By default, it will emit colors if it looks like it's running on a terminal supporting them. Set it to false to tell Sass to not emit colors.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: true
 
 `<embedSourceMap>`
 
-This flag tells Sass to embed the contents of the source map file in the generated CSS, rather than creating a separate file and linking to it from the CSS.<br>
+This flag tells Sass to embed the contents of the source map file in the generated CSS, rather than create a separate file and link to it from the CSS.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
 
 `<embedSources>`
 
-This flag tells Sass to embed the entire contents of the Sass files that contributed to the generated CSS in the source map. This may produce very large source maps, but it guarantees that the source will be available on any computer no matter how the CSS is served.<br>
+This flag tells Sass to embed all the contents of the Sass files that contributed to the generated CSS in the source map. This may produce very large source maps, but it guarantees that the source will be available on any computer no matter how the CSS is served.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
 
 `<errorCSS>`
 
-This flag tells Sass whether to emit a CSS file when an error occurs during compilation. This CSS file describes the error in a comment and in the content property of body::before, so that you can see the error message in the browser without needing to switch back to the terminal.
-By default, error CSS is enabled if you're compiling to at least one file on disk (as opposed to standard output). You can activate errorCSS explicitly to enable it even when you're compiling to standard out (not supported by this Maven plugin), or set it explicitly to false to disable it everywhere. When it's disabled, the update flag and watch flag (the latter being not yet supported by this Maven plugin) will delete CSS files instead when an error occurs.<br>
+This flag tells Sass whether to emit a CSS file when an error occurs during compilation. This CSS file describes the error in a comment and in the content property of `body::before` so that you can see the error message in the browser without needing to switch back to the terminal.
+By default, error CSS is enabled if you're compiling to at least one file on disk (as opposed to standard output). You can activate errorCSS explicitly to enable it even when compiling to standard out (not supported by this Maven plugin) or set it explicitly to false to disable it everywhere. When it's disabled, the update flag and watch flag (the latter being not yet supported by this Maven plugin) will delete CSS files instead when an error occurs.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: true
@@ -151,7 +160,7 @@ This flag tells Sass never to emit a @charset declaration or a UTF-8 byte-order 
 
 `<noSourceMap>`
 
-If the noSourceMap flag is set to true, Sass won't generate any source maps. It will void other source map options (namely sourceMapURLs, embedSources and embedSourceMap) if explicitly set.<br>
+If the `noSourceMap` flag is set, Sass won't generate any source maps. If explicitly set, it will void other source map options (namely sourceMapURLs, embedSources, and embedSourceMap).<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
@@ -165,7 +174,7 @@ This flag tells Sass only to emit ASCII characters to the terminal as part of er
 
 `<outputFolder>`
 
-Path to the folder where the css and source map files will be created.<br>
+Path to the folder where the CSS and source map files will be created.<br>
 **Type**: java.io.File<br>
 **Required**: No<br>
 User Property: project.build.directory
@@ -179,17 +188,19 @@ This flag tells Sass not to emit any warnings when compiling. By default, Sass e
 
 `<quietDeps>`
 
-This flag tells Sass not to emit deprecation warnings that come from dependencies. It considers any file that's transitively imported through a load path to be a "dependency". This flag doesn't affect the @warn rule or the @debug rule.<br>
+This flag tells Sass not to emit deprecation warnings that come from dependencies. It considers any file that's transitively imported through a load path to be a "dependency." This flag doesn't affect the @warn rule or the @debug rule.<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
 
 `<sourceMapURLs>`
 
-This option controls how the source maps that Sass generates link back to the Sass files that contributed to the generated CSS. Dart Sass supports two types of URLs:<br>
-relative (the default) uses relative URLs from the location of the source map file to the locations of the Sass source file;
+This option controls how the source maps Sass generates link back to the Sass files that contributed to the generated CSS. Dart Sass supports two types of URLs:<br>
+
+- `RELATIVE` (the default) uses relative URLs from the location of the source map file to the locations of the Sass source file;
 and
-absolute uses the absolute file: URLs of the Sass source files. Note that absolute URLs will only work on the same computer that the CSS was compiled.
+- `ABSOLUTE` uses the absolute file: URLs of the Sass source files. Note that absolute URLs will only work on the same computer where the CSS was compiled.
+
 Use either `RELATIVE` or `ABSOLUTE` in the plugin configuration.<br>
 **Type**: com.github.cleydyr.dart.command.enums.<br>SourceMapURLs
 **Required**: No<br>
@@ -197,7 +208,7 @@ Use either `RELATIVE` or `ABSOLUTE` in the plugin configuration.<br>
 
 `<stopOnError>`
 
-This flag tells Sass to stop compiling immediately when an error is detected, rather than trying to compile other Sass files that may not contain errors. It's mostly useful in many-to-many mode (which is the mode currently supported by this Maven plugin).<br>
+This flag tells Sass to stop compiling immediately when an error is detected rather than trying to compile other Sass files that may not contain errors. It's mostly useful in many-to-many mode (which is the mode currently supported by this Maven plugin).<br>
 **Type**: boolean<br>
 **Required**: No<br>
 **Default**: false
@@ -205,9 +216,12 @@ This flag tells Sass to stop compiling immediately when an error is detected, ra
 `<style>`
 
 This option controls the output style of the resulting CSS. Dart Sass supports two output styles:
-expanded (the default), which writes each selector and declaration on its own line; and
-compressed, which removes as many extra characters as possible, and writes the entire stylesheet on a single line.
-Use either EXPANDED or COMPRESSED in the plugin configuration.<br>
+
+- `EXPANDED` (the default), which writes each selector and declaration on its own line; and
+- `COMPRESSED`, which removes as many extra characters as possible, and writes the entire stylesheet on a single line.
+
+Use either EXPANDED or COMPRESSED in the plugin configuration.
+
 **Type**: com.github.cleydyr.dart.command.enums.Style<br>
 **Required**: No<br>
 **Default**: EXPANDED
@@ -227,7 +241,8 @@ If this flag is set to true, Sass will only compile stylesheets whose dependenci
 **Default**: false
 
 ### watch-sass
-Goal that compiles a set of sass/scss files from an input directory to an output directory keeps the process opened watching for changes in the source files. Each time a source file is changed, a message will be written to the standard output.
+
+This goal compiles a set of sass/scss files from an input directory to an output directory and keeps the process open watching for changes in the source files. Each time a source file changes, a message will be written to the standard output.
 
 Full name: `io.github.cleydyr:dart-sass-maven-plugin:0.4.0:watch-sass`
 
