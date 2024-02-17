@@ -40,6 +40,9 @@ public class DartSassReleaseParameter {
     }
 
     public String getArtifactName() {
+        if (os.equals(OSDetector.OS_LINUX_WITH_MUSL)) {
+            return String.format("dart-sass-%s-linux-%s-musl.tar.gz", version, arch);
+        }
         return String.format("dart-sass-%s-%s-%s.%s", version, os, arch, getArtifactExtension());
     }
 
