@@ -41,12 +41,12 @@ A Maven plugin that allows to compile SASS using Dart Sass
 
 Dart Sass Maven Plugin will run on any operating systems and architectures available on the [Dart Sass releases page](https://github.com/sass/dart-sass/releases). As of now, they are:
 
-|       | Linux | Mac | Windows |
-| ----- | ----- | --- | ------- |
-| ia32  | ✅    | ❌  | ✅      |
-| x64   | ✅    | ✅  | ✅      |
-| arm64 | ✅    | ✅  | ❌      |
-| arm   | ✅    | ❌  | ❌      |
+|       | Linux | Mac | Windows | Linux (musl) |
+| ----- | ----- | --- | ------- |--------------|
+| ia32  | ✅    | ❌  | ✅      | ✅            |
+| x64   | ✅    | ✅  | ✅      | ✅            |
+| arm64 | ✅    | ✅  | ❌      | ✅            |
+| arm   | ✅    | ❌  | ❌      | ✅            |
 
 ## Automatic detection of operating system and architecture
 
@@ -90,7 +90,7 @@ This parameter represents the Dart Sass architecture that should be used to comp
 
 `<os>`
 
-This parameter represents the Dart Sass operating system that should be used to compile Sass files. If left unset, it will be autodetected by the plugin. Accepted values are "linux", "macos" and "windows".<br>
+This parameter represents the Dart Sass operating system that should be used to compile Sass files. If left unset, it will be autodetected by the plugin. Accepted values are "linux", "linux-musl", "macos" and "windows".<br>
 **Type**: String<br>
 **Required**: No
 
