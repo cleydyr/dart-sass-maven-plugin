@@ -29,8 +29,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spotless.version>2.22.1</spotless.version>
-		<maven.version>3.8.5</maven.version>
-		<maven.plugin.version>3.6.4</maven.plugin.version>
+		<maven.version>3.9.6</maven.version>
+		<maven.plugin.version>3.11.0</maven.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
@@ -61,13 +61,13 @@
 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-verifier</artifactId>
-			<version>1.8.0</version>
+			<version>2.0.0-M1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>4.5.0</version>
+			<version>5.2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
-			<version>1.24.0</version>
+			<version>1.26.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.kohsuke</groupId>
@@ -262,7 +262,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -279,7 +279,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

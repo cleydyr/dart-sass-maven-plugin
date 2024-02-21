@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThrows;
 import java.io.File;
 import java.nio.file.Files;
 import junit.framework.TestCase;
-import org.apache.maven.it.util.ResourceExtractor;
+import org.apache.maven.shared.verifier.util.ResourceExtractor;
 
 public class DefaultFileCounterTest extends TestCase {
     public void testFileExtensions() {
