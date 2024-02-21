@@ -4,6 +4,6 @@ public class DummyGithubLatestVersionProvider implements GithubLatestVersionProv
 
     @Override
     public String get(String os, String arch) {
-        return "1.68.0";
+        return "1.71.1";
     }
 }

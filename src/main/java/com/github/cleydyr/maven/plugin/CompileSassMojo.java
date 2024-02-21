@@ -265,7 +265,7 @@ public class CompileSassMojo extends AbstractMojo {
     /**
      * This parameter represents the Dart Sass operating system that should be used to compile
      * Sass files. If left unset, it will be autodetected by the plugin. Accepted values are
-     * "linux", "macos" and "windows".
+     * "linux", "linux-musl", "macos" and "windows".
      */
     @Parameter
     private String os;

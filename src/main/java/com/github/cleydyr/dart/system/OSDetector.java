@@ -28,6 +28,8 @@ public class OSDetector {
 
     public static final String OS_LINUX = "linux";
 
+    public static final String OS_LINUX_WITH_MUSL = "linux-musl";
+
     public static final Collection<String> ACCEPTED_OSES = new ArrayList<>();
 
     public static final Collection<String> ACCEPTED_ARCHITECTURES = new ArrayList<>();
@@ -39,7 +41,7 @@ public class OSDetector {
     private static final boolean IS_WINDOWS;
 
     static {
-        Collections.addAll(ACCEPTED_OSES, OS_LINUX, OS_MAC_OS, OS_WINDOWS);
+        Collections.addAll(ACCEPTED_OSES, OS_LINUX, OS_MAC_OS, OS_WINDOWS, OS_LINUX_WITH_MUSL);
 
         Collections.addAll(ACCEPTED_ARCHITECTURES, ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64);
 
