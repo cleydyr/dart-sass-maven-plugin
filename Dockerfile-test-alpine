@@ -1,0 +1,16 @@
+# Usa a imagem base do Alpine
+FROM alpine:latest
+
+# Instala o OpenJDK 8 e o Maven
+RUN apk add --no-cache openjdk8 maven
+
+# Copia os arquivos do diretório desejado para o container
+COPY ./ /dart-sass-maven-plugin
+
+# Define o diretório de trabalho
+WORKDIR /dart-sass-maven-plugin
+
+RUN cp /dart-sass-maven-plugin/src/test/resources/musl/test-project/pom.xml /dart-sass-maven-plugin/src/test/resources/test-project/pom.xml
+
+# Comando padrão ou ação que será executada quando o container iniciar
+CMD ["mvn", "test"]
