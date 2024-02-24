@@ -5,7 +5,7 @@
 
 	<groupId>com.github.cleydyr</groupId>
 	<artifactId>test-project</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0</version>
 
 	<name>test-project</name>
 	<description>A simple test-project.</description>
@@ -21,7 +21,7 @@
 			<plugin>
 				<groupId>io.github.cleydyr</groupId>
 				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>1.3.0-SNAPSHOT</version>
+				<version>1.3.0</version>
 				<configuration>
 					<outputFolder>${project.build.directory}/static/styles</outputFolder>
 					<style>COMPRESSED</style>
