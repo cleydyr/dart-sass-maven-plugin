@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Instala o OpenJDK 8 e o Maven
-RUN apk add --no-cache openjdk8 maven
+RUN apk add --no-cache openjdk11 maven
 
 # Copia os arquivos do diretório desejado para o container
 COPY ./ /dart-sass-maven-plugin
