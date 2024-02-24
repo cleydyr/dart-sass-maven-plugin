@@ -36,6 +36,8 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
         try {
             GitHub github = new GitHubBuilder()
                     .withConnector(new ImpatientHttpConnector(this::setupConnection))
+                    .withRateLimitHandler(RateLimitHandler.FAIL)
+                    .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
                     .build();
 
             GHRepository repository = github.getRepository("sass/dart-sass");
