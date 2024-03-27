@@ -10,10 +10,9 @@ import java.net.URL;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.apache.maven.settings.MavenSettingsBuilder;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.kohsuke.github.*;
 import org.kohsuke.github.extras.ImpatientHttpConnector;
 
@@ -26,7 +25,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     private Logger logger;
 
     @Inject
-    private MavenSettingsBuilder mavenSettingsBuilder;
+    private MavenSession mavenSession;
 
     private final GithubLatestVersionProvider fallbackVersionProvider = new DummyGithubLatestVersionProvider();
 
@@ -70,7 +69,9 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     }
 
     public HttpURLConnection setupConnection(URL url) throws IOException {
-        if (mavenSettingsBuilder == null) {
+        if (mavenSession == null
+                || mavenSession.getSettings() == null
+                || mavenSession.getSettings().getActiveProxy() == null) {
             return (HttpURLConnection) url.openConnection();
         }
 
@@ -79,7 +80,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
 
     public HttpURLConnection setupWithMavenSettings(URL url) throws IOException {
         try {
-            Settings settings = mavenSettingsBuilder.buildSettings();
+            Settings settings = mavenSession.getSettings();
 
             org.apache.maven.settings.Proxy activeProxy = settings.getActiveProxy();
 
@@ -90,7 +91,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
             Proxy proxy = getProxy(activeProxy);
 
             return (HttpURLConnection) url.openConnection(proxy);
-        } catch (IOException | XmlPullParserException e) {
+        } catch (IOException e) {
             logger.warn("Error while parsing maven settings. Settings like proxy will be ignored.");
 
             return (HttpURLConnection) url.openConnection();
