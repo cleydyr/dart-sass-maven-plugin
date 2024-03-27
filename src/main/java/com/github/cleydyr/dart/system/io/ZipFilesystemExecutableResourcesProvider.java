@@ -13,7 +13,7 @@ public class ZipFilesystemExecutableResourcesProvider extends FilesystemExecutab
 
     @Override
     protected InputStream getResourceFromReleaseArchive(String resourceName, File release) throws IOException {
-        ZipFile zipFile = new ZipFile(release);
+        ZipFile zipFile = ZipFile.builder().setFile(release).get();
 
         InputStream inputStream = zipFile.getInputStream(zipFile.getEntry(resourceName));
 

@@ -10,6 +10,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 public class TarFilesystemExecutableResourcesProvider extends FilesystemExecutableResourcesProvider {
+
     public TarFilesystemExecutableResourcesProvider(File repository, ReleaseDownloader downloader) {
         super(repository, downloader);
     }
@@ -19,9 +20,9 @@ public class TarFilesystemExecutableResourcesProvider extends FilesystemExecutab
         TarArchiveInputStream tarArchiveInputStream = new TarArchiveInputStream(
                 new GzipCompressorInputStream(new BufferedInputStream(Files.newInputStream(release.toPath()))));
 
-        for (TarArchiveEntry entry = tarArchiveInputStream.getNextTarEntry();
+        for (TarArchiveEntry entry = tarArchiveInputStream.getNextEntry();
                 entry != null;
-                entry = tarArchiveInputStream.getNextTarEntry()) {
+                entry = tarArchiveInputStream.getNextEntry()) {
             if (entry.getName().equals(resourceName)) {
                 return tarArchiveInputStream;
             }
