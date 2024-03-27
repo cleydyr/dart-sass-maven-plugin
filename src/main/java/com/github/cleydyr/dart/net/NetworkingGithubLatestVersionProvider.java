@@ -14,11 +14,12 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.logging.Logger;
 import org.kohsuke.github.*;
+import org.kohsuke.github.connector.GitHubConnectorResponse;
 import org.kohsuke.github.extras.ImpatientHttpConnector;
+import org.kohsuke.github.internal.GitHubConnectorHttpConnectorAdapter;
 
 @Singleton
 @Named
-@SuppressWarnings("deprecation")
 public class NetworkingGithubLatestVersionProvider implements GithubLatestVersionProvider {
 
     @Inject
@@ -33,9 +34,19 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     public String get(String os, String arch) {
         try {
             GitHub github = new GitHubBuilder()
-                    .withConnector(new ImpatientHttpConnector(this::setupConnection))
-                    .withRateLimitHandler(RateLimitHandler.FAIL)
-                    .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
+                    .withConnector(GitHubConnectorHttpConnectorAdapter.adapt(new ImpatientHttpConnector(this::setupConnection)))
+                    .withRateLimitHandler(new GitHubRateLimitHandler() {
+                        @Override
+                        public void onError(GitHubConnectorResponse ghcr) throws IOException {
+                            throw new IOException("GitHub rate limit exceeded.");
+                        }
+                    })
+                    .withAbuseLimitHandler(new GitHubAbuseLimitHandler() {
+                        @Override
+                        public void onError(GitHubConnectorResponse ghcr) throws IOException {
+                            throw new IOException("GitHub abuse limit hit.");
+                        }
+                    })
                     .build();
 
             GHRepository repository = github.getRepository("sass/dart-sass");
@@ -49,7 +60,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
 
                 DartSassReleaseParameter dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
 
-                for (GHAsset ghAsset : ghRelease.getAssets()) {
+                for (GHAsset ghAsset : ghRelease.listAssets()) {
                     logger.debug("Checking asset " + ghAsset.getName());
 
                     if (ghAsset.getName().equals(dartSassReleaseParameter.getArtifactName())) {
