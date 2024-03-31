@@ -7,27 +7,26 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URL;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.apache.maven.settings.MavenSettingsBuilder;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.settings.Settings;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.kohsuke.github.*;
+import org.kohsuke.github.connector.GitHubConnectorResponse;
 import org.kohsuke.github.extras.ImpatientHttpConnector;
+import org.kohsuke.github.internal.GitHubConnectorHttpConnectorAdapter;
 
 @Singleton
 @Named
-@SuppressWarnings("deprecation")
-@Component(role = GithubLatestVersionProvider.class)
 public class NetworkingGithubLatestVersionProvider implements GithubLatestVersionProvider {
-    @Requirement
+
+    @Inject
     private Logger logger;
 
-    @Requirement
-    private MavenSettingsBuilder mavenSettingsBuilder;
+    @Inject
+    private MavenSession mavenSession;
 
     private final GithubLatestVersionProvider fallbackVersionProvider = new DummyGithubLatestVersionProvider();
 
@@ -35,9 +34,19 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     public String get(String os, String arch) {
         try {
             GitHub github = new GitHubBuilder()
-                    .withConnector(new ImpatientHttpConnector(this::setupConnection))
-                    .withRateLimitHandler(RateLimitHandler.FAIL)
-                    .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
+                    .withConnector(GitHubConnectorHttpConnectorAdapter.adapt(new ImpatientHttpConnector(this::setupConnection)))
+                    .withRateLimitHandler(new GitHubRateLimitHandler() {
+                        @Override
+                        public void onError(GitHubConnectorResponse ghcr) throws IOException {
+                            throw new IOException("GitHub rate limit exceeded.");
+                        }
+                    })
+                    .withAbuseLimitHandler(new GitHubAbuseLimitHandler() {
+                        @Override
+                        public void onError(GitHubConnectorResponse ghcr) throws IOException {
+                            throw new IOException("GitHub abuse limit hit.");
+                        }
+                    })
                     .build();
 
             GHRepository repository = github.getRepository("sass/dart-sass");
@@ -51,7 +60,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
 
                 DartSassReleaseParameter dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
 
-                for (GHAsset ghAsset : ghRelease.getAssets()) {
+                for (GHAsset ghAsset : ghRelease.listAssets()) {
                     logger.debug("Checking asset " + ghAsset.getName());
 
                     if (ghAsset.getName().equals(dartSassReleaseParameter.getArtifactName())) {
@@ -71,7 +80,9 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     }
 
     public HttpURLConnection setupConnection(URL url) throws IOException {
-        if (mavenSettingsBuilder == null) {
+        if (mavenSession == null
+                || mavenSession.getSettings() == null
+                || mavenSession.getSettings().getActiveProxy() == null) {
             return (HttpURLConnection) url.openConnection();
         }
 
@@ -80,7 +91,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
 
     public HttpURLConnection setupWithMavenSettings(URL url) throws IOException {
         try {
-            Settings settings = mavenSettingsBuilder.buildSettings();
+            Settings settings = mavenSession.getSettings();
 
             org.apache.maven.settings.Proxy activeProxy = settings.getActiveProxy();
 
@@ -91,7 +102,7 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
             Proxy proxy = getProxy(activeProxy);
 
             return (HttpURLConnection) url.openConnection(proxy);
-        } catch (IOException | XmlPullParserException e) {
+        } catch (IOException e) {
             logger.warn("Error while parsing maven settings. Settings like proxy will be ignored.");
 
             return (HttpURLConnection) url.openConnection();

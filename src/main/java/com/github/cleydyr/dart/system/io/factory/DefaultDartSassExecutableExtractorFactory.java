@@ -11,31 +11,33 @@ import com.github.cleydyr.dart.system.io.WindowsDartSassExecutableExtractor;
 import com.github.cleydyr.dart.system.io.ZipFilesystemExecutableResourcesProvider;
 import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.apache.maven.settings.Proxy;
 
 @Named
 @Singleton
 public class DefaultDartSassExecutableExtractorFactory implements DartSassExecutableExtractorFactory {
+
     @Override
     public DartSassExecutableExtractor getDartSassExecutableExtractor(
-            DartSassReleaseParameter dartSassReleaseParameter, File cachedFileDirectory, URL proxyHost) {
+            DartSassReleaseParameter dartSassReleaseParameter, File cachedFileDirectory, Proxy proxy) {
         try {
             if (OSDetector.isWindows()) {
                 ExecutableResourcesProvider executableResourcesProvider;
                 executableResourcesProvider = new ZipFilesystemExecutableResourcesProvider(
-                        cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxyHost));
+                        cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxy));
 
                 return new WindowsDartSassExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
             }
 
             ExecutableResourcesProvider executableResourcesProvider = new TarFilesystemExecutableResourcesProvider(
-                    cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxyHost));
+                    cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxy));
 
             return new PosixDartSassSnapshotExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | MalformedURLException e) {
             throw new DartSassExecutableExtractorException("Error while creating DartSassExecutableExtractor", e);
         }
     }
