@@ -19,8 +19,11 @@ public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader
     private final HttpHost httpProxy;
 
     public ApacheFluidHttpClientReleaseDownloader(Proxy proxy) throws URISyntaxException, MalformedURLException {
-        //TODO: respect non-proxy host configuration
-        this.httpProxy = proxy == null ? null : HttpHost.create(new URL(proxy.getProtocol() + "://" + proxy.getHost() + ":" + proxy.getPort()).toURI());
+        // TODO: respect non-proxy host configuration
+        this.httpProxy = proxy == null
+                ? null
+                : HttpHost.create(
+                        new URL(proxy.getProtocol() + "://" + proxy.getHost() + ":" + proxy.getPort()).toURI());
     }
 
     @Override

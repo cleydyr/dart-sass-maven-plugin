@@ -67,7 +67,9 @@ public class CompileSassMojo extends AbstractMojo {
         this.githubLatestVersionProvider = githubLatestVersionProvider;
         this.cachedFilesDirectoryProvider = cachedFilesDirectoryProviderFactory.get();
 
-        if (mavenSession == null || mavenSession.getSettings() == null || mavenSession.getSettings().getActiveProxy() == null) {
+        if (mavenSession == null
+                || mavenSession.getSettings() == null
+                || mavenSession.getSettings().getActiveProxy() == null) {
             return;
         }
 
@@ -356,8 +358,8 @@ public class CompileSassMojo extends AbstractMojo {
     }
 
     public void extractExecutable() throws MojoExecutionException {
-        DartSassExecutableExtractor dartSassExecutableExtractor
-                = dartSassExecutableExtractorFactory.getDartSassExecutableExtractor(
+        DartSassExecutableExtractor dartSassExecutableExtractor =
+                dartSassExecutableExtractorFactory.getDartSassExecutableExtractor(
                         dartSassReleaseParameter, cachedFilesDirectory, proxy);
 
         try {

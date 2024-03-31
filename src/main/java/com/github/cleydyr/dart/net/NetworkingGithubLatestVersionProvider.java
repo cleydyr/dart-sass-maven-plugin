@@ -34,7 +34,8 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
     public String get(String os, String arch) {
         try {
             GitHub github = new GitHubBuilder()
-                    .withConnector(GitHubConnectorHttpConnectorAdapter.adapt(new ImpatientHttpConnector(this::setupConnection)))
+                    .withConnector(GitHubConnectorHttpConnectorAdapter.adapt(
+                            new ImpatientHttpConnector(this::setupConnection)))
                     .withRateLimitHandler(new GitHubRateLimitHandler() {
                         @Override
                         public void onError(GitHubConnectorResponse ghcr) throws IOException {
