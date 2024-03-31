@@ -11,12 +11,13 @@ import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFact
 import com.github.cleydyr.maven.plugin.WatchSassMojo;
 import java.io.File;
 import java.nio.file.Files;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class WatchSassMojoTest extends TestCase {
+public class WatchSassMojoTest {
     private final String tmpDirPrefix = getClass().getName();
 
+    @Test
     public void testWatchWithoutPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 
@@ -39,6 +40,7 @@ public class WatchSassMojoTest extends TestCase {
         Mockito.verify(mockSassCommandBuilder, Mockito.times(0)).withPoll(true);
     }
 
+    @Test
     public void testWatchWithPoll() throws Exception {
         SassCommandBuilder mockSassCommandBuilder = _mockSassCommandBuilder();
 

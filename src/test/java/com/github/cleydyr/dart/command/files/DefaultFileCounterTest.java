@@ -1,13 +1,14 @@
 package com.github.cleydyr.dart.command.files;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.nio.file.Files;
-import junit.framework.TestCase;
 import org.apache.maven.shared.verifier.util.ResourceExtractor;
+import org.junit.jupiter.api.Test;
 
-public class DefaultFileCounterTest extends TestCase {
+public class DefaultFileCounterTest {
+    @Test
     public void testFileExtensions() {
         FileCounter fileCounter = new DefaultFileCounter();
 
@@ -32,14 +33,19 @@ public class DefaultFileCounterTest extends TestCase {
         assertFalse(fileCounter.hasAllowedExtensionDifferentFolders("test.Css"));
     }
 
+    @Test
     public void testFileCount() throws Exception {
         File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/test-project/src/main/sass");
 
         FileCounter fileCounter = new DefaultFileCounter();
 
-        assertEquals(4, fileCounter.getProcessableFileCount(testDir.toPath(), Files.createTempDirectory(getName())));
+        assertEquals(
+                4,
+                fileCounter.getProcessableFileCount(
+                        testDir.toPath(), Files.createTempDirectory("dart-sass-maven-plugin-test")));
     }
 
+    @Test
     public void testFileCountWithSameInputAndOutputFolder() throws Exception {
         File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/test-project/src/main/sass");
 

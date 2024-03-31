@@ -1,12 +1,14 @@
 package com.github.cleydyr.dart.release;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.cleydyr.dart.maven.plugin.test.util.TestUtil;
 import com.github.cleydyr.dart.system.OSDetector;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class DartSassReleaseParameterTest extends TestCase {
+public class DartSassReleaseParameterTest {
+    @Test
     public void testGetters() {
         String os = TestUtil.randomAlphaString(7);
         String arch = TestUtil.randomAlphaString(7);
@@ -19,6 +21,7 @@ public class DartSassReleaseParameterTest extends TestCase {
         assertEquals(parameter.getVersion(), version);
     }
 
+    @Test
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> new DartSassReleaseParameter(null, null, null));
 
@@ -47,6 +50,7 @@ public class DartSassReleaseParameterTest extends TestCase {
                 () -> new DartSassReleaseParameter(null, null, TestUtil.randomAlphaString(7)));
     }
 
+    @Test
     public void testGetArtifactNameMacOsX64() {
         String os = OSDetector.OS_MAC_OS;
         String arch = OSDetector.ARCH_X64;
@@ -59,6 +63,7 @@ public class DartSassReleaseParameterTest extends TestCase {
         assertEquals("dart-sass-1.71.1-macos-x64.tar.gz", artifactName);
     }
 
+    @Test
     public void testGetArtifactNameLinuxArm() {
         String os = OSDetector.OS_LINUX;
         String arch = OSDetector.ARCH_ARM;
@@ -71,6 +76,7 @@ public class DartSassReleaseParameterTest extends TestCase {
         assertEquals("dart-sass-1.71.1-linux-arm.tar.gz", artifactName);
     }
 
+    @Test
     public void testGetArtifactNameWindowsX64() {
         String os = OSDetector.OS_WINDOWS;
         String arch = OSDetector.ARCH_X64;
@@ -83,6 +89,7 @@ public class DartSassReleaseParameterTest extends TestCase {
         assertEquals("dart-sass-1.71.1-windows-x64.zip", artifactName);
     }
 
+    @Test
     public void testGetArtifactNameLinuxMuslArm64() {
         String os = OSDetector.OS_LINUX_WITH_MUSL;
         String arch = OSDetector.ARCH_ARM64;

@@ -1,5 +1,7 @@
 package com.github.cleydyr.dart.maven.plugin;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.cleydyr.dart.command.enums.SourceMapURLs;
 import com.github.cleydyr.dart.command.files.DefaultFileCounter;
 import com.github.cleydyr.dart.maven.plugin.test.util.TestUtil;
@@ -7,13 +9,16 @@ import com.github.cleydyr.dart.net.DummyGithubLatestVersionProvider;
 import com.github.cleydyr.dart.system.io.OSDependentDefaultCachedFilesDirectoryProviderFactory;
 import com.github.cleydyr.maven.plugin.CompileSassMojo;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import junit.framework.TestCase;
+import java.util.stream.Stream;
 import org.apache.maven.shared.verifier.util.ResourceExtractor;
+import org.junit.jupiter.api.Test;
 
-public class CompileSassMojoTest extends TestCase {
+public class CompileSassMojoTest {
+    @Test
     public void testNoSourceMapFlag() throws Exception {
         CompileSassMojo compileSassMojo = new CompileSassMojo(
                 new DefaultFileCounter(),
@@ -33,6 +38,7 @@ public class CompileSassMojoTest extends TestCase {
         assertFalse(compileSassMojo.isEmbedSources());
     }
 
+    @Test
     public void testCompileSubfolders() throws Exception {
         TestUtil.installMainPlugin();
 
@@ -44,16 +50,13 @@ public class CompileSassMojoTest extends TestCase {
 
         Path outputDirPath = Paths.get(testDir.getAbsolutePath(), "target", "static", "styles");
 
-        assertTrue("Output folder was not created", Files.exists(outputDirPath));
+        assertTrue(Files.exists(outputDirPath));
 
         String[] expectedFilesTop = {
             "test-top.css", "test-top.css.map", "subfolder/",
         };
 
-        assertEquals(
-                "There should be " + expectedFilesTop.length + " files in the top folder",
-                expectedFilesTop.length,
-                Files.list(outputDirPath).count());
+        assertEquals(expectedFilesTop.length, getFileCount(outputDirPath));
 
         Path subfolder = Paths.get(outputDirPath.toString(), "subfolder");
 
@@ -66,11 +69,18 @@ public class CompileSassMojoTest extends TestCase {
             "subfolder/test-sub3.css.map"
         };
 
-        assertEquals(
-                "There should be " + expectedFilesSub.length + " files in the sub-folder",
-                expectedFilesSub.length,
-                Files.list(subfolder).count());
+        assertEquals(expectedFilesSub.length, getFileCount(subfolder));
 
         TestUtil.executeGoal(testDir, "clean");
+    }
+
+    private static long getFileCount(Path outputDirPath) throws IOException {
+        long fileCount;
+
+        try (Stream<Path> fileList = Files.list(outputDirPath)) {
+            fileCount = fileList.count();
+        }
+
+        return fileCount;
     }
 }
