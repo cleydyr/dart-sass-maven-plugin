@@ -5,7 +5,7 @@ import java.util.Random;
 import org.apache.maven.shared.verifier.VerificationException;
 import org.apache.maven.shared.verifier.Verifier;
 
-public class TestUtil {
+public final class TestUtil {
     private TestUtil() {
         // Utility class
     }

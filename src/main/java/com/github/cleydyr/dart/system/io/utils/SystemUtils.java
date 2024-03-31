@@ -4,7 +4,7 @@ import com.github.cleydyr.dart.release.DartSassReleaseParameter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class SystemUtils {
+public final class SystemUtils {
     private SystemUtils() {
         // Utility class
     }
