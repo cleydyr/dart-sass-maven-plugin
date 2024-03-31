@@ -33,19 +33,12 @@ public class OSDependentSassCommandBuilderFactory implements SassCommandBuilderF
                     throw new SassCommandException("java.io.tmpdir is not a valid directory");
                 }
 
-                if (OSDetector.isWindows()) {
-                    return new AbstractSassCommand() {
-                        @Override
-                        protected void setExecutable(List<String> commands) {
-                            commands.add(tmpDirPath.resolve("sass.bat").toString());
-                        }
-                    };
-                }
+                String executableName = OSDetector.isWindows() ? "sass.bat" : "sass";
 
                 return new AbstractSassCommand() {
                     @Override
                     protected void setExecutable(List<String> commands) {
-                        commands.add(tmpDirPath.resolve("sass").toString());
+                        commands.add(tmpDirPath.resolve(executableName).toString());
                     }
                 };
             }
