@@ -55,27 +55,37 @@ public class NetworkingGithubLatestVersionProvider implements GithubLatestVersio
             PagedIterable<GHRelease> ghReleases = repository.listReleases();
 
             for (GHRelease ghRelease : ghReleases) {
-                logger.debug("Checking release " + ghRelease.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Checking release " + ghRelease.getName());
+                }
 
                 String version = ghRelease.getTagName();
 
                 DartSassReleaseParameter dartSassReleaseParameter = new DartSassReleaseParameter(os, arch, version);
 
                 for (GHAsset ghAsset : ghRelease.listAssets()) {
-                    logger.debug("Checking asset " + ghAsset.getName());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Checking asset " + ghAsset.getName());
+                    }
 
                     if (ghAsset.getName().equals(dartSassReleaseParameter.getArtifactName())) {
                         return version;
                     }
                 }
 
-                logger.info("Skipping version " + version + " because it doesn't have a matching asset");
+                if (logger.isInfoEnabled()) {
+                    logger.info("Skipping version " + version + " because it doesn't have a matching asset");
+                }
             }
         } catch (IOException e) {
-            logger.warn("Error while getting latest version from GitHub API", e);
+            if (logger.isWarnEnabled()) {
+                logger.warn("Error while getting latest version from GitHub API", e);
+            }
         }
 
-        logger.warn("Falling back to latest known release (" + fallbackVersionProvider.get(os, arch) + ")");
+        if (logger.isWarnEnabled()) {
+            logger.warn("Falling back to latest known release (" + fallbackVersionProvider.get(os, arch) + ")");
+        }
 
         return fallbackVersionProvider.get(os, arch);
     }
