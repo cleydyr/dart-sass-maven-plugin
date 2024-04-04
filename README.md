@@ -16,24 +16,26 @@ A Maven plugin that allows to compile SASS using Dart Sass
 
 ```xml
 <build>
-...
-		<plugins>
-			<plugin>
-				<groupId>io.github.cleydyr</groupId>
-				<artifactId>dart-sass-maven-plugin</artifactId>
-				<version>1.3.0</version>
-				<executions>
-					<execution>
-						<id>generate-css-using-sass</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>compile-sass</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-...
-</plugins>
+  <plugins>
+    <plugin>
+      <groupId>io.github.cleydyr</groupId>
+      <artifactId>dart-sass-maven-plugin</artifactId>
+      <version>1.3.0</version>
+      <configuration>
+        <!-- use a fixed version of dart-saas to ensure reproducible builds -->
+        <version>1.71.1</version>
+      </configuration>     
+      <executions>
+        <execution>
+          <id>generate-css-using-sass</id>
+          <phase>generate-resources</phase>
+          <goals>
+            <goal>compile-sass</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
 </build>
 ```
 
@@ -64,7 +66,7 @@ Dart Sass Maven Plugin will determine the latest Dart Sass version available on 
 
 ## Offline operation
 
-This plugin included all released archives for a given Dart Sass version in previous versions. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass if it's not found in the temporary folder or in the cached files' directory. Should this plugin be used in an air-capped environment, you should provide a release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>` parameter. The release archive should be a file named `release` on the subpath `<os>`/`<arch>`/`<version>`/ inside the cached files' directory.
+This plugin included all released archives for a given Dart Sass version in previous versions. However, starting from version 1.0.0, this plugin will download the latest release of Dart Sass if it's not found in the temporary folder or in the cached files' directory. Should this plugin be used in an air-gapped environment, you should provide a release archive inside the cached files directory and at least pin the Dart Sass' release version with the `<version>` parameter. The release archive should be a file named `release` on the subpath `<os>`/`<arch>`/`<version>`/ inside the cached files' directory.
 
 ## Proxy connections
 
