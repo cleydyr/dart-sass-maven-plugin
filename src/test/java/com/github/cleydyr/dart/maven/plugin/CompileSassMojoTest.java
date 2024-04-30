@@ -18,7 +18,7 @@ public class CompileSassMojoTest extends TestCase {
         CompileSassMojo compileSassMojo = new CompileSassMojo(
                 new DefaultFileCounter(),
                 () -> null,
-                (any0, any1, any2) -> null,
+                (any0, any1, any2, any3) -> null,
                 new DummyGithubLatestVersionProvider(),
                 new OSDependentDefaultCachedFilesDirectoryProviderFactory(),
                 null);

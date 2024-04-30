@@ -73,6 +73,6 @@ public class WatchSassMojoTest extends TestCase {
     }
 
     private DartSassExecutableExtractorFactory _mockDartSassExecutableExtractorFactory() {
-        return (any0, any1, any2) -> Mockito.mock(DartSassExecutableExtractor.class);
+        return (any0, any1, any2, any3) -> Mockito.mock(DartSassExecutableExtractor.class);
     }
 }

@@ -16,6 +16,7 @@ import com.github.cleydyr.dart.system.io.DefaultCachedFilesDirectoryProviderFact
 import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import com.github.cleydyr.dart.system.io.factory.DartSassExecutableExtractorFactory;
 import java.io.File;
+import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -281,6 +282,13 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter
     private File cachedFilesDirectory;
 
+    /**
+     * A base URL containing dart-sass releases.  The default is
+     * {@code https://github.com/sass/dart-sass/releases/download/}.
+     */
+    @Parameter
+    private URI baseURL = URI.create("https://github.com/sass/dart-sass/releases/download/");
+
     @Override
     public void execute() throws MojoExecutionException {
         validateProxyHostSyntax();
@@ -360,6 +368,7 @@ public class CompileSassMojo extends AbstractMojo {
     public void extractExecutable() throws MojoExecutionException {
         DartSassExecutableExtractor dartSassExecutableExtractor =
                 dartSassExecutableExtractorFactory.getDartSassExecutableExtractor(
+                        baseURL,
                         dartSassReleaseParameter, cachedFilesDirectory, proxy);
 
         try {
