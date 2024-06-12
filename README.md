@@ -48,6 +48,9 @@ Dart Sass Maven Plugin will run on any operating systems and architectures avail
 | arm64 | ✅    | ✅  | ❌      | ✅            |
 | arm   | ✅    | ❌  | ❌      | ✅            |
 
+> [!WARNING]
+> Not all operating system _versions_ are supported by Dart and Dart Sass, which means that Dart Sass Maven Plugin may not work on certain configurations either. For example, due to https://github.com/dart-lang/sdk/issues/54509, newer versions of Dart Sass will work only on Windows 10 and newer.
+
 ## Automatic detection of operating system and architecture
 
 The Dart Sass Maven Plugin will automatically detect the operating system and architecture of the machine where it's running. If it fails to do so, it will fall back to the following defaults:
