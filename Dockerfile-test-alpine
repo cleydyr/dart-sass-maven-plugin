@@ -1,8 +1,5 @@
 # Usa a imagem base do Alpine
-FROM alpine:latest
-
-# Instala o OpenJDK 8 e o Maven
-RUN apk add --no-cache openjdk11 maven
+FROM maven:3.9-eclipse-temurin-11-alpine
 
 # Copia os arquivos do diretório desejado para o container
 COPY ./ /dart-sass-maven-plugin
