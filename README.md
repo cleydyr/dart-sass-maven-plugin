@@ -97,9 +97,6 @@ This parameter represents the Dart Sass operating system that should be used to 
 **Type**: String<br>
 **Required**: No
 
-> [!WARNING]
-> When compiling on alpine derived images, setting `os` to `linux-musl` is required as it cannot be autodetected.
-
 `<version>`
 
 This parameter represents the Dart Sass version that should be used to compile Sass files. If left unset, the version available at https://github.com/sass/dart-sass/releases/latest will be used.<br>
