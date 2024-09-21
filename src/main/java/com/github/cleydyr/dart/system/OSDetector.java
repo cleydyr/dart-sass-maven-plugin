@@ -1,6 +1,9 @@
 package com.github.cleydyr.dart.system;
 
 import com.github.cleydyr.dart.system.exception.OSDetectionException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,6 +62,10 @@ public final class OSDetector {
             DETECTED_OS = OS_WINDOWS;
 
             IS_WINDOWS = true;
+        } else if (isLinuxMusl()) {
+            DETECTED_OS = OS_LINUX_WITH_MUSL;
+
+            IS_WINDOWS = false;
         } else {
             DETECTED_OS = OS_LINUX;
 
@@ -100,5 +107,28 @@ public final class OSDetector {
 
     public static boolean isAcceptedArchitecture(String architecture) {
         return ACCEPTED_ARCHITECTURES.stream().anyMatch(architecture::equals);
+    }
+
+    public static boolean isLinuxMusl() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("ldd", "--version");
+
+            Process process = processBuilder.start();
+
+            InputStream inputStream = process.getErrorStream();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                boolean hasMusl = reader.lines().anyMatch(line -> line.contains("musl"));
+
+                process.waitFor();
+
+                return hasMusl;
+            }
+        } catch (Exception e) {
+            // TODO: log warning
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
