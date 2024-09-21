@@ -14,11 +14,12 @@ import org.apache.maven.settings.Proxy;
 
 public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader {
 
-    private static final String RELEASE_URI_PATTERN = "https://github.com/sass/dart-sass/releases/download/%s/%s";
+    private final URI baseURL;
 
     private final HttpHost httpProxy;
 
-    public ApacheFluidHttpClientReleaseDownloader(Proxy proxy) throws URISyntaxException, MalformedURLException {
+    public ApacheFluidHttpClientReleaseDownloader(URI baseURL, Proxy proxy) throws URISyntaxException, MalformedURLException {
+        this.baseURL = baseURL;
         // TODO: respect non-proxy host configuration
         this.httpProxy = proxy == null
                 ? null
@@ -28,20 +29,18 @@ public class ApacheFluidHttpClientReleaseDownloader implements ReleaseDownloader
 
     @Override
     public void download(DartSassReleaseParameter release, File destination) throws ReleaseDownloadException {
-        String releaseURI = getReleaseURI(release);
+        URI releaseURI = getReleaseURI(release);
 
         try {
-            Request request = Request.get(new URI(releaseURI)).viaProxy(httpProxy);
+            Request request = Request.get(releaseURI).viaProxy(httpProxy);
 
             request.execute().saveContent(destination);
         } catch (IOException e) {
             throw new ReleaseDownloadException("Error while downloading Dart Sass release from uri " + releaseURI, e);
-        } catch (URISyntaxException e) {
-            throw new ReleaseDownloadException("Invalid uri: " + releaseURI, e);
         }
     }
 
-    private String getReleaseURI(DartSassReleaseParameter release) {
-        return String.format(RELEASE_URI_PATTERN, release.getVersion(), release.getArtifactName());
+    private URI getReleaseURI(DartSassReleaseParameter release) {
+        return baseURL.resolve(String.format("%s/%s", release.getVersion(), release.getArtifactName()));
     }
 }
