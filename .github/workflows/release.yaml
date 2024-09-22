@@ -17,9 +17,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          cache: 'maven'
           distribution: 'adopt'
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
 
       - name: Configure Maven settings
         run: |
@@ -30,8 +30,11 @@ jobs:
         run: mvn --batch-mode --update-snapshots clean test spotless:check ossindex:audit
 
       - name: Deploy to Maven Central
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         if: success()
-        run: mvn deploy -P release
+        run: mvn deploy -DskipTests
 
       - name: Create GitHub Release
         if: success()
