@@ -12,6 +12,7 @@ import com.github.cleydyr.dart.system.io.ZipFilesystemExecutableResourcesProvide
 import com.github.cleydyr.dart.system.io.exception.DartSassExecutableExtractorException;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -23,18 +24,21 @@ public class DefaultDartSassExecutableExtractorFactory implements DartSassExecut
 
     @Override
     public DartSassExecutableExtractor getDartSassExecutableExtractor(
+            URI baseURL,
             DartSassReleaseParameter dartSassReleaseParameter, File cachedFileDirectory, Proxy proxy) {
         try {
+            final ApacheFluidHttpClientReleaseDownloader downloader =
+                    new ApacheFluidHttpClientReleaseDownloader(baseURL, proxy);
             if (OSDetector.isWindows()) {
                 ExecutableResourcesProvider executableResourcesProvider;
                 executableResourcesProvider = new ZipFilesystemExecutableResourcesProvider(
-                        cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxy));
+                        cachedFileDirectory, downloader);
 
                 return new WindowsDartSassExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
             }
 
             ExecutableResourcesProvider executableResourcesProvider = new TarFilesystemExecutableResourcesProvider(
-                    cachedFileDirectory, new ApacheFluidHttpClientReleaseDownloader(proxy));
+                    cachedFileDirectory, downloader);
 
             return new PosixDartSassSnapshotExecutableExtractor(dartSassReleaseParameter, executableResourcesProvider);
         } catch (URISyntaxException | MalformedURLException e) {
