@@ -20,9 +20,15 @@ public final class TestUtil {
         verifier.verifyErrorFreeLog();
     }
 
-    public static void executeGoal(File testDir, String goal) throws VerificationException {
+    public static void executeGoal(File testDir, String goal, String... additionalCLiArguments)
+            throws VerificationException {
         Verifier verifier = new Verifier(testDir.getAbsolutePath());
         verifier.addCliArgument(goal);
+
+        for (String arg : additionalCLiArguments) {
+            verifier.addCliArgument(arg);
+        }
+
         verifier.execute();
         verifier.verifyErrorFreeLog();
     }
