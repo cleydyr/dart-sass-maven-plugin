@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New feature to autodetect Linux Musl systems and use the Musl version of the
+- v1.5.0 New feature to skip the compile goal execution by setting the `skip` flag to `true`
+- v1.4.0 New feature to autodetect Linux Musl systems and use the Musl version of the
 binary if detected
 
 ### Removed
