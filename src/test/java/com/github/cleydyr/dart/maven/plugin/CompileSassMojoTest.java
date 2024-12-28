@@ -74,6 +74,21 @@ public class CompileSassMojoTest {
         TestUtil.executeGoal(testDir, "clean");
     }
 
+    @Test
+    public void testSkipFlag() throws Exception {
+        TestUtil.installMainPlugin();
+
+        File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/test-project");
+
+        TestUtil.executeGoal(testDir, "clean");
+
+        TestUtil.executeGoal(testDir, "compile", "-Ddart.sass.skip=true");
+
+        Path outputDirPath = Paths.get(testDir.getAbsolutePath(), "target", "static", "styles");
+
+        assertFalse(Files.exists(outputDirPath));
+    }
+
     private static long getFileCount(Path outputDirPath) throws IOException {
         long fileCount;
 

@@ -282,8 +282,20 @@ public class CompileSassMojo extends AbstractMojo {
     @Parameter
     private File cachedFilesDirectory;
 
+    /**
+     * This parameter allows to skip the execution of the plugin.
+     */
+    @Parameter(property = "dart.sass.skip")
+    private boolean skip;
+
     @Override
     public void execute() throws MojoExecutionException {
+        if (skip) {
+            getLog().info("Skipping execution of the plugin");
+
+            return;
+        }
+
         validateProxyHostSyntax();
 
         verifyDefaultParameters();
@@ -553,5 +565,9 @@ public class CompileSassMojo extends AbstractMojo {
 
     public void setTrace(boolean trace) {
         this.trace = trace;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 }
