@@ -26,6 +26,9 @@ jobs:
           mkdir -p $HOME/.m2
           echo "<settings><servers><server><id>ossrh</id><username>${{ secrets.SONATYPE_USERNAME }}</username><password>${{ secrets.SONATYPE_PASSWORD }}</password></server></servers></settings>" > $HOME/.m2/settings.xml
 
+      - name: Basic plugin version verification
+        run: java -ea scripts/CheckPomVersions.java
+
       - name: Build and Test
         run: mvn --batch-mode --update-snapshots clean test spotless:check ossindex:audit
 
