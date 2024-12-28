@@ -25,7 +25,7 @@
 				<configuration>
 					<outputFolder>${project.build.directory}/static/styles</outputFolder>
 					<style>COMPRESSED</style>
-					<version>1.79.3</version>
+					<version>1.83.0</version>
 				</configuration>
 				<executions>
 					<execution>
