@@ -37,7 +37,7 @@ import org.apache.maven.settings.Proxy;
 @Mojo(name = "compile-sass", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, threadSafe = true)
 public class CompileSassMojo extends AbstractMojo {
 
-    private FileCounter fileCounter;
+    private final FileCounter fileCounter;
 
     protected SassCommandBuilder sassCommandBuilder;
 
