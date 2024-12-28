@@ -246,7 +246,8 @@ public class CompileSassMojo extends AbstractMojo {
     /**
      * This parameter represents the Dart Sass version that should be used to
      * compile Sass files. If left unset, the version available at
-     * https://github.com/sass/dart-sass/releases/latest will be used.
+     * <a href="https://github.com/sass/dart-sass/releases/latest">https://github.com/sass/dart-sass/releases/latest</a>
+     * will be used.
      */
     @Parameter
     private String version;
