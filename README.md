@@ -246,6 +246,12 @@ If this flag is set to true, Sass will only compile stylesheets whose dependenci
 **Required**: No<br>
 **Default**: false
 
+`<skip>`
+This flag tells the plugin to skip the execution of the goal.<br>
+**Type**: boolean<br>
+**Required**: No<br>
+**Default**: false
+
 ### watch-sass
 
 This goal compiles a set of sass/scss files from an input directory to an output directory and keeps the process open watching for changes in the source files. A message will be written to the standard output each time a source file changes.
