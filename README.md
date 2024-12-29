@@ -23,8 +23,8 @@ A Maven plugin that allows to compile SASS using Dart Sass
 				<artifactId>dart-sass-maven-plugin</artifactId>
 				<version>1.5.0</version>
 				<configuration>
-        				<!-- use a fixed version of dart-saas to ensure reproducible builds -->
-        				<version>1.83.0</version>
+						<!-- use a fixed version of dart-saas to ensure reproducible builds -->
+						<version>1.83.0</version>
 				</configuration>
 				<executions>
 					<execution>
