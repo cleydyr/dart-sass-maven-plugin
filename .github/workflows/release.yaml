@@ -34,8 +34,8 @@ jobs:
 
       - name: Deploy to Maven Central
         env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY }}
-          MAVEN_GPG_KEY: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         if: success()
         run: MAVEN_GPG_PASSPHRASE=$MAVEN_GPG_PASSPHRASE MAVEN_GPG_KEY=${MAVEN_GPG_KEY} mvn deploy -DskipTests
 
