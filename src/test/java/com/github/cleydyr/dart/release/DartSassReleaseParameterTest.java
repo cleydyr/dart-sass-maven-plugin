@@ -101,4 +101,17 @@ public class DartSassReleaseParameterTest {
 
         assertEquals("dart-sass-1.71.1-linux-arm64-musl.tar.gz", artifactName);
     }
+
+    @Test
+    public void testGetArtifactNameWindowsArm64() {
+        String os = OSDetector.OS_WINDOWS;
+        String arch = OSDetector.ARCH_ARM64;
+        String version = "1.85.1";
+
+        DartSassReleaseParameter parameter = new DartSassReleaseParameter(os, arch, version);
+
+        String artifactName = parameter.getArtifactName();
+
+        assertEquals("dart-sass-1.85.1-windows-arm64.zip", artifactName);
+    }
 }
