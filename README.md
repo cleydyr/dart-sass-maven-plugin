@@ -80,7 +80,7 @@ This parameter represents the Dart Sass version that should be used to compile S
 
 This parameter represents a path in the local file system where the release archive downloaded from the internet will be stored. If letf unset, it will default to
 <ul>
-<li>$HOME/.cache/dart-sass-maven-plugin/ on *nix operating systems; or</li>
+<li>$HOME/.dart-sass-maven-plugin/ on *nix operating systems; or</li>
 <li>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache on Windows operating systems.</li>
 </ul>
 

@@ -273,7 +273,7 @@ public class CompileSassMojo extends AbstractMojo {
      * This parameter represents a path in the local file system where the release archive
      * downloaded from the internet will stored. If letf unset, it will default to
      * <ul>
-     *  <li><code>$HOME/.cache/dart-sass-maven-plugin/</code> on *nix operating systems; or</li>
+     *  <li><code>$HOME/.dart-sass-maven-plugin/</code> on *nix operating systems; or</li>
      *  <li><code>%LOCALAPPDATA%\dart-sass-maven-plugin\Cache</code> on Windows operating systems.</li>
      * </ul>
      */
