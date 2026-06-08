@@ -1,9 +1,18 @@
 package com.github.cleydyr.dart.system;
 
+import com.github.cleydyr.dart.system.exception.OSDetectionException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
-public class OSDetector {
+public final class OSDetector {
+    private OSDetector() {
+        // Utility class
+    }
+
     public static final String ARCH_IA32 = "ia32";
 
     public static final String ARCH_X64 = "x64";
@@ -22,72 +31,74 @@ public class OSDetector {
 
     public static final String OS_LINUX = "linux";
 
+    public static final String OS_LINUX_WITH_MUSL = "linux-musl";
+
     public static final Collection<String> ACCEPTED_OSES = new ArrayList<>();
 
     public static final Collection<String> ACCEPTED_ARCHITECTURES = new ArrayList<>();
 
-    private static final String _DETECTED_OS;
+    private static final String DETECTED_OS;
 
-    private static final String _DETECTED_ARCHITECTURE;
+    private static final String DETECTED_ARCHITECTURE;
 
-    private static final boolean _IS_WINDOWS;
+    private static final boolean IS_WINDOWS;
 
     static {
-        for (String os : new String[] {OS_LINUX, OS_MAC_OS, OS_WINDOWS}) {
-            ACCEPTED_OSES.add(os);
-        }
+        Collections.addAll(ACCEPTED_OSES, OS_LINUX, OS_MAC_OS, OS_WINDOWS, OS_LINUX_WITH_MUSL);
 
-        for (String arch : new String[] {ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64}) {
-            ACCEPTED_ARCHITECTURES.add(arch);
-        }
+        Collections.addAll(ACCEPTED_ARCHITECTURES, ARCH_ARM64, ARCH_ARM, ARCH_IA32, ARCH_X64);
 
         String osName = System.getProperty("os.name");
 
         if (osName == null) {
-            throw new Error("os.name system property is not set");
+            throw new OSDetectionException("os.name system property is not set");
         }
 
         if (osName.contains("Mac OS")) {
-            _DETECTED_OS = OS_MAC_OS;
+            DETECTED_OS = OS_MAC_OS;
 
-            _IS_WINDOWS = false;
+            IS_WINDOWS = false;
         } else if (osName.contains("Windows")) {
-            _DETECTED_OS = OS_WINDOWS;
+            DETECTED_OS = OS_WINDOWS;
 
-            _IS_WINDOWS = true;
+            IS_WINDOWS = true;
+        } else if (isLinuxMusl()) {
+            DETECTED_OS = OS_LINUX_WITH_MUSL;
+
+            IS_WINDOWS = false;
         } else {
-            _DETECTED_OS = OS_LINUX;
+            DETECTED_OS = OS_LINUX;
 
-            _IS_WINDOWS = false;
+            IS_WINDOWS = false;
         }
 
         String osArchitecture = System.getProperty("os.arch");
 
         if (osArchitecture == null) {
-            throw new Error("os.arch system property is not set");
+            throw new OSDetectionException("os.arch system property is not set");
         }
 
-        if (osArchitecture.equals(AARCH32)) {
-            _DETECTED_ARCHITECTURE = ARCH_ARM;
-        } else if (osArchitecture.equals(AARCH64)) {
-            _DETECTED_ARCHITECTURE = ARCH_ARM64;
+        if (AARCH32.equals(osArchitecture)) {
+            DETECTED_ARCHITECTURE = ARCH_ARM;
+        } else if (AARCH64.equals(osArchitecture)) {
+            DETECTED_ARCHITECTURE = ARCH_ARM64;
         } else if (osArchitecture.contains("64")) {
-            _DETECTED_ARCHITECTURE = ARCH_X64;
+            DETECTED_ARCHITECTURE = ARCH_X64;
         } else {
-            _DETECTED_ARCHITECTURE = ARCH_IA32;
+            DETECTED_ARCHITECTURE = ARCH_IA32;
         }
     }
 
     public static String getOSName() {
-        return _DETECTED_OS;
+        return DETECTED_OS;
     }
 
     public static String getOSArchitecture() {
-        return _DETECTED_ARCHITECTURE;
+        return DETECTED_ARCHITECTURE;
     }
 
     public static boolean isWindows() {
-        return _IS_WINDOWS;
+        return IS_WINDOWS;
     }
 
     public static boolean isAcceptedOSName(String osName) {
@@ -96,5 +107,28 @@ public class OSDetector {
 
     public static boolean isAcceptedArchitecture(String architecture) {
         return ACCEPTED_ARCHITECTURES.stream().anyMatch(architecture::equals);
+    }
+
+    public static boolean isLinuxMusl() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("ldd", "--version");
+
+            Process process = processBuilder.start();
+
+            InputStream inputStream = process.getErrorStream();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                boolean hasMusl = reader.lines().anyMatch(line -> line.contains("musl"));
+
+                process.waitFor();
+
+                return hasMusl;
+            }
+        } catch (Exception e) {
+            // TODO: log warning
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

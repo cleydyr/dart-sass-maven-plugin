@@ -2,29 +2,35 @@ package com.github.cleydyr.dart.maven.plugin.test.util;
 
 import java.io.File;
 import java.util.Random;
-import org.apache.maven.it.VerificationException;
-import org.apache.maven.it.Verifier;
+import org.apache.maven.shared.verifier.VerificationException;
+import org.apache.maven.shared.verifier.Verifier;
 
-public class TestUtil {
+public final class TestUtil {
+    private TestUtil() {
+        // Utility class
+    }
 
     public static void installMainPlugin() throws VerificationException {
         String mainPluginDir = System.getProperty("basedir");
 
         Verifier verifier = new Verifier(new File(mainPluginDir).getAbsolutePath());
 
-        verifier.addCliOption("-DskipTests");
-        verifier.addCliOption("-Dmaven.javadoc.skip=true");
-        verifier.addCliOption("-Dgpg.skip");
-        verifier.executeGoal("install");
+        verifier.addCliArguments("-DskipTests", "-Dmaven.javadoc.skip=true", "-Dgpg.skip", "install");
+        verifier.execute();
         verifier.verifyErrorFreeLog();
-        verifier.resetStreams();
     }
 
-    public static void executeGoal(File testDir, String goal) throws VerificationException {
+    public static void executeGoal(File testDir, String goal, String... additionalCLiArguments)
+            throws VerificationException {
         Verifier verifier = new Verifier(testDir.getAbsolutePath());
-        verifier.executeGoal(goal);
+        verifier.addCliArgument(goal);
+
+        for (String arg : additionalCLiArguments) {
+            verifier.addCliArgument(arg);
+        }
+
+        verifier.execute();
         verifier.verifyErrorFreeLog();
-        verifier.resetStreams();
     }
 
     public static String randomAlphaString(int size) {

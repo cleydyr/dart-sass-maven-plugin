@@ -1,6 +1,8 @@
 package com.github.cleydyr.dart.system.io;
 
 import com.github.cleydyr.dart.release.DartSassReleaseParameter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,5 +15,10 @@ public class WindowsDartSassExecutableExtractor extends AbstractDartSassExecutab
             DartSassReleaseParameter dartSassReleaseParameter,
             ExecutableResourcesProvider executableResourcesProvider) {
         super(dartSassReleaseParameter, executableResourcesProvider, RESOURCE_NAMES);
+    }
+
+    @Override
+    void setResourcePermissions(Path resourcePath) throws IOException {
+        // There's no need to set permissions on Windows.
     }
 }

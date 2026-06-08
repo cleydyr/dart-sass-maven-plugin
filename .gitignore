@@ -22,3 +22,6 @@ log.txt
 bin/
 /.apt_generated/
 /.apt_generated_tests/
+
+#VS Code
+.vscode/
